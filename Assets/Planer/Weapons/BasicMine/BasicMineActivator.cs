@@ -14,7 +14,7 @@ public class BasicMineActivator : ButtonObject
 	if(cooldown>0)return;
 	if(number==0)return;
 //	Debug.Log("hithit");
-	minePrefab.GetComponent<BasicMine>().Level=ParentPlaner.Level;
+	minePrefab.GetComponent<CustomObjectEditorSupply>().Level=ParentPlaner.Level;
 //	Debug.Log(ParentPlaner.transform.position);
 //	Debug.Log(ParentPlaner.prevNode.NodeCoords());
 	GameObject mine=Instantiate(minePrefab) as GameObject;

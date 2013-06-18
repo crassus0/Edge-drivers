@@ -68,10 +68,10 @@ public class EditorAdditionalGUI : MonoBehaviour {
 //	  Debug.Log(ActiveLevel);
 	  SetFlags();
 	   
-	  if(Application.isPlaying)
+	  if(!Application.isEditor)
 	  {
 		
-		Destroy(this);
+		  Destroy(this);
 		
 	  }
       //gameObject.hideFlags=0;

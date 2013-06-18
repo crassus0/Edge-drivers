@@ -2,15 +2,28 @@ using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode()]
 public class CustomObjectEditorSupply : MonoBehaviour {
-	public int level=0;
+	public int Level
+  {
+    get
+    {
+      //Debug.Log(m_level);
+      return m_level;
+    }
+    set
+    {
+
+      m_level = value;
+      
+    }
+
+  }
+  [SerializeField]
+  int m_level;
 	
-	void Update()
-	{
-      //Debug.Log("Update");
-	  GetComponent<CustomObject>().Level=level;
-	}
+
 	void Start()
 	{
+    
 	  if(Application.isPlaying)return;
 	  //Debug.Log(EditorAdditionalGUI.EditorOptions);
 	  

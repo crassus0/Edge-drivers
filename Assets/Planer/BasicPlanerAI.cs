@@ -45,7 +45,9 @@ public class BasicPlanerAI: ScriptableObject {
   public void ChangeLevel(int level)
   {
 	if(m_target==null)return;
-	if(level!=m_target.Level)m_target=null;
+  if (level != m_target.Level) m_target = null;
+  else SetTarget(m_target.node, m_target.direction );
+
   }
   void ApplyDirection()
   {

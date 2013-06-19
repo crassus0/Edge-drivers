@@ -115,11 +115,15 @@ public class InputControls : MonoBehaviour
         return;
       }
     Touch touch= Input.GetTouch(0);
-    Touch touch2 = Input.GetTouch(0);
+    Debug.Log(touch);
+    Touch touch2 = Input.GetTouch(1);
+    Debug.Log(touch2);
     // Find out how the touches have moved relative to eachother:
     Vector2 curDist = touch.position - touch2.position;
     Vector2 prevDist = (prevTouch - prevTouch2) ;
     scaler = 0;
+    prevTouch = touch.position;
+    prevTouch2 = touch2.position;
     if(prevDist.magnitude>0)
       scaler = curDist.magnitude - prevDist.magnitude;
 

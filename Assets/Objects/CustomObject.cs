@@ -9,6 +9,10 @@ public abstract class CustomObject : MonoBehaviour
   {
     get
     {
+      if (node == null)
+        Init();
+      if (node == null)
+        return -1;
       return node.Level;
     }
     

@@ -32,6 +32,10 @@ public class BareerLevelControls : MonoBehaviour
 
   public byte[] Bareers { get { return m_bareers; } }
   public byte[] Graph { get { return m_graph; } }
+  public void Awake()
+  {
+    Deactivate();
+  }
   public void InitBareers()
   {
     //	Debug.Log(m_bareers[0]);
@@ -66,7 +70,7 @@ public class BareerLevelControls : MonoBehaviour
 
 
     m_areas = new BareerAreaControls[NumAreas * NumAreas];
-    //	Debug.Log("Init");
+   
     //if(Creator.creator.randomLevel||Application.platform!=RuntimePlatform.WindowsEditor)
     for (int i = 0; i < NumAreas; i++)
       for (int j = 0; j < NumAreas; j++)
@@ -88,7 +92,8 @@ public class BareerLevelControls : MonoBehaviour
 
         newArea.transform.parent = transform;
         newArea.GetComponent<BareerAreaControls>().Init(parameters);
-        newArea.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
+
+        newArea.hideFlags = 0;// HideFlags.HideInHierarchy | HideFlags.HideInInspector;
       }
     SetGraph();
     m_init = true;
@@ -167,13 +172,20 @@ public class BareerLevelControls : MonoBehaviour
   }
   public void Deactivate()
   {
-    gameObject.SetActiveRecursively(false);
-    animation.Play("HideLevel", PlayMode.StopAll);
+    gameObject.SetActive(false);
+    if (Application.isPlaying)
+      for (int i = 0; i < m_areas.Length; i++)
+      {
+        if (m_areas[i] != null)
+          Destroy(m_areas[i].gameObject);
+      }
+   
   }
   public void Activate()
   {
+    gameObject.SetActive(true);
     Init();
-    animation.Play("ShowLevel", PlayMode.StopAll);
+   
   }
   void MUpdate()
   {

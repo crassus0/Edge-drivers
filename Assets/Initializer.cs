@@ -16,7 +16,11 @@ public class Initializer : MonoBehaviour {
 	  WebCatapultActivator.minePrefab=webMinePrefab;
 	  WebCatapultActivator.mineTexture=webMineTexture;
 	  ButtonObject.buttonPrefab=buttonPrefab.guiTexture;
-	  creator.Init();
+	  
 	}
+  void Start()
+  {
+    creator.Init();
+  }
 	//TODO
 }

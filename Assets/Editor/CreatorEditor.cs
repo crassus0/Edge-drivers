@@ -20,7 +20,7 @@ public class CreatorEditor : Editor
     m_activeLevelSize = targ.levels[(targ.ActiveLevel)].NumAreas;
     for (int i = 0; i < targ.levels.Count; i++)
     {
-      targ.levels[i].gameObject.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+      targ.levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
     }
     OnChangedActiveLevel();
   }
@@ -65,26 +65,26 @@ public class CreatorEditor : Editor
     if (Application.isPlaying) return;
     for (int i = 0; i < targ.levels.Count; i++)
     {
-      targ.levels[i].gameObject.SetActiveRecursively(false);
+      targ.levels[i].gameObject.SetActive(false);
       targ.levels[i].OnDeactivate();
-      targ.levels[i].gameObject.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+      targ.levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
     }
     targ.levels[targ.ActiveLevel].Init();
     foreach (CustomObject x in targ.objects)
     {
       if (x.Level != targ.ActiveLevel)
       {
-        x.gameObject.SetActiveRecursively(false);
+        x.gameObject.SetActive(false);
       }
       else
       {
-        x.gameObject.SetActiveRecursively(true);
+        x.gameObject.SetActive(true);
       }
     }
     m_activeLevelSize = targ.levels[targ.ActiveLevel].NumAreas;
     //Debug.Log(m_activeLevelSize);
-    targ.levels[targ.ActiveLevel].gameObject.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
-    targ.levels[targ.ActiveLevel].gameObject.SetActiveRecursively(true);
+    targ.levels[targ.ActiveLevel].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+    targ.levels[targ.ActiveLevel].gameObject.SetActive(true);
   }
   void ShowActiveLevelEditor()
   {

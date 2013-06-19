@@ -61,15 +61,16 @@ public class Creator : MonoBehaviour
     DebugMessage = "Initializing...";
     OnPause = false;
     m_creator = this;
-
+    
 
 
 
 
     m_player.Init();
     m_energy = m_player.Level;
-    levels[m_energy].Init();
-
+    levels[m_energy].Activate();
+    SwitchLevel();
+    levels[m_energy].gameObject.SetActive(true);
     m_ratio = (float)Screen.width / Screen.height;
     m_screenSize.y = ((Camera.mainCamera.orthographicSize));
     m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
@@ -102,12 +103,14 @@ public class Creator : MonoBehaviour
     {
 
       levels[m_energy].Deactivate();
+
       levels[newEnergy].Activate();
+      levels[newEnergy].gameObject.SetActive(true);
       foreach (CustomObject x in m_objects)
         if (x != null)
         {
 
-          x.gameObject.SetActiveRecursively(x.Level == newEnergy);
+          x.gameObject.SetActive(x.Level == newEnergy);
         }
 
       m_energy = newEnergy;
@@ -125,7 +128,7 @@ public class Creator : MonoBehaviour
       {
         if (!m_objects.Contains(x))
           m_objects.Add(x);
-        x.gameObject.SetActiveRecursively(x.Level == m_energy);
+        x.gameObject.SetActive(x.Level == m_energy);
       }
     m_addObjects.Clear();
     if (m_removeObjects == null)

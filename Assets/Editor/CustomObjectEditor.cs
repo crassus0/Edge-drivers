@@ -60,7 +60,7 @@ public class CustomObjectEditor : Editor
         yCoord = EditorGUILayout.IntField("Y", m_currentNode.Y);
         index = EditorGUILayout.IntField("Index", m_currentNode.Index);
         //Debug.Log(EditorAdditionalGUI.EditorOptions);
-        edited.gameObject.SetActiveRecursively(level == EditorAdditionalGUI.EditorOptions.ActiveLevel);
+        edited.gameObject.SetActive(level == EditorAdditionalGUI.EditorOptions.ActiveLevel);
 
 
       }

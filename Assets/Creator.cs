@@ -66,11 +66,8 @@ public class Creator : MonoBehaviour
 
 
 
-    m_player.Init();
-    m_energy = m_player.Level;
-    levels[m_energy].Activate();
-    SwitchLevel();
-    levels[m_energy].gameObject.SetActive(true);
+   
+    
     m_ratio = (float)Screen.width / Screen.height;
     m_screenSize.y = ((Camera.mainCamera.orthographicSize));
     m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
@@ -92,18 +89,23 @@ public class Creator : MonoBehaviour
     m_init = true;
     if (m_objects == null)
       m_objects = new HashSet<CustomObject>();
-
+    m_player.Init();
+    m_energy = -1;
+    SwitchLevel();
   }
   void SwitchLevel()
   {
     int newEnergy = m_player.Level;
 
-    //	  Debug.Log(m_energy+","+newEnergy+","+m_player.Energy);
+     //Debug.Log(m_energy+","+newEnergy);
     if (m_energy != newEnergy)
     {
-
-      levels[m_energy].Deactivate();
-
+      if (m_energy >= 0)
+      {
+        //Debug.Log(m_energy);
+        levels[m_energy].Deactivate();
+        Camera.main.animation.Play("CameraAnimation");
+      }
       levels[newEnergy].Activate();
       levels[newEnergy].gameObject.SetActive(true);
       foreach (CustomObject x in m_objects)
@@ -116,7 +118,7 @@ public class Creator : MonoBehaviour
       m_energy = newEnergy;
       if (m_energy > 2)
         m_energy = 2;
-      Camera.main.animation.Play("CameraAnimation");
+      
     }
   }
   void UpdateObjectList()

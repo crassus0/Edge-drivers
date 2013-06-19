@@ -12,12 +12,12 @@ public class EditorMenu : EditorWindow
       return EditorAdditionalGUI.EditorOptions;
     }
   }
-
+  GameObject m_editorPrefab = AssetDatabase.LoadAssetAtPath("Assets/EditorAdd-ins/EditorOptionsPrefab.prefab", typeof(GameObject)) as GameObject;
   public int m_selectedOption = 0;
   [MenuItem("EdgeDrivers/Editor Menu")]
   static void Init()
   {
-    Debug.Log("init");
+    //Debug.Log("init");
     // Get existing open window or if none, make a new one:
     EditorMenu window = (EditorMenu)EditorWindow.GetWindow(typeof(EditorMenu));
     window.name = "Edge drivers components";
@@ -31,6 +31,14 @@ public class EditorMenu : EditorWindow
 
     //m_selectedOption=0;
     //editor.selected=0;
+
+    if (EditorAdditionalGUI.EditorOptions == null)
+    {
+      GameObject newEditor = Instantiate(m_editorPrefab) as GameObject;
+      newEditor.name = "EditorOptions";
+    }
+    
+    //EditorAdditionalGUI.editorPrefab = m_editorPrefab;
     Selection.activeObject = editor.gameObject;
   }
   // Update is called once per frame

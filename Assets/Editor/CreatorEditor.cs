@@ -10,6 +10,8 @@ public class CreatorEditor : Editor
   int m_activeLevelSize;
   //int count = 0;
   //int activeLevel=1;
+
+  static GameObject m_editorPrefab;
   void OnEnable()
   {
     //	  Debug.Log("OnEnabled");
@@ -70,6 +72,7 @@ public class CreatorEditor : Editor
       targ.levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
     }
     targ.levels[targ.ActiveLevel].Init();
+    targ.levels[targ.ActiveLevel].gameObject.SetActive(true);
     foreach (CustomObject x in targ.objects)
     {
       if (x.Level != targ.ActiveLevel)

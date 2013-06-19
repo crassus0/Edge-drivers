@@ -28,7 +28,7 @@ public class EditorMenu : EditorWindow
   void OnFocus()
   {
 
-
+    Repaint();
     //m_selectedOption=0;
     //editor.selected=0;
 
@@ -36,10 +36,11 @@ public class EditorMenu : EditorWindow
     {
       GameObject newEditor = Instantiate(m_editorPrefab) as GameObject;
       newEditor.name = "EditorOptions";
+
     }
     
     //EditorAdditionalGUI.editorPrefab = m_editorPrefab;
-    Selection.activeObject = editor.gameObject;
+    Selection.activeGameObject = editor.gameObject;
   }
   // Update is called once per frame
   void OnGUI()
@@ -82,11 +83,11 @@ public class EditorMenu : EditorWindow
 
     GameObject planerPrefab = AssetDatabase.LoadAssetAtPath("Assets/ObjectPrefabs/" + type + "Prefab.prefab", typeof(GameObject)) as GameObject;
     GameObject planer = Instantiate(planerPrefab) as GameObject;
-    planer.name = type + EditorAdditionalGUI.EditorOptions.objects.Count;
-    EditorAdditionalGUI.EditorOptions.objects.Add(planer.GetComponent<CustomObject>());
+    planer.name = type + EditorAdditionalGUI.EditorOptions.Objects.Count;
+    EditorAdditionalGUI.EditorOptions.Objects.Add(planer.GetComponent<CustomObject>());
     //planer.name="Planer";
     editor.objectToMove = planer.GetComponent<CustomObject>();
-    editor.objectToMove.GetComponent<CustomObjectEditorSupply>().Level = editor.ActiveLevel;
+    editor.objectToMove.GetComponent<CustomObject>().Level = editor.ActiveLevel;
   }
   public void Repeat()
   {

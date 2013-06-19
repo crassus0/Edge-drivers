@@ -12,7 +12,7 @@ public class EditorAdditionalGUI : MonoBehaviour
 
   public int selected { get; set; }
   public List<BareerLevelControls> levels { get; set; }
-  public List<CustomObject> objects
+  public List<CustomObject> Objects
   {
     get
     {
@@ -51,7 +51,7 @@ public class EditorAdditionalGUI : MonoBehaviour
     foreach (Object x in customObjects)
     {
       if (!x.name.Contains("Prefab"))
-        objects.Add((x as CustomObject));
+        Objects.Add((x as CustomObject));
     }
 
     levels = GameObject.Find("Creator").GetComponent<Creator>().levels;

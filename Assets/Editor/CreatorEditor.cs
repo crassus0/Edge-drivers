@@ -12,30 +12,35 @@ public class CreatorEditor : Editor
   //int activeLevel=1;
 
   static GameObject m_editorPrefab;
-  void OnEnable()
-  {
-    //	  Debug.Log("OnEnabled");
 
-    targ = target as EditorAdditionalGUI;
-    targ.RepeatButton = false;
-    targ.levels = Creator.creator.levels;
-    m_activeLevelSize = targ.levels[(targ.ActiveLevel)].NumAreas;
-    for (int i = 0; i < targ.levels.Count; i++)
-    {
-      targ.levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
-    }
-    OnChangedActiveLevel();
-  }
   public override void OnInspectorGUI()
   {
     //KeyCheck();
+    PreInit();
     ShowActiveLevel();
     ShowInstrumentSetup();
     ShowActiveLevelEditor();
   }
+  void PreInit()
+  {
+    if (targ == null)
+    {
+      
+      targ = target as EditorAdditionalGUI;
+      targ.RepeatButton = false;
+      targ.levels = GameObject.Find("Creator").GetComponent<Creator>().levels;
 
+      m_activeLevelSize = targ.levels[(targ.ActiveLevel)].NumAreas;
+      for (int i = 0; i < targ.levels.Count; i++)
+      {
+        targ.levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+      }
+      OnChangedActiveLevel();
+    }
+  }
   void ShowActiveLevel()
   {
+
     int[] levelValues = new int[targ.levels.Count];
     string[] levelNames = new string[levelValues.Length];
     for (int i = 0; i < levelValues.Length; i++)
@@ -48,7 +53,10 @@ public class CreatorEditor : Editor
     //	    Debug.Log(levelNames);
     //	    Debug.Log(levelValues);
     activeLevel = EditorGUILayout.IntPopup("Active Level", activeLevel, levelNames, levelValues);
+    //Debug.Log(activeLevel);
+
     targ.ActiveLevel = activeLevel;
+    //Debug.Log(targ.ActiveLevel);
     //targ.levels[targ.ActiveLevel].gameObject.hideFlags=HideFlags.HideInInspector|HideFlags.HideInHierarchy;
     if (GUI.changed)
     {
@@ -64,6 +72,7 @@ public class CreatorEditor : Editor
   }
   void OnChangedActiveLevel()
   {
+    
     if (Application.isPlaying) return;
     for (int i = 0; i < targ.levels.Count; i++)
     {
@@ -73,10 +82,11 @@ public class CreatorEditor : Editor
     }
     targ.levels[targ.ActiveLevel].Init();
     targ.levels[targ.ActiveLevel].gameObject.SetActive(true);
-    foreach (CustomObject x in targ.objects)
+    foreach (CustomObject x in targ.Objects)
     {
-      if (x.Level != targ.ActiveLevel)
+      if (x.GetComponent<CustomObject>().Level != targ.ActiveLevel)
       {
+       
         x.gameObject.SetActive(false);
       }
       else
@@ -127,6 +137,7 @@ public class CreatorEditor : Editor
   //SCENE  GUI
   void OnSceneGUI()
   {
+    PreInit();
     //targ=target as EditorAdditionalGUI;
     //Debug.Log(Event.current.mousePosition);
     //	  KeyCheck();

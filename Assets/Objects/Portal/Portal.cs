@@ -9,7 +9,7 @@ public class Portal : CustomObject
   {
     if (m_awaken) return;
     m_awaken = true;
-    PairPortal.Init();
+
     
   }
   public override void OnUpdate()
@@ -18,6 +18,7 @@ public class Portal : CustomObject
   }
   public override void Interact(CustomObject obj, InteractType type)
   {
+    //Debug.Log("Interact");
     if (PairPortal == null) return;
     if (type == InteractType.Stay)
     {
@@ -25,6 +26,7 @@ public class Portal : CustomObject
       PlanerCore x = obj as PlanerCore;
       if (x != null&&!x.EnteredPortal)
       {
+        x.RemoveUpdateFunc(OnPlanerEnter);
         x.AddUpdateFunc(OnPlanerEnter);
       }
     }

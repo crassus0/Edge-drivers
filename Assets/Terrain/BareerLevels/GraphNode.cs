@@ -1,15 +1,28 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+[System.Serializable]
 public class GraphNode: System.IComparable<GraphNode>
 {
+  [SerializeField]
   int m_i;
+
+  [SerializeField]
   int m_j;
+
+  [SerializeField]
   int m_level;
+
+  [SerializeField]
   int m_index;
+
+  [SerializeField]
   List<CustomObject> m_objects;
+
+  [SerializeField]
   List<CustomObject> m_toLeave;
+
+  [SerializeField]
   List<CustomObject> m_toEnter;
 
   
@@ -57,6 +70,13 @@ public class GraphNode: System.IComparable<GraphNode>
     }
     levels[m_level].m_bareers[m_i + m_j * triangleRow] = (byte)nodeGraph;
     levels[m_level].OnChanged(m_i, m_j);
+  }
+  public GraphNode()
+  {
+    m_i = 0;
+    m_j = 0;
+    m_index = 0;
+    m_level = 0;
   }
   public int Distance(GraphNode x)
   {

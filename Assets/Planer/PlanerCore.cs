@@ -16,6 +16,7 @@ public class PlanerCore : CustomObject
   //	float time=1;
   public PlanerVisualControls m_visualiser;
   bool m_isPlayer = false;
+  [SerializeField]
   public int direction = 0;
   PlanerMoveControls m_moveControls;
   BasicPlanerAI m_basicAI;
@@ -81,6 +82,7 @@ public class PlanerCore : CustomObject
 
   public void AddUpdateFunc(Action<PlanerCore> newUpdateFunc)
   {
+    //Debug.Log("add");
     if (!m_renewedUpdater)
     {
 
@@ -121,9 +123,10 @@ public class PlanerCore : CustomObject
   }
 
 
-  public override void Init()
+  public void Init()
   {
-    base.Init();
+    //Debug.Log(direction);
+    
     //bug.Log(Level);
     EnteredPortal = false;
     if (m_initislized) return;
@@ -149,10 +152,12 @@ public class PlanerCore : CustomObject
     m_basicAI.Init(this);
     m_mineController = ScriptableObject.CreateInstance<MineController>();
     m_mineController.Init(this);
+    //Debug.Log(m_initislized);
     m_visualiser.Init(this);
     //m_visualiser.Init(this);
     //	  GetComponent<Catcher>().Init(this);
     m_initislized = true;
+    //Debug.Log(m_initislized);
 
   }
   public void SetTarget(GraphNode x, int angle)
@@ -163,6 +168,7 @@ public class PlanerCore : CustomObject
   {
     EnteredPortal = false;
     //Debug.Log(m_updateFunc.Method.Name);
+    //Debug.Log("update");
     if (m_updateFunc != null)
       m_updateFunc(this);
   }
@@ -219,6 +225,7 @@ public class PlanerCore : CustomObject
   public void OnEnterPortal(GraphNode node)
   {
     //m_freese = 1;
+    
     Node = node;
     
     //Debug.Log(node);

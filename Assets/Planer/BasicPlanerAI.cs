@@ -14,20 +14,28 @@ public class BasicPlanerAI : ScriptableObject
   protected PlanerCore Planer { get { return m_planer; } }
   public virtual void Init(PlanerCore planer)
   {
+    //Debug.Log("init");
     m_planer = planer;
     route = new Queue<int>();
     weights = new Queue<float>();
   }
-  public void SetTarget(GraphNode target, int direction, int maxDistance = 50)
+	public void SetTarget(GraphNode target, int direction)
+	{
+		SetTarget(target, direction, 50);
+	}
+  public void SetTarget(GraphNode target, int direction, int maxDistance)
   {
+    //Debug.Log("set");
     m_maxDistance = maxDistance;
     m_target = new AStarNode(target, direction, float.MaxValue, null);
+    m_target.IsTarget = true;
     //	Debug.Log(m_target);
     if (!AStarSearch())
     {
       m_target = null;
       //Debug.Log("FAIL");
     }
+    //Debug.Log(m_target);
   }
   public void SetTarget(GraphNode target)
   {
@@ -36,10 +44,17 @@ public class BasicPlanerAI : ScriptableObject
   }
   public virtual void OnUpdate()
   {
+    //Debug.Log("update");
+    //Debug.Log(m_planer.Stopped);
     AStarNode currentNode = new AStarNode(m_planer.GetNode(), m_planer.Direction, 0, null);
     if (m_planer.Stopped > 0) return;
     if (currentNode.EqualWithRandomRotation(m_target))
+    {
+      //Debug.Log("fail");
       m_target = null;
+    }
+    //Debug.Log(m_target);
+    //Debug.Log(m_planer.name);
     if (m_target == null) return;
     ApplyDirection();
   }
@@ -52,6 +67,7 @@ public class BasicPlanerAI : ScriptableObject
   }
   void ApplyDirection()
   {
+    //Debug.Log("rotate");
     int newDir = route.Dequeue();
     float newWeight = weights.Dequeue();
     if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(EntityValue) - 0.5f)
@@ -223,6 +239,8 @@ public class BasicPlanerAI : ScriptableObject
   public virtual float EntityValue(CustomObject entity)
   {
     if (entity.GetType() == typeof(BasicMine)) return 0.1f;
+    if (entity.GetType() == typeof(Portal)) return 5f;
+
     return 0;
   }
 }

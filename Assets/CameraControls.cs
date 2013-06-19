@@ -69,6 +69,7 @@ public class CameraControls:MonoBehaviour
 	
 	public void SetNewTargetPosition(Vector3 targetPosition, float scale, float speedIndex)
 	{
+    //Debug.Log(scale);
 	  m_targetPosition=targetPosition;
 	  m_targetPosition.y=5;
 	  m_maxMoveTime=speedIndex;
@@ -77,11 +78,10 @@ public class CameraControls:MonoBehaviour
 	  m_basicPosition=transform.position;
 	  m_moveTime=0;
 	}
-	public void ForceSetPosition(Vector3 position, float scale)
+	public void ForceSetPosition(Vector3 position)
 	{
 	  position.y=5;
 	  transform.position=position;
-	  m_curentScale=scale;
 	}
 	public void Init()
 	{

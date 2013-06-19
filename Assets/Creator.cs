@@ -52,6 +52,7 @@ public class Creator : MonoBehaviour
     //	  Debug.Log ("creation started");
 
     if (m_init) return;
+    
     numCreators++;
     if (numCreators > 1)
     {
@@ -75,7 +76,7 @@ public class Creator : MonoBehaviour
 
     DebugMessage = "Bareers loaded\n";
 
-
+    m_player.Init();
     if (m_ratio > 1)
       m_screenSize.z = m_ratio;
     else
@@ -85,11 +86,17 @@ public class Creator : MonoBehaviour
     DebugMessage = DebugMessage + "Background loaded\n";
     //Debug.Log(ratio);
     Camera.main.GetComponent<CameraControls>().Init();
-    Camera.main.GetComponent<CameraControls>().ForceSetPosition(m_player.transform.position, m_energy);
+    Camera.main.GetComponent<CameraControls>().ForceSetPosition(m_player.transform.position);
     m_init = true;
     if (m_objects == null)
       m_objects = new HashSet<CustomObject>();
-    m_player.Init();
+    UnityEngine.Object[] customObjects = Resources.FindObjectsOfTypeAll(typeof(CustomObject));
+    foreach (UnityEngine.Object x in customObjects)
+    {
+      if (!x.name.Contains("Prefab"))
+        m_objects.Add((x as CustomObject));
+    }
+
     m_energy = -1;
     SwitchLevel();
   }
@@ -97,9 +104,10 @@ public class Creator : MonoBehaviour
   {
     int newEnergy = m_player.Level;
 
-     //Debug.Log(m_energy+","+newEnergy);
+    // Debug.Log(m_energy+","+newEnergy);
     if (m_energy != newEnergy)
     {
+
       if (m_energy >= 0)
       {
         //Debug.Log(m_energy);
@@ -150,6 +158,8 @@ public class Creator : MonoBehaviour
     if (OnPause) return;
     if (turnTime >= 0)
     {
+      if(turnTime==1f)
+        Camera.main.GetComponent<CameraControls>().SetNewTargetPosition(m_player.Visualiser.transform.position, m_player.Level, 1f);
       turnTime -= Time.deltaTime;
       return;
     }
@@ -166,10 +176,11 @@ public class Creator : MonoBehaviour
     foreach (CustomObject x in m_objects)
       if (x != null)
       {
+        
         x.OnUpdate();
       }
     GraphNode.InteractAll();
-    Camera.main.GetComponent<CameraControls>().SetNewTargetPosition(m_player.transform.position, m_player.Level, 1f);
+    
     SwitchLevel();
   }
   public static uint GetID() { return m_curentID++; }

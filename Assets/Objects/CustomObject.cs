@@ -9,16 +9,15 @@ public abstract class CustomObject : MonoBehaviour
   {
     get
     {
-      if (node == null)
-        Init();
-      if (node == null)
-        return -1;
       return node.Level;
     }
-    
+    set
+    {
+      Node = GraphNode.GetNodeByParameters(Node.X, Node.Y, Node.Index, value);
+    }
   }
   protected bool m_init = false;
-  protected GraphNode Node
+  public GraphNode Node
   {
     get
     {
@@ -36,7 +35,8 @@ public abstract class CustomObject : MonoBehaviour
       transform.position = newPosition;
     }
   }
-  GraphNode node;
+  [SerializeField]
+  GraphNode node=new GraphNode();
 
   public GraphNode GetNode()
   {
@@ -47,15 +47,7 @@ public abstract class CustomObject : MonoBehaviour
   //protected void OnStart(){}
   protected void Awake()
   {
-    Init();
-  }
-  public virtual void Init()
-  {
-    //Debug.Log(Level);
     if (m_init) return;
-    int level = GetComponent<CustomObjectEditorSupply>().Level;
-    Node = GraphNode.GetNodeByCoords(transform.position, level);
-
     Creator.AddObject(this);
     m_init = true;
   }

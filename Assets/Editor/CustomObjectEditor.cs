@@ -9,20 +9,26 @@ public class CustomObjectEditor : Editor
 {
   GraphNode m_currentNode;
   Creator creator;
-  CustomObjectEditorSupply edited;
+  CustomObject edited;
   void OnEnable()
   {
     //	Debug.Log(target);
     creator = GameObject.Find("Creator").GetComponent<Creator>();
-    edited = target as CustomObjectEditorSupply;
-    m_currentNode = GraphNode.GetNodeByCoords(edited.transform.position, edited.Level);
-    edited.SetFlags();
+    edited = (target as CustomObjectEditorSupply).GetComponent<CustomObject>();
+
+    (target as CustomObjectEditorSupply).SetFlags();
+    CustomObject x = edited.GetComponent<CustomObject>();
+    //x.Level = Level;
+    if (!EditorAdditionalGUI.EditorOptions.Objects.Contains(x))
+      EditorAdditionalGUI.EditorOptions.Objects.Add(x);
   }
   public override void OnInspectorGUI()
   {
+    
     //base.OnInspectorGUI();
     //if(Application.isPlaying)return;
     //Debug.Log("1412351345");
+    m_currentNode = edited.Node;
     EditorGUILayout.BeginHorizontal();
     EditorGUILayout.LabelField("X", GUILayout.MaxWidth(45));
     int xCoord = EditorGUILayout.IntField(m_currentNode.X, GUILayout.ExpandWidth(true));
@@ -41,34 +47,30 @@ public class CustomObjectEditor : Editor
       levels[i] = i;
       levelNames[i] = creator.levels[i].name;
     }
-    int level = EditorGUILayout.IntPopup("Level", m_currentNode.Level, levelNames, levels);
+    int level = EditorGUILayout.IntPopup("Level", edited.Level, levelNames, levels);
 
 
     if (GUI.changed)
     {
 
-      if (m_currentNode.Level != level)
-      {
-        //Debug.Log(creator.levels.Count);
-        //		Debug.Log(m_currentNode);
-        m_currentNode = GraphNode.GetNodeByCoords(m_currentNode.NodeCoords(), level);
-        //Debug.Log(m_currentNode);
-        edited.transform.position = m_currentNode.NodeCoords();
-        edited.Level = level;
 
-        xCoord = EditorGUILayout.IntField("X", m_currentNode.X);
-        yCoord = EditorGUILayout.IntField("Y", m_currentNode.Y);
-        index = EditorGUILayout.IntField("Index", m_currentNode.Index);
-        //Debug.Log(EditorAdditionalGUI.EditorOptions);
-        edited.gameObject.SetActive(level == EditorAdditionalGUI.EditorOptions.ActiveLevel);
+      //Debug.Log(creator.levels.Count);
+      //		Debug.Log(m_currentNode);
+      //Debug.Log(edited.name);
+      m_currentNode = GraphNode.GetNodeByParameters(xCoord, yCoord, index, level);//.GetNodeByCoords(m_currentNode.NodeCoords(), level);
+      //Debug.Log(m_currentNode);
+      edited.Node = m_currentNode;
+      //edited.transform.position = m_currentNode.NodeCoords();
+      
+      //edited.GetComponent<CustomObject>().Level = level;
+
+      edited.gameObject.SetActive(level == EditorAdditionalGUI.EditorOptions.ActiveLevel);
 
 
-      }
-      m_currentNode = GraphNode.GetNodeByParameters(xCoord, yCoord, index, level);
       edited.transform.position = m_currentNode.NodeCoords();
     }
     //edited.transform.hideFlags=0;
-    edited.SetFlags();
+    (target as CustomObjectEditorSupply).SetFlags();
   }
   /*CustomObjectEditor()
   {
@@ -78,8 +80,9 @@ public class CustomObjectEditor : Editor
   public void OnSceneGUI()
   {
 
-    CustomObjectEditorSupply edited = target as CustomObjectEditorSupply;
+    
     m_currentNode = GraphNode.GetNodeByCoords(edited.transform.position, edited.Level);
+    edited.Node = m_currentNode;
     edited.transform.position = m_currentNode.NodeCoords();
 
   }

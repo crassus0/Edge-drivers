@@ -39,7 +39,7 @@ public class AdvancedPlanerAI : BasicPlanerAI
 	  if(!Creator.Initialised)return;
 	  Vector3 randomVector=new Vector3(Random.Range(0f,1f),0,Random.Range(0f,1f)).normalized;
 	  randomVector*=15*GraphNode.graphDistance;
-	  Planer.GetComponent<CustomObjectEditorSupply>().Level=Creator.Level;
+	  Planer.GetComponent<CustomObject>().Level=Creator.Level;
 	  
       GameObject newPlaner =Instantiate(Planer.gameObject, Creator.Player.transform.position+randomVector, Planer.transform.rotation) as GameObject;
 	  newPlaner.GetComponent<PlanerCore>().Energy=25;

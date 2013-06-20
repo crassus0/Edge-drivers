@@ -71,6 +71,7 @@ public class CustomObjectEditor : Editor
     }
     //edited.transform.hideFlags=0;
     (target as CustomObjectEditorSupply).SetFlags();
+    EditorUtility.SetDirty(edited);
   }
   /*CustomObjectEditor()
   {

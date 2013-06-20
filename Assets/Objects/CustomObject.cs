@@ -3,7 +3,7 @@ using System.Collections;
 [RequireComponent(typeof(CustomObjectEditorSupply))]
 public abstract class CustomObject : MonoBehaviour
 {
-
+  public CustomObjectVisualiser m_visualiser;
   public ObjectType Type { get; set; }
   public int Level
   {
@@ -48,8 +48,8 @@ public abstract class CustomObject : MonoBehaviour
   protected void Awake()
   {
     if (m_init) return;
-    Creator.AddObject(this);
     Node = GraphNode.GetNodeByParameters(node.X, node.Y, node.Index, node.Level);
+    Creator.AddObject(this);
     m_init = true;
   }
 

@@ -19,6 +19,7 @@ public class Creator : MonoBehaviour
   public string m_nextLevel;
 
   public static readonly int Size = 1;
+  public static float turnDuration = 0.5f;
   static Vector3 m_screenSize;
   static float m_ratio;
   static Creator m_creator;
@@ -156,15 +157,16 @@ public class Creator : MonoBehaviour
     if (!m_init) return;
     UpdateObjectList();
     if (OnPause) return;
+    Camera.main.GetComponent<CameraControls>().SetNewTargetPosition(m_player.Visualiser.transform.position, m_player.Level, turnDuration);
     if (turnTime >= 0)
     {
-      if(turnTime==1f)
-        Camera.main.GetComponent<CameraControls>().SetNewTargetPosition(m_player.Visualiser.transform.position, m_player.Level, 1f);
+     
+       
       turnTime -= Time.deltaTime;
       return;
     }
     
-    turnTime = 1f;
+    turnTime = turnDuration;
     m_screenSize.y = ((Camera.mainCamera.orthographicSize));
     m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
     if (m_objects == null)
@@ -199,6 +201,7 @@ public class Creator : MonoBehaviour
   }
   public static void AddObject(CustomObject newObject)
   {
+    //Debug.Log(newObject.Node);
     if (m_addObjects == null)
       m_addObjects = new HashSet<CustomObject>();
     m_addObjects.Add(newObject);

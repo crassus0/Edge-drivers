@@ -6,12 +6,11 @@ public class WebMine : CustomObject
   //public BasicMineVisualiser m_visualiser;
   int stunTime = 2;
   List<PlanerCore> m_caughtList = new List<PlanerCore>();
-  public WebCatapultVisualiser m_visualiser;
   bool placed = false;
   public void Init(PlanerCore parent, int range)
   {
     GraphNode x = parent.GetNode();
-
+    gameObject.SetActive(true);
     int direction = parent.Direction;
     int i = range;
     while (i > 0)
@@ -29,7 +28,7 @@ public class WebMine : CustomObject
     placed = true;
     Node = x;
 
-    m_visualiser.Push(parent);
+    (m_visualiser as WebCatapultVisualiser).Push(parent);
   }
   public override void OnUpdate()
   {

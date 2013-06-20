@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BasicMineVisualiser : MonoBehaviour 
+public class BasicMineVisualiser : CustomObjectVisualiser 
 {
   public void OnInstall(PlanerCore parent )
 	{

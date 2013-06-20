@@ -84,6 +84,7 @@ public class EditorMenu : EditorWindow
     GameObject planerPrefab = AssetDatabase.LoadAssetAtPath("Assets/ObjectPrefabs/" + type + "Prefab.prefab", typeof(GameObject)) as GameObject;
     GameObject planer = Instantiate(planerPrefab) as GameObject;
     planer.name = type + EditorAdditionalGUI.EditorOptions.Objects.Count;
+    planer.SetActive(true);
     EditorAdditionalGUI.EditorOptions.Objects.Add(planer.GetComponent<CustomObject>());
     //planer.name="Planer";
     editor.objectToMove = planer.GetComponent<CustomObject>();

@@ -129,6 +129,7 @@ public class CreatorEditor : Editor
     {
       targ.levels[(targ.ActiveLevel)].name = name;
     }
+    EditorUtility.SetDirty(targ.levels[(targ.ActiveLevel)]);
   }
 
   //SCENE  GUI

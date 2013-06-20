@@ -14,7 +14,7 @@ public class PlanerCore : CustomObject
   public int agility;
 
   //	float time=1;
-  public PlanerVisualControls m_visualiser;
+  //public PlanerVisualControls m_visualiser;
   bool m_isPlayer = false;
   [SerializeField]
   public int direction = 0;
@@ -39,7 +39,7 @@ public class PlanerCore : CustomObject
   }
   public PlanerVisualControls Visualiser
   {
-    get { return m_visualiser; }
+    get { return m_visualiser as PlanerVisualControls; }
   }
   public int Agility
   {
@@ -153,7 +153,7 @@ public class PlanerCore : CustomObject
     m_mineController = ScriptableObject.CreateInstance<MineController>();
     m_mineController.Init(this);
     //Debug.Log(m_initislized);
-    m_visualiser.Init(this);
+    (m_visualiser as PlanerVisualControls).Init(this);
     //m_visualiser.Init(this);
     //	  GetComponent<Catcher>().Init(this);
     m_initislized = true;

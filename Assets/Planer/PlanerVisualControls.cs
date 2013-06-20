@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlanerVisualControls : MonoBehaviour
+public class PlanerVisualControls : CustomObjectVisualiser
 {
   PlanerCore m_parentPlaner;
   bool m_isHit = false;
@@ -9,9 +9,9 @@ public class PlanerVisualControls : MonoBehaviour
   public GameObject body;
   public Texture2D normalHaloTexture;
   public Texture2D hitHaloTexture;
-  public void Init(PlanerCore parent)
+  public void Init(CustomObject parent)
   {
-    m_parentPlaner = parent;
+    m_parentPlaner = parent as PlanerCore;
     Bounds newBounds = animation.localBounds;
     animation.localBounds = newBounds;
   }
@@ -20,15 +20,18 @@ public class PlanerVisualControls : MonoBehaviour
     string anim = "MoveR" + rotation + "I" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
     //	Debug.Log(anim);
     animation.Play(anim);
+    //animation[anim].speed = 1/Creator.turnDuration;
   }
   public void Hit(int rotation)
   {
     string anim = "HitR" + rotation + "I" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
     //	Debug.Log(anim);
     animation.Play(anim);
+    //animation[anim].speed = 1 / Creator.turnDuration;
   }
   public void OnHit()
   {
+    
     //Debug.Log(m_isHit);
     if (m_isHit)
     {

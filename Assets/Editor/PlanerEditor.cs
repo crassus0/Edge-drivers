@@ -33,6 +33,7 @@ public class PlanerEditor : Editor
       targetObject.Agility = agility;
 
     }
+    EditorUtility.SetDirty(target);
   }
   void OnSceneGUI()
   {

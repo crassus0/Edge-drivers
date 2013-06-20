@@ -67,7 +67,7 @@ public class BareerLevelControls : MonoBehaviour
     m_areaWidth = BareerAreaControls.areaWidth;
     m_areaHeight = BareerAreaControls.areaHeight;
     triangleRow = NumAreas * BareerAreaControls.areaSize;
-
+    hideFlags = 0;
 
     m_areas = new BareerAreaControls[NumAreas * NumAreas];
    

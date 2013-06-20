@@ -26,6 +26,6 @@ public class CustomObjectEditorSupply : MonoBehaviour {
 	  transform.hideFlags=HideFlags.HideInInspector;
 	  int children=transform.childCount;
 	  for(int i=0; i<children; i++)
-		transform.GetChild(i).gameObject.hideFlags=HideFlags.HideInInspector|HideFlags.HideInHierarchy;
+      transform.GetChild(i).gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
 	}
 }

@@ -31,10 +31,7 @@ public class CreatorEditor : Editor
       targ.levels = GameObject.Find("Creator").GetComponent<Creator>().levels;
 
       m_activeLevelSize = targ.levels[(targ.ActiveLevel)].NumAreas;
-      for (int i = 0; i < targ.levels.Count; i++)
-      {
-        targ.levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
-      }
+
       OnChangedActiveLevel();
     }
   }

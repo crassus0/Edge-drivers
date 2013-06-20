@@ -174,7 +174,7 @@ public class PlanerCore : CustomObject
   }
   public void UpdateFuncBasic(PlanerCore planer)
   {
-    //Debug.Log(123);
+    //Debug.Log(Node.GetDirections()[0]);
 
     m_basicAI.OnUpdate();
     m_moveControls.OnUpdate();

@@ -36,6 +36,7 @@ public class GraphNode: System.IComparable<GraphNode>
   int nodeGraph;
   GraphNode[] adjacent=new GraphNode[3];
   int triangleRow;
+  [System.NonSerialized]
   bool setGraph=false;
 	
   public void ChangeState(byte[] states, List<BareerLevelControls> levels)
@@ -110,6 +111,7 @@ public class GraphNode: System.IComparable<GraphNode>
       foreach (CustomObject x in savedNode.m_objects)
       {
         if (CustomObject.ReferenceEquals(x, enteringObject)) continue;
+        //Debug.Log(x.name);
         enteringObject.Interact(x, InteractType.Enter);
         x.Interact(enteringObject, InteractType.Stay);
         if (enteringObject.GetNode() != savedNode)
@@ -213,8 +215,11 @@ public class GraphNode: System.IComparable<GraphNode>
   }
   public bool[] GetDirections()
   {
+    //Debug.Log(setGraph);
     if (!setGraph)
       SetNodeGraph();
+    //Debug.Log(nodeGraph);
+
     bool[] directions = new bool[6];
     for (int i = 0; i < 6; i++)
       directions[i] = false;
@@ -314,10 +319,14 @@ public class GraphNode: System.IComparable<GraphNode>
   //technicals
   void SetNodeGraph()
   {
+    
     if (m_index == 0)
     {
       if (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow)
+      {
         nodeGraph = Creator.GetBareerMap(m_level)[m_i + m_j * triangleRow];
+      
+      }
       else
         nodeGraph = (byte)Random.Range(0, 64);
     }
@@ -355,6 +364,7 @@ public class GraphNode: System.IComparable<GraphNode>
       newNode = s_usedNodes[findIndex];
     }
     newNode.triangleRow = BareerAreaControls.areaSize * Creator.creator.levels[level].NumAreas;
+
     return newNode;
   }
 

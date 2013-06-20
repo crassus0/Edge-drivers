@@ -49,6 +49,7 @@ public abstract class CustomObject : MonoBehaviour
   {
     if (m_init) return;
     Creator.AddObject(this);
+    Node = GraphNode.GetNodeByParameters(node.X, node.Y, node.Index, node.Level);
     m_init = true;
   }
 

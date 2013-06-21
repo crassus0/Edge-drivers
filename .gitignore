@@ -18,6 +18,7 @@ ExportedObj/
 *.user
 *.unityproj
 *.booproj
+*.exe 
  
 # ============ #
 # OS generated #

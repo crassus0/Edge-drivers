@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class Portal : CustomObject 
+using System;
+[Serializable]
+public class Portal : CustomObject
 {
   public Portal PairPortal;
   bool m_awaken;

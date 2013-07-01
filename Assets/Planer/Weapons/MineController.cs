@@ -1,28 +1,65 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
-public class MineController : ScriptableObject 
+
+public class MineController : ScriptableObject
 {
-//	public mineIncluded[] mines;
-	PlanerCore m_planer;
-    ButtonObject[] m_mines;
-    public ButtonObject[] Mines{get{return m_mines;}}
-	
-	public void Init(PlanerCore planer)
-	{
-	  m_planer=planer;
-	  m_mines=new ButtonObject[2];
-	  m_mines[0]=ScriptableObject.CreateInstance<BasicMineActivator>();
-	  m_mines[0].Init(m_planer, 0);
-	  m_mines[1]=ScriptableObject.CreateInstance<WebCatapultActivator>();
-	  m_mines[1].Init(m_planer, 1);
-	}
-	public void OnUpdate()
-	{
-	  for(int i=0; i<m_mines.Length; i++)
-	  {
-		m_mines[i].OnUpdate();
-	  }
-	}
+  //	public mineIncluded[] mines;
+  PlanerCore m_planer;
+  List<ButtonObject> m_mines;
+  public List<ButtonObject> Mines { get { return m_mines; } }
 
+  public void Init(PlanerCore planer)
+  {
+    //Debug.Log("init");
+    m_planer = planer;
+    m_mines = new List<ButtonObject>();
+    int i = 0;
+    foreach(string x in planer.Upgrades)
+    {
+      ButtonObject obj = ScriptableObject.CreateInstance(x) as ButtonObject;
+      obj.Init(planer, i);
+      m_mines.Add(obj);
+      i++;
+      Debug.Log(i);
+    }
+    
+  }
+  public void OnUpdate()
+  {
+    for (int i = 0; i < m_mines.Count; i++)
+    {
+      m_mines[i].OnUpdate();
+    }
+  }
+  public void RenewObjectList(string[] mines)
+  {
+    m_mines = new List<ButtonObject>();
+    for (int i = 0; i < mines.Length; i++)
+    {
+      //Debug.Log(mines[i]);
+      ButtonObject x = ScriptableObject.CreateInstance(mines[i]) as ButtonObject;
+      //Debug.Log(x);
+      x.Init(m_planer, i);
+      m_mines.Add(x);
+      //Debug.Log(newController.m_mines.Count);
+    }
+  }
+  void OnDestroy()
+  {
+    //Debug.Log("adfsdf");
+    for (int i = 0; i < m_mines.Count; i++)
+    {
+      Destroy(m_mines[i]);
+    }
+  }
+  public static MineController GetMineController(string[] mines, PlanerCore planer)
+  {
+    MineController newController=ScriptableObject.CreateInstance<MineController>();
+    newController.Init(planer);
+    newController.RenewObjectList(mines);
+    return newController;
+  }
 }

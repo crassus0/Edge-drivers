@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using System;
+
+[Serializable]
 [RequireComponent(typeof(CustomObjectEditorSupply))]
 public abstract class CustomObject : MonoBehaviour
 {
@@ -28,13 +31,14 @@ public abstract class CustomObject : MonoBehaviour
       if (value == null) return;
       if (node != null)
         node.Leave(this);
-      node = value;
+      node = GraphNode.GetNodeByParameters(value.X, value.Y, value.Index, value.Level);
       node.Enter(this);
       Vector3 newPosition = node.NodeCoords();
       newPosition.y = transform.position.y;
       transform.position = newPosition;
     }
   }
+  [HideInInspector]
   [SerializeField]
   GraphNode node=new GraphNode();
 
@@ -79,6 +83,11 @@ public abstract class CustomObject : MonoBehaviour
     //GameObject targetObject = (target as PlanerCore).gameObject;
     Gizmos.color = new Color(0, 0, 0, 0);
     Gizmos.DrawSphere(transform.position, 20);
+  }
+  public void SetSpeed()
+  {
+    if (m_visualiser != null)
+      m_visualiser.SetSpeed();
   }
 }
 public enum ObjectType

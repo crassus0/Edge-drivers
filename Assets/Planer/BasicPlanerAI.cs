@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Timers;
+
+
 public class BasicPlanerAI : ScriptableObject
 {
   PlanerCore m_planer;
@@ -12,6 +14,7 @@ public class BasicPlanerAI : ScriptableObject
   int m_maxDistance = 50;
   public AStarNode Target { get { return m_target; } }
   protected PlanerCore Planer { get { return m_planer; } }
+  public bool HasTarget { get { return m_target != null; } }
   public virtual void Init(PlanerCore planer)
   {
     //Debug.Log("init");

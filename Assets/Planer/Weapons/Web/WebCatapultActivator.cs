@@ -41,5 +41,8 @@ public class WebCatapultActivator : ButtonObject
       Button.guiTexture.color = new Color(1, 1 - 0.33333f * cooldown, 1 - 0.33333f * cooldown, 1) * 0.5f;
 
   }
-
+  public override string GetName()
+  {
+    return "Web Catapult";
+  }
 }

@@ -32,4 +32,14 @@ public class ItemsEditor : MonoBehaviour
       x.gameObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
     }
   }
+  [MenuItem("EdgeDrivers/AddScene")]
+  static void AddScene()
+  {
+    ScriptableWizard.DisplayWizard<AddSceneDialog>("AddScene");
+  }
+  [MenuItem("EdgeDrivers/DeleteScene")]
+  static void RemoveScene()
+  {
+    ScriptableWizard.DisplayWizard<DeleteSceneDialog>("Delete scene");
+  }
 }

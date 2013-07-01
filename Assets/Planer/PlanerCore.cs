@@ -17,21 +17,28 @@ public class PlanerCore : CustomObject
   //public PlanerVisualControls m_visualiser;
   bool m_isPlayer = false;
   [SerializeField]
-  public int direction = 0;
+  int direction = 0;
   PlanerMoveControls m_moveControls;
   BasicPlanerAI m_basicAI;
   MineController m_mineController;
   Action<PlanerCore> m_updateFunc;
   bool m_renewedUpdater = false;
   public bool EnteredPortal;// { get; set; }
-
+  public bool HasTarget { get { return m_basicAI.HasTarget; } }
+  public List<string> Upgrades
+  {
+    get { return m_upgrades; }
+    set { m_upgrades = value; }
+  }
+  [SerializeField]
+  List<string> m_upgrades=new List<string>();
 
   public uint ID
   {
     get { return id; }
   }
   public int Energy { get { return m_moveControls.Energy; } set { m_moveControls.Energy = value; } }
-  public ButtonObject[] Mines { get { return m_mineController.Mines; } }
+  public List<ButtonObject> Mines { get { return m_mineController.Mines; } }
   public GraphNode prevNode { get; set; }
   public PlanerMoveControls MoveControls
   {
@@ -40,6 +47,11 @@ public class PlanerCore : CustomObject
   public PlanerVisualControls Visualiser
   {
     get { return m_visualiser as PlanerVisualControls; }
+  }
+  public MineController MineController
+  {
+    get { return m_mineController; }
+    set { m_mineController = value; }
   }
   public int Agility
   {
@@ -57,6 +69,11 @@ public class PlanerCore : CustomObject
       else
         agility = value;
     }
+  }
+  public float Concentration
+  {
+    get { return 0; }
+    set { }
   }
   public int Direction
   {
@@ -231,7 +248,13 @@ public class PlanerCore : CustomObject
     //Debug.Log(node);
     m_basicAI.ChangeLevel(node.Level);
   }
-
+  public void OnWeaponsChanged()
+  {
+    if (m_mineController != null)
+      Destroy(m_mineController);
+    m_mineController = ScriptableObject.CreateInstance<MineController>() as MineController;
+    m_mineController.Init(this);
+  }
   //TODO
 }
 

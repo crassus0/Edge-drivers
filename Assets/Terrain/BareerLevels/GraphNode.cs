@@ -16,13 +16,12 @@ public class GraphNode: System.IComparable<GraphNode>
   [SerializeField]
   int m_index;
 
-  [SerializeField]
+  [System.NonSerialized]
   List<CustomObject> m_objects;
 
-  [SerializeField]
-  List<CustomObject> m_toLeave;
+  
 
-  [SerializeField]
+  [System.NonSerialized]
   List<CustomObject> m_toEnter;
 
   
@@ -122,7 +121,9 @@ public class GraphNode: System.IComparable<GraphNode>
   }
   public void Leave(CustomObject leavingObject)
   {
-    m_objects.Remove(leavingObject);
+    
+    if(m_objects!=null)
+      m_objects.Remove(leavingObject);
   }
   public Vector3 NodeCoords()
   {

@@ -58,6 +58,13 @@ public abstract class ButtonObject : ScriptableObject
     }
 
   }
+  protected void OnDestroy()
+  {
+    if(m_button!=null)
+      Destroy(m_button.gameObject);
+    //Debug.Log("DestroyButton");
+  }
   protected abstract void OnLoop();
   public void OnUpdate() { if (Activated) OnLoop(); }
+  public abstract string GetName();
 }

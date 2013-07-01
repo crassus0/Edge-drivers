@@ -25,7 +25,7 @@ public class CreatorEditor : Editor
   {
     if (targ == null)
     {
-      
+
       targ = target as EditorAdditionalGUI;
       targ.RepeatButton = false;
       targ.levels = GameObject.Find("Creator").GetComponent<Creator>().levels;
@@ -54,7 +54,6 @@ public class CreatorEditor : Editor
 
     targ.ActiveLevel = activeLevel;
     //Debug.Log(targ.ActiveLevel);
-    //targ.levels[targ.ActiveLevel].gameObject.hideFlags=HideFlags.HideInInspector|HideFlags.HideInHierarchy;
     if (GUI.changed)
     {
 
@@ -69,7 +68,7 @@ public class CreatorEditor : Editor
   }
   void OnChangedActiveLevel()
   {
-    
+
     if (Application.isPlaying) return;
     for (int i = 0; i < targ.levels.Count; i++)
     {
@@ -81,14 +80,16 @@ public class CreatorEditor : Editor
     targ.levels[targ.ActiveLevel].gameObject.SetActive(true);
     foreach (CustomObject x in targ.Objects)
     {
-      if (x.GetComponent<CustomObject>().Level != targ.ActiveLevel)
+      if (x != null)
       {
-       
-        x.gameObject.SetActive(false);
-      }
-      else
-      {
-        x.gameObject.SetActive(true);
+        if (x.Level != targ.ActiveLevel)
+        {
+          x.gameObject.SetActive(false);
+        }
+        else
+        {
+          x.gameObject.SetActive(true);
+        }
       }
     }
     m_activeLevelSize = targ.levels[targ.ActiveLevel].NumAreas;
@@ -98,10 +99,6 @@ public class CreatorEditor : Editor
   }
   void ShowActiveLevelEditor()
   {
-    if (Application.isPlaying)
-    {
-      return;
-    }
 
     GUILayout.Space(10);
     GUILayout.Label("ActiveLevel");
@@ -119,7 +116,6 @@ public class CreatorEditor : Editor
       }
       if (GUILayout.Button("Unconfirm"))
       {
-        //Debug.Log("unconfirm");
         m_activeLevelSize = targ.levels[(targ.ActiveLevel)].NumAreas;
       }
     }
@@ -129,6 +125,22 @@ public class CreatorEditor : Editor
     {
       targ.levels[(targ.ActiveLevel)].name = name;
     }
+    float t = EditorGUILayout.FloatField("Selection phase duration", targ.levels[targ.ActiveLevel].SelectionPhaseDuration);
+    if (t < 0) t = 0;
+    targ.levels[targ.ActiveLevel].SelectionPhaseDuration = t;
+    targ.levels[targ.ActiveLevel].SelectionPhaseType = (PhaseType)EditorGUILayout.EnumPopup("Selection phase duration", targ.levels[targ.ActiveLevel].SelectionPhaseType);
+    if (targ.levels.Count > 1)
+    {
+      if (GUILayout.Button("DeleteLevel"))
+      {
+        BareerLevelControls x = targ.levels[(targ.ActiveLevel)];
+        targ.levels.Remove(x);
+        DestroyImmediate(x.gameObject);
+        targ.ActiveLevel = 0;
+        OnChangedActiveLevel();
+      }
+    }
+
     EditorUtility.SetDirty(targ.levels[(targ.ActiveLevel)]);
   }
 
@@ -136,38 +148,30 @@ public class CreatorEditor : Editor
   void OnSceneGUI()
   {
     PreInit();
-    //targ=target as EditorAdditionalGUI;
-    //Debug.Log(Event.current.mousePosition);
-    //	  KeyCheck();
     OnInstrument();
     //OnButtons();
 
     OnBareerEditCheck();
     OnObjectMove();
     CheckEvent();
-
   }
   void CheckEvent()
   {
     Event currentEvent = Event.current;
     if (currentEvent.type == EventType.ScrollWheel) return;
     if (currentEvent.button == 2) return;
-    //if(currentEvent.button==0)return;
     if (currentEvent.type == EventType.KeyDown || currentEvent.type == EventType.KeyUp) return;
     Event.current.Use();
   }
   void OnInstrument()
   {
-    //Debug.Log(targ.selected);
     if ((targ.selected > 0) && (targ.selected < 4))
     {
-      //Debug.Log("num "+(count++));  
       Vector3 mouseCoords = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
       mouseCoords.y = 0;
       Color instrumentColor = Color.red;
       instrumentColor.a = 0.2f;
       Handles.color = instrumentColor;
-
       Handles.DrawSolidDisc(mouseCoords, Vector3.up, targ.InstrumentRadius);
     }
   }
@@ -195,7 +199,6 @@ public class CreatorEditor : Editor
     {
       bool found = true;
       Vector3 left, right;
-
       GraphNode levelNode = GraphNode.GetNodeByCoords(center, targ.ActiveLevel);
       left = levelNode.NodeCoords();
       right = left;
@@ -269,5 +272,9 @@ public class CreatorEditor : Editor
         targ.objectToMove = null;
       }
     }
+  }
+  void OnDestroy()
+  {
+    SceneDataSaver.SaveSceneData();
   }
 }

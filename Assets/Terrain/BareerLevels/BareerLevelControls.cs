@@ -16,20 +16,28 @@ public class BareerLevelControls : MonoBehaviour
   public BareerAreaControls[] m_areas;
   public byte[] m_bareers;
   byte[] m_graph;
-
   public int Level { get; set; }
+  public float SelectionPhaseDuration
+  {
+    get { return m_selectionPhase; }
+    set { m_selectionPhase = value; }
+  }
+  [SerializeField]
+  float m_selectionPhase=1;
+  public PhaseType SelectionPhaseType
+  {
+    get { return m_selectionPhaseType; }
+    set { m_selectionPhaseType = value; }
+  }
+  [SerializeField]
+  PhaseType m_selectionPhaseType;
   public int NumAreas = 1;
-
+  
   float m_areaWidth;
   float m_areaHeight;
-  //  static readonly float triangleHeight=2*Mathf.Sqrt(3);
-  //  static readonly float triangleWidth=4;
-
   float leftTime;
 
   public int triangleRow { get; set; }
-
-
   public byte[] Bareers { get { return m_bareers; } }
   public byte[] Graph { get { return m_graph; } }
   public void Awake()
@@ -38,8 +46,6 @@ public class BareerLevelControls : MonoBehaviour
   }
   public void InitBareers()
   {
-    //	Debug.Log(m_bareers[0]);
-    //	Debug.Log(m_bareers.Length);
     int oldTriangleRow = (int)Mathf.Sqrt(m_bareers.Length);
     triangleRow = NumAreas * BareerAreaControls.areaSize;
     byte[] newbareers = new byte[(triangleRow) * (triangleRow)];
@@ -51,27 +57,17 @@ public class BareerLevelControls : MonoBehaviour
         newbareers[i + triangleRow * j] = m_bareers[i + oldTriangleRow * j];
       }
     }
-    //	Debug.Log(triangleRow);
-    //    Debug.Log(oldTriangleRow);
     m_bareers = newbareers;
   }
   public void Init()
   {
-
-    //	Debug.Log(Application.isPlaying);
-    //	if(m_init)return;
     PreInit();
-    //Debug.Log(renderer.sharedMaterial);
     renderer.sharedMaterial = new Material(renderer.sharedMaterial);
-
     m_areaWidth = BareerAreaControls.areaWidth;
     m_areaHeight = BareerAreaControls.areaHeight;
     triangleRow = NumAreas * BareerAreaControls.areaSize;
-    hideFlags = 0;
-
-    m_areas = new BareerAreaControls[NumAreas * NumAreas];
-   
-    //if(Creator.creator.randomLevel||Application.platform!=RuntimePlatform.WindowsEditor)
+    hideFlags = 0;  
+    m_areas = new BareerAreaControls[NumAreas * NumAreas];       
     for (int i = 0; i < NumAreas; i++)
       for (int j = 0; j < NumAreas; j++)
       {
@@ -80,19 +76,13 @@ public class BareerLevelControls : MonoBehaviour
         GameObject newArea = Instantiate(areaPrefab, new Vector3(x, 0, y), new Quaternion()) as GameObject;
         m_areas[i + NumAreas * j] = newArea.GetComponent<BareerAreaControls>();
         BareerAreaControls.BareerAreaParameters parameters;
-
         parameters.xCoord = i;
         parameters.yCoord = j;
         parameters.parent = this;
         parameters.basicMesh = areaMesh;
-
-
-
         newArea.renderer.sharedMaterial = renderer.sharedMaterial;
-
         newArea.transform.parent = transform;
         newArea.GetComponent<BareerAreaControls>().Init(parameters);
-
         newArea.hideFlags = 0;// HideFlags.HideInHierarchy | HideFlags.HideInInspector;
       }
     SetGraph();
@@ -117,7 +107,6 @@ public class BareerLevelControls : MonoBehaviour
     int areaY = j / 8;
     i = i - areaX * 8;
     j = j - areaY * 8;
-    //	Debug.Log(areaX+", "+areaY);
     m_areas[areaX + NumAreas * areaY].RedrawTriangle(i, j);
   }
   void SetGraph()
@@ -132,7 +121,6 @@ public class BareerLevelControls : MonoBehaviour
         {
           node += (byte)((1 - (triangle % 4) / 2) << k);
           triangle /= 4;
-
         }
         byte upperNode = (byte)(SetUpperNode(i, j) << 3);
         node += upperNode;
@@ -178,14 +166,12 @@ public class BareerLevelControls : MonoBehaviour
       {
         if (m_areas[i] != null)
           Destroy(m_areas[i].gameObject);
-      }
-   
+      }   
   }
   public void Activate()
   {
     gameObject.SetActive(true);
-    Init();
-   
+    Init();   
   }
   void MUpdate()
   {
@@ -201,38 +187,29 @@ public class BareerLevelControls : MonoBehaviour
       for (int j = 0; j < triangleRow; j++)
       {
         float xCoord = (i + 0.5f * ((j + 1) % 2 + 1)) * triangleWidth;
-        float yCoord = triangleHeight * (j + 0.6666666f);
-        //		byte node=m_graph[i+triangleRow*j];
+        float yCoord = triangleHeight * (j + 0.6666666f);        
         Vector3 position = new Vector3(xCoord, 0, yCoord);
-
-
         GraphNode x = GraphNode.GetNodeByCoords(position, Level);
         bool[] dirs = x.GetDirections();
         for (int k = 0; k < 6; k++)
         {
-
           Vector3 direction = new Vector3(Mathf.Cos(Mathf.PI * ((1f / 3f) * k)), 0, Mathf.Sin(Mathf.PI * ((1f / 3f) * k)));
           Color lineColor = (!dirs[k]) ? Color.red : Color.green;
           Debug.DrawRay(position, direction * 10, lineColor);
-
         }
-        position = new Vector3(xCoord, 0, triangleHeight * (j + 1.33333333f));
-        //		direction=new Vector3(0,0,-triangleHeight/4);
+        position = new Vector3(xCoord, 0, triangleHeight * (j + 1.33333333f));        
         x = GraphNode.GetNodeByCoords(position, Level);
         dirs = x.GetDirections();
         for (int k = 0; k < 6; k++)
         {
-
           Vector3 direction = new Vector3(Mathf.Cos(Mathf.PI * ((1f / 3f) * k)), 0, Mathf.Sin(Mathf.PI * ((1f / 3f) * k)));
           Color lineColor = (!dirs[k]) ? Color.red : Color.green;
           Debug.DrawRay(position, direction * 10, lineColor);
-
         }
       }
   }
   public void OnDeactivate()
   {
-    //	Debug.Log("Deactivated");
     PreInit();
   }
   void PreInit()
@@ -251,4 +228,10 @@ public class BareerLevelControls : MonoBehaviour
     if (EditorAdditionalGUI.EditorOptions != null)
       EditorAdditionalGUI.EditorOptions.ActiveLevel = 0;
   }
+}
+public enum PhaseType
+{
+  OnAction,
+  OnTime,
+  Mixed
 }

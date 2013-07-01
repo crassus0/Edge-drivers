@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System;
 
 public class Creator : MonoBehaviour
@@ -14,27 +15,26 @@ public class Creator : MonoBehaviour
   public bool randomLevel = false;
   public List<BareerLevelControls> levels;
   public string levelName;
-
-
   public string m_nextLevel;
 
   public static readonly int Size = 1;
-  public static float turnDuration = 0.5f;
+  public float turnDuration = 1f;
   static Vector3 m_screenSize;
   static float m_ratio;
   static Creator m_creator;
   static int m_energy;
-  static HashSet<CustomObject> m_objects;
+  static List<CustomObject> m_objects;
   static HashSet<CustomObject> m_removeObjects;
   static HashSet<CustomObject> m_addObjects;
   //    static int m_step=0;
   int numObjects;
-  static bool m_init = false;
+  bool m_init = false;
   static uint m_curentID = 1;
   public PlanerCore m_player;
-  static int numCreators = 0;
   int direction;
   float turnTime = 0.1f;
+  float pauseTime;
+  PhaseType m_phaseType=PhaseType.OnAction;
 
   public static string NextLevel { get { return creator.m_nextLevel; } set { creator.m_nextLevel = value; } }
   public static Vector3 ScreenSize { get { return m_screenSize; } }
@@ -45,31 +45,18 @@ public class Creator : MonoBehaviour
   public static int Level { get { return Player.Level; } }
   //public static int Size{get{return m_staticSize;}}
   public static string DebugMessage { get; set; }
-  public static bool Initialised { get { return m_init; } }
+  public static bool Initialised { get { return m_creator.m_init; } }
 
   public void Init()
   {
     //	   Debug.Log(Application.platform.ToString());
     //	  Debug.Log ("creation started");
-
+    //Debug.Log(m_init);
     if (m_init) return;
-    
-    numCreators++;
-    if (numCreators > 1)
-    {
-      Debug.LogError("Multiply Creators: " + numCreators.ToString());
-      throw (new System.Exception("Only one creator is allowed"));
-    }
+
     DebugMessage = "Initializing...";
     OnPause = false;
     m_creator = this;
-    
-
-
-
-
-   
-    
     m_ratio = (float)Screen.width / Screen.height;
     m_screenSize.y = ((Camera.mainCamera.orthographicSize));
     m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
@@ -78,6 +65,7 @@ public class Creator : MonoBehaviour
     DebugMessage = "Bareers loaded\n";
 
     m_player.Init();
+    LoadGame();
     if (m_ratio > 1)
       m_screenSize.z = m_ratio;
     else
@@ -90,7 +78,7 @@ public class Creator : MonoBehaviour
     Camera.main.GetComponent<CameraControls>().ForceSetPosition(m_player.transform.position);
     m_init = true;
     if (m_objects == null)
-      m_objects = new HashSet<CustomObject>();
+      m_objects = new List<CustomObject>();
     UnityEngine.Object[] customObjects = Resources.FindObjectsOfTypeAll(typeof(CustomObject));
     foreach (UnityEngine.Object x in customObjects)
     {
@@ -100,6 +88,7 @@ public class Creator : MonoBehaviour
 
     m_energy = -1;
     SwitchLevel();
+    turnTime = levels[m_energy].SelectionPhaseDuration;
   }
   void SwitchLevel()
   {
@@ -127,7 +116,8 @@ public class Creator : MonoBehaviour
       m_energy = newEnergy;
       if (m_energy > 2)
         m_energy = 2;
-      
+      pauseTime = levels[newEnergy].SelectionPhaseDuration;
+      m_phaseType = levels[newEnergy].SelectionPhaseType;
     }
   }
   void UpdateObjectList()
@@ -160,17 +150,28 @@ public class Creator : MonoBehaviour
     Camera.main.GetComponent<CameraControls>().SetNewTargetPosition(m_player.Visualiser.transform.position, m_player.Level, turnDuration);
     if (turnTime >= 0)
     {
-     
-       
       turnTime -= Time.deltaTime;
-      return;
+      if (m_phaseType == PhaseType.Mixed)
+      {
+        if (!(m_player.HasTarget && turnTime - pauseTime < 0))
+          return;
+      }
+      else
+      {
+        
+        return;
+      }
     }
+    if ((m_phaseType == PhaseType.OnAction) && !m_player.HasTarget)
+      return;
     
-    turnTime = turnDuration;
+    
+    SaveGame();//TODO
+    RenewTurnTime();
     m_screenSize.y = ((Camera.mainCamera.orthographicSize));
     m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
     if (m_objects == null)
-      m_objects = new HashSet<CustomObject>();
+      m_objects = new List<CustomObject>();
     if (m_removeObjects == null)
       m_removeObjects = new HashSet<CustomObject>();
     if (m_addObjects == null)
@@ -178,12 +179,17 @@ public class Creator : MonoBehaviour
     foreach (CustomObject x in m_objects)
       if (x != null)
       {
-        
         x.OnUpdate();
       }
     GraphNode.InteractAll();
-    
+
     SwitchLevel();
+  }
+  public void RenewTurnTime()
+  {
+    if (m_phaseType == PhaseType.OnAction)
+      levels[m_energy].SelectionPhaseDuration = 0;
+    turnTime = turnDuration + levels[m_energy].SelectionPhaseDuration;
   }
   public static uint GetID() { return m_curentID++; }
   public static byte[] GetBareerMap(int i)
@@ -217,6 +223,21 @@ public class Creator : MonoBehaviour
   public Creator()
   {
     m_creator = this;
+  }
+  void SaveGame()
+  {
+    PlayerSaveData.Save(m_player, null, false);
+  }
+  bool LoadGame()
+  {
+    return PlayerSaveData.SetPlanerData(m_player);
+  }
+  void SetSpeed()
+  {
+    foreach (CustomObject x in m_objects)
+    {
+      x.SetSpeed();
+    }
   }
   struct xTest
   {

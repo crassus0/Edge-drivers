@@ -7,36 +7,32 @@ public class Portal : CustomObject
 {
   public Portal PairPortal;
   bool m_awaken;
-  void Start()
+  public override void OnStart()
   {
     if (m_awaken) return;
     m_awaken = true;
-
+    Interact = OnInteract;
     
   }
-  public override void OnUpdate()
-  {
-    
-  }
-  public override void Interact(CustomObject obj, InteractType type)
+  
+  void OnInteract(CustomObject obj, InteractType type)
   {
     //Debug.Log("Interact");
     if (PairPortal == null) return;
     if (type == InteractType.Stay)
     {
-
       PlanerCore x = obj as PlanerCore;
       if (x != null&&!x.EnteredPortal)
       {
-        x.RemoveUpdateFunc(OnPlanerEnter);
         x.AddUpdateFunc(OnPlanerEnter);
+        x.HasTarget = true;
       }
     }
   }
-  void OnPlanerEnter(PlanerCore x)
+  void OnPlanerEnter(IPlanerLike planer)
   {
     //Debug.Log(PairPortal);
-
+    PlanerCore x = planer as PlanerCore;
     x.OnEnterPortal(PairPortal.GetNode());
     x.RemoveUpdateFunc(OnPlanerEnter);
     x.EnteredPortal = true;

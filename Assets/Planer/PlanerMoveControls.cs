@@ -7,9 +7,6 @@ public class PlanerMoveControls : ScriptableObject
 
   int m_agility;
   int m_direction;
-  int m_hiroscope;
-  int m_transitionEnergy;
-  int m_stopped = 0;
   int m_maxRotationAngle;
   int m_rotationAngle = 0;
 
@@ -30,14 +27,6 @@ public class PlanerMoveControls : ScriptableObject
     }
   }
   public int MaxRotationAngle { get { return m_maxRotationAngle; } }
-  public int Stopped { get { return m_stopped; } }
-  public int Energy { get { return m_transitionEnergy; } set { m_transitionEnergy = value; } }
-
-
-  public void HitEnergy(int hit)
-  {
-    m_transitionEnergy -= hit;
-  }
   public void Initialize(PlanerCore planer, MoveParameters parameters)
   {
 
@@ -51,21 +40,15 @@ public class PlanerMoveControls : ScriptableObject
   }
   public void OnUpdate()
   {
-    CheckHiroscope();
-
-    if (m_stopped == 0)
-    {
+    
       Move();
-    }
-    else
-      m_stopped--;
+    
   }
 
 
   void Move()
   {
     m_planer.prevNode = m_planer.GetNode();
-    bool rotated = m_rotationAngle > 0;
     m_direction %= 6;
     int rotatedAngle = m_rotationAngle;
     ApplyRotation();
@@ -75,11 +58,6 @@ public class PlanerMoveControls : ScriptableObject
       //		Debug.Log(m_hiroscope+","+rotated);
       m_planer.Move(m_direction);
       m_planer.Visualiser.Move(rotatedAngle);
-      if (m_hiroscope != 0 && !rotated)
-      {
-        m_transitionEnergy++;
-        m_hiroscope -= (int)Mathf.Sign(m_hiroscope);
-      }
 
     }
     else
@@ -88,22 +66,11 @@ public class PlanerMoveControls : ScriptableObject
       int changeDirection = (newDirection + 3) % 6 - m_direction;
       if (changeDirection < -1) changeDirection += 6;
       if (changeDirection > 1) changeDirection %= 6;
-      m_hiroscope -= 5;
       m_direction = newDirection;
-
       m_planer.transform.rotation = Quaternion.identity;
       m_planer.transform.Rotate(new Vector3(0, -60 * m_direction, 0));
       m_planer.Visualiser.Hit(rotatedAngle);
     }
-  }
-  public int AdditionalRotateDirection()
-  {
-    //TODO temporary change in parameters
-    if (Mathf.Abs(m_hiroscope) > m_agility / 2)
-    {
-      return (int)Mathf.Sign(m_hiroscope);
-    }
-    return 0;
   }
   public bool[] Directions()
   {
@@ -112,11 +79,6 @@ public class PlanerMoveControls : ScriptableObject
       dirs[i] = false;
     int minDirection = (m_direction + 6 - m_maxRotationAngle);
     int maxDirection = (m_direction + 6 + m_maxRotationAngle);
-    int additionalDirection = AdditionalRotateDirection();
-    if (additionalDirection < 0)
-      minDirection += additionalDirection;
-    else
-      maxDirection += additionalDirection;
     for (int i = minDirection; i <= maxDirection; i++)
     {
       int index = i % 6;
@@ -137,22 +99,9 @@ public class PlanerMoveControls : ScriptableObject
     if (Mathf.Abs(m_rotationAngle) > 3)
       m_rotationAngle -= 6 * (int)Mathf.Sign(m_rotationAngle);
     if (Mathf.Abs(m_rotationAngle) > m_maxRotationAngle)
-    {
-      if (AdditionalRotateDirection() != m_rotationAngle)
-        m_rotationAngle = (int)Mathf.Sign(m_rotationAngle) * m_maxRotationAngle;
-      else
-        m_hiroscope -= 3 * m_agility;
-    }
+      m_rotationAngle = (int)(m_maxRotationAngle * Mathf.Sign(m_rotationAngle));
   }
-  void CheckHiroscope()
-  {
-    if (m_hiroscope > 40 - m_agility)
-    {
-      m_stopped = 4;
-      m_hiroscope = 0;
-    }
 
-  }
   void ApplyRotation()
   {
     m_direction += m_rotationAngle;

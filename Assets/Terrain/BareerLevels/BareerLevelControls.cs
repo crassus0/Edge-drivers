@@ -31,6 +31,14 @@ public class BareerLevelControls : MonoBehaviour
   }
   [SerializeField]
   PhaseType m_selectionPhaseType;
+  public float MovePhaseDuration
+  {
+    get { return m_movePhaseDuration; }
+    set { m_movePhaseDuration = value; }
+  }
+  [SerializeField]
+  float m_movePhaseDuration=1;
+
   public int NumAreas = 1;
   
   float m_areaWidth;
@@ -61,6 +69,7 @@ public class BareerLevelControls : MonoBehaviour
   }
   public void Init()
   {
+    //Debug.Log("init"+ Level);
     PreInit();
     renderer.sharedMaterial = new Material(renderer.sharedMaterial);
     m_areaWidth = BareerAreaControls.areaWidth;
@@ -79,6 +88,7 @@ public class BareerLevelControls : MonoBehaviour
         parameters.xCoord = i;
         parameters.yCoord = j;
         parameters.parent = this;
+        //Debug.Log(this);
         parameters.basicMesh = areaMesh;
         newArea.renderer.sharedMaterial = renderer.sharedMaterial;
         newArea.transform.parent = transform;
@@ -103,11 +113,14 @@ public class BareerLevelControls : MonoBehaviour
   }
   public void OnChanged(int i, int j)
   {
+    //Debug.Log("OnChanged");
+    //Debug.Log(Application.loadedLevelName);
     int areaX = i / 8;
     int areaY = j / 8;
     i = i - areaX * 8;
     j = j - areaY * 8;
-    m_areas[areaX + NumAreas * areaY].RedrawTriangle(i, j);
+    if(m_init||!Application.isPlaying)
+      m_areas[areaX + NumAreas * areaY].RedrawTriangle(i, j);
   }
   void SetGraph()
   {
@@ -166,7 +179,8 @@ public class BareerLevelControls : MonoBehaviour
       {
         if (m_areas[i] != null)
           Destroy(m_areas[i].gameObject);
-      }   
+      }
+    m_init = false;
   }
   public void Activate()
   {
@@ -180,7 +194,8 @@ public class BareerLevelControls : MonoBehaviour
   void DebugGraphWatch()
   {
     if (!m_init) return;
-    if (renderer.material.color.a < 1) return;
+    if (Creator.Level != Level) return;
+    //if (renderer.material.color.a < 1) return;
     float triangleWidth = BareerAreaControls.triangleWidth;
     float triangleHeight = BareerAreaControls.triangleHeight;
     for (int i = 0; i < triangleRow; i++)

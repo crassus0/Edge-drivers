@@ -17,7 +17,9 @@ public class BareerAreaControls : MonoBehaviour
 	{
 	  xCoord=parameters.xCoord;
 	  yCoord=parameters.yCoord;
+
 	  parent=parameters.parent;
+    //Debug.Log(parent);
 //      Debug.Log(parent);
 	  Mesh newMesh=new Mesh();
 	  newMesh.vertices=parameters.basicMesh.vertices;
@@ -36,7 +38,7 @@ public class BareerAreaControls : MonoBehaviour
 		{
 		  InitTriangle(j, i);
 		}
-	  gameObject.hideFlags=HideFlags.HideInInspector|HideFlags.HideInHierarchy;
+    gameObject.hideFlags = 0;//HideFlags.HideInInspector|HideFlags.HideInHierarchy;
 	}
 	public void RedrawTriangle(int i, int j)
 	{
@@ -51,6 +53,7 @@ public class BareerAreaControls : MonoBehaviour
 	{
 	  int localCoord=x+areaSize*y;
 //	  Debug.Log(parent);
+    //Debug.Log(parent);
 	  int globalCoord=x+xCoord*areaSize+(y+yCoord*areaSize)*(areaSize*parent.NumAreas);
 	  byte triangle=parent.Bareers[globalCoord];
 	  for(int i=0; i<3; i++)

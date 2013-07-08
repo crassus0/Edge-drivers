@@ -22,8 +22,8 @@ public class CustomObjectEditorSupply : MonoBehaviour {
 	}
 	public void SetFlags()
 	{
-	  
-	  transform.hideFlags=HideFlags.HideInInspector;
+
+    transform.hideFlags = 0;// HideFlags.HideInInspector;
 	  int children=transform.childCount;
 	  for(int i=0; i<children; i++)
       transform.GetChild(i).gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;

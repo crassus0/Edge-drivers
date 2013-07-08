@@ -21,6 +21,7 @@ public class EditorMenu : EditorWindow
     // Get existing open window or if none, make a new one:
     EditorMenu window = (EditorMenu)EditorWindow.GetWindow(typeof(EditorMenu));
     window.name = "Edge drivers components";
+    
     window.Repaint();
   }
 
@@ -42,6 +43,7 @@ public class EditorMenu : EditorWindow
     //EditorAdditionalGUI.editorPrefab = m_editorPrefab;
     Selection.activeGameObject = editor.gameObject;
   }
+
   // Update is called once per frame
   void OnGUI()
   {
@@ -65,7 +67,7 @@ public class EditorMenu : EditorWindow
   void DrawButtons()
   {
     //GUILayout.Label("BareerEdit");
-    m_selectedOption = GUILayout.SelectionGrid(m_selectedOption, editor.buttonTextures, 4, GUILayout.Width(160), GUILayout.Height(80));
+    m_selectedOption = GUILayout.SelectionGrid(m_selectedOption, editor.buttonTextures, 4, GUILayout.Width(160), GUILayout.Height(80), GUILayout.MinHeight(160));
 
   }
   void CheckActiveState()

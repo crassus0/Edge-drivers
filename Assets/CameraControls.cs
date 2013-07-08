@@ -82,6 +82,7 @@ public class CameraControls:MonoBehaviour
 	{
 	  position.y=5;
 	  transform.position=position;
+    m_basicPosition = position;
 	}
 	public void Init()
 	{

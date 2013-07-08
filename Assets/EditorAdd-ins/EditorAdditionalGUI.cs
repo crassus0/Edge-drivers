@@ -89,13 +89,13 @@ public class EditorAdditionalGUI : MonoBehaviour
     for (int i = 0; i < levels.Count; i++)
     {
       //		Debug.Log(i);
-      levels[i].gameObject.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+      levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
     }
     //levels[ActiveLevel].gameObject.hideFlags=0;
     //	  Debug.Log(transform.hideFlags);
     gameObject.transform.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
     //	  Debug.Log(transform.hideFlags);
-    //gameObject.hideFlags=HideFlags.HideInHierarchy;
+    //gameObject.hideFlags = HideFlags.HideInHierarchy ;
     //hideFlags=0;
   }
 }

@@ -10,19 +10,24 @@ public class GUIButtonControls : MonoBehaviour {
 	  m_parent.Activate();
 	  
 	}
-	public void Init(ButtonObject parent, Allign allign)
+	public void Init(ButtonObject parent, Allign allign, int index)
 	{
-
+   
 	  m_parent=parent;
 	  guiTexture.texture=parent.GetObjectTexture();
-	  int allignNumeric=Utility.AllignToIntHorizontal(allign);
-	  Rect pixelInsert= new Rect(-allignNumeric*Screen.height/numColumnTextures,0,Screen.height/numColumnTextures,Screen.height/numColumnTextures);
+	  
+    int allignNumeric=Utility.AllignToIntHorizontal(allign);
+    transform.position = new Vector3(allignNumeric, 1 - (float)((index + 2)) / GUIButtonControls.numColumnTextures, 0);
+    Rect pixelInsert = new Rect(-allignNumeric * Screen.height / numColumnTextures, 0, Screen.height / numColumnTextures, Screen.height / numColumnTextures);
 	  guiTexture.pixelInset=pixelInsert;
 	}
-    public void Init(ButtonObject parent)
+  public void Init(ButtonObject parent)
 	{
 	  m_parent=parent;
 	}
+  void OnGUI()
+  {
 
+  }
 
 }

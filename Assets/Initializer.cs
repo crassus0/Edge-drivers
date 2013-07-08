@@ -8,7 +8,8 @@ public class Initializer : MonoBehaviour {
 	public GameObject webMinePrefab;
 	public Texture2D basicMineTexture;
 	public Texture2D webMineTexture;
-	
+  public Texture2D cancelActionTexture;
+
 	void Awake () 
 	{
 	  BasicMineActivator.minePrefab=basicMinePrefab;
@@ -16,11 +17,8 @@ public class Initializer : MonoBehaviour {
 	  WebCatapultActivator.minePrefab=webMinePrefab;
 	  WebCatapultActivator.mineTexture=webMineTexture;
 	  ButtonObject.buttonPrefab=buttonPrefab.guiTexture;
-	  
+    CancelAction.objectTexture = cancelActionTexture;
 	}
-  void Start()
-  {
-    creator.Init();
-  }
+
 	//TODO
 }

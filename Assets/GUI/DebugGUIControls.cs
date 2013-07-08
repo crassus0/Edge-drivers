@@ -18,7 +18,7 @@ public class DebugGUIControls : MonoBehaviour {
 	  else{
 		double FPS=1/Time.deltaTime;
 	  text= "Energy: ";
-	  text=text+Creator.Energy.ToString();
+
 	  text=text+"\n"+FPS+" FPS";
 	  if(FPS<minFPS)
 		minFPS=FPS;

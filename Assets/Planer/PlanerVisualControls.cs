@@ -12,8 +12,10 @@ public class PlanerVisualControls : CustomObjectVisualiser
   public void Init(CustomObject parent)
   {
     m_parentPlaner = parent as PlanerCore;
-    Bounds newBounds = animation.localBounds;
-    animation.localBounds = newBounds;
+    foreach (AnimationState x in animation)
+    {
+      x.speed = 0.5f;
+    }
   }
   public void Move(int rotation)
   {

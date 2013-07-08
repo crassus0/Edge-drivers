@@ -6,8 +6,14 @@ using System;
 [RequireComponent(typeof(CustomObjectEditorSupply))]
 public abstract class CustomObject : MonoBehaviour
 {
+  
   public CustomObjectVisualiser m_visualiser;
   public ObjectType Type { get; set; }
+  public abstract void OnStart();
+  public virtual int GetStepCount()
+  {
+    return 4;
+  }
   public int Level
   {
     get
@@ -31,6 +37,7 @@ public abstract class CustomObject : MonoBehaviour
       if (value == null) return;
       if (node != null)
         node.Leave(this);
+      //Debug.Log(name);
       node = GraphNode.GetNodeByParameters(value.X, value.Y, value.Index, value.Level);
       node.Enter(this);
       Vector3 newPosition = node.NodeCoords();
@@ -42,17 +49,28 @@ public abstract class CustomObject : MonoBehaviour
   [SerializeField]
   GraphNode node=new GraphNode();
 
+  //public abstract void OnStart();
   public GraphNode GetNode()
   {
     //Debug.Log(node);
     return node;
   }
-  public abstract void OnUpdate();
+  public Action OnUpdate;
+  
   //protected void OnStart(){}
   protected void Awake()
   {
+    
     if (m_init) return;
-    Node = GraphNode.GetNodeByParameters(node.X, node.Y, node.Index, node.Level);
+    try
+    {
+      Node = GraphNode.GetNodeByParameters(node.X, node.Y, node.Index, node.Level);
+    }
+    catch (System.Exception x)
+    {
+      Debug.Log(x);
+      Debug.Log(name);
+    }
     Creator.AddObject(this);
     m_init = true;
   }
@@ -67,7 +85,8 @@ public abstract class CustomObject : MonoBehaviour
     }
 
   }
-  public abstract void Interact(CustomObject obj, InteractType type);
+  public Action<CustomObject, InteractType> Interact;
+  public Action Activate; 
   public void Move(int direction)
   {
     if (direction < 6)
@@ -84,11 +103,7 @@ public abstract class CustomObject : MonoBehaviour
     Gizmos.color = new Color(0, 0, 0, 0);
     Gizmos.DrawSphere(transform.position, 20);
   }
-  public void SetSpeed()
-  {
-    if (m_visualiser != null)
-      m_visualiser.SetSpeed();
-  }
+
 }
 public enum ObjectType
 {

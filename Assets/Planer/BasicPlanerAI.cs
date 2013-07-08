@@ -7,15 +7,16 @@ using System.Timers;
 
 public class BasicPlanerAI : ScriptableObject
 {
-  PlanerCore m_planer;
+  IPlanerLike m_planer;
   AStarNode m_target;
   Queue<int> route;
   Queue<float> weights;
   int m_maxDistance = 50;
+  public static readonly float MaxWeight=5000;
   public AStarNode Target { get { return m_target; } }
-  protected PlanerCore Planer { get { return m_planer; } }
+  protected IPlanerLike Planer { get { return m_planer; } }
   public bool HasTarget { get { return m_target != null; } }
-  public virtual void Init(PlanerCore planer)
+  public virtual void Init(IPlanerLike planer)
   {
     //Debug.Log("init");
     m_planer = planer;
@@ -24,20 +25,28 @@ public class BasicPlanerAI : ScriptableObject
   }
 	public void SetTarget(GraphNode target, int direction)
 	{
+    
 		SetTarget(target, direction, 50);
 	}
   public void SetTarget(GraphNode target, int direction, int maxDistance)
   {
     //Debug.Log("set");
+    if (target == null)
+    {
+      m_target = null;
+      return;
+    }
     m_maxDistance = maxDistance;
     m_target = new AStarNode(target, direction, float.MaxValue, null);
     m_target.IsTarget = true;
     //	Debug.Log(m_target);
+    
     if (!AStarSearch())
     {
       m_target = null;
-      //Debug.Log("FAIL");
+
     }
+
     //Debug.Log(m_target);
   }
   public void SetTarget(GraphNode target)
@@ -45,21 +54,23 @@ public class BasicPlanerAI : ScriptableObject
 
     SetTarget(target, -1);
   }
-  public virtual void OnUpdate()
+  public void CheckTarget()
   {
-    //Debug.Log("update");
-    //Debug.Log(m_planer.Stopped);
+    
     AStarNode currentNode = new AStarNode(m_planer.GetNode(), m_planer.Direction, 0, null);
-    if (m_planer.Stopped > 0) return;
     if (currentNode.EqualWithRandomRotation(m_target))
     {
-      //Debug.Log("fail");
       m_target = null;
     }
-    //Debug.Log(m_target);
-    //Debug.Log(m_planer.name);
+  }
+  public virtual void OnUpdate()
+  {
+
+    
     if (m_target == null) return;
+    
     ApplyDirection();
+
   }
   public void ChangeLevel(int level)
   {
@@ -71,11 +82,21 @@ public class BasicPlanerAI : ScriptableObject
   void ApplyDirection()
   {
     //Debug.Log("rotate");
-    int newDir = route.Dequeue();
-    float newWeight = weights.Dequeue();
-    if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(EntityValue) - 0.5f)
-      AStarSearch();
-    m_planer.SetNewDirection(newDir);
+    try
+    {
+      int newDir = route.Dequeue();
+
+      float newWeight = weights.Dequeue();
+      if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(m_planer.EntityValue) - 0.5f)
+        AStarSearch();
+      m_planer.Direction=newDir;
+    }
+    catch (System.Exception x)
+    {
+      Debug.LogError(x);
+      if(AStarSearch())
+        ApplyDirection();
+    }
   }
   bool AStarSearch()
   {
@@ -108,8 +129,8 @@ public class BasicPlanerAI : ScriptableObject
       //Find best adjacent
       foreach (AStarNode x in adjaccentNodes)
       {
-        float nodeHeuristic = x.distance + m_target.Distance(x.node);
-        if (nodeHeuristic < heuristic && nodeHeuristic < foundDist)
+        float nodeHeuristic = x.distance + m_target.Distance(x);
+        if (nodeHeuristic < heuristic && nodeHeuristic < foundDist && x.distance<MaxWeight)
         {
           heuristic = nodeHeuristic;
           toAddNode = x;
@@ -177,6 +198,9 @@ public class BasicPlanerAI : ScriptableObject
     int maxRotateAngle = m_planer.MaxRotateAngle;
     int minDirection = (node.direction + 6 - maxRotateAngle);
     int maxDirection = (node.direction + 6 + maxRotateAngle);
+    //Debug.Log(minDirection%6);
+    //Debug.Log(maxDirection%6);
+    //Debug.Log(m_target);
     for (int i = minDirection; i <= maxDirection; i++)
     {
       int index = i % 6;
@@ -190,7 +214,7 @@ public class BasicPlanerAI : ScriptableObject
     if (directions[index])
     {
       newNode = new AStarNode(node.node.GetNodeByDirection(index), index, node.distance + 1 + 0.01f * Mathf.Abs((node.direction + 6 - index) % 6), node);
-      newNode.distance += newNode.node.NodeValue(EntityValue);
+      newNode.distance += newNode.node.NodeValue(m_planer.EntityValue);
     }
     else
     {
@@ -239,11 +263,5 @@ public class BasicPlanerAI : ScriptableObject
       adj.Insert(~foundIndex, newNode);
     }
   }
-  public virtual float EntityValue(CustomObject entity)
-  {
-    if (entity.GetType() == typeof(BasicMine)) return 0.1f;
-    if (entity.GetType() == typeof(Portal)) return 5f;
 
-    return 0;
-  }
 }

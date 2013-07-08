@@ -19,11 +19,12 @@ public class MineController : ScriptableObject
     int i = 0;
     foreach(string x in planer.Upgrades)
     {
+      //Debug.Log(x);
       ButtonObject obj = ScriptableObject.CreateInstance(x) as ButtonObject;
       obj.Init(planer, i);
       m_mines.Add(obj);
       i++;
-      Debug.Log(i);
+      //Debug.Log(i);
     }
     
   }
@@ -41,10 +42,8 @@ public class MineController : ScriptableObject
     {
       //Debug.Log(mines[i]);
       ButtonObject x = ScriptableObject.CreateInstance(mines[i]) as ButtonObject;
-      //Debug.Log(x);
       x.Init(m_planer, i);
       m_mines.Add(x);
-      //Debug.Log(newController.m_mines.Count);
     }
   }
   void OnDestroy()

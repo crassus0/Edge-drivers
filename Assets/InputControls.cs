@@ -11,7 +11,7 @@ public class InputControls : MonoBehaviour
   Vector2 prevTouch2;
     
   bool m_hasTarget = false;
-  float screenSensivity = 0.02f;
+  float screenSensivity = 0.05f;
   void Start()
   {
     m_gameArrows = GameObject.Find("GameArrows").GetComponent<GameArrowsControls>();
@@ -48,12 +48,9 @@ public class InputControls : MonoBehaviour
       m_targetPosition.y = 0;
       GraphNode targetNode = GraphNode.GetNodeByCoords(m_targetPosition, Creator.Level);
       m_gameArrows.transform.position = targetNode.NodeCoords();
-      //m_screenPosition=Camera.main.WorldToViewportPoint(m_gameArrows.transform.position);
-      //m_screenPosition.z=0;
-      //Debug.Log(m_screenPosition);
       m_hasTarget = true;
 
-      //m_gameArrows.transform.localScale=Vector3.one;
+      m_gameArrows.transform.localScale=Vector3.one*Camera.main.GetComponent<CameraControls>().CameraSize/10;
       m_gameArrows.Appear();
       //Debug.Log("press");
     }
@@ -82,9 +79,6 @@ public class InputControls : MonoBehaviour
     coords.z = 0;
     if (coords.magnitude > screenSensivity)
     {
-      //Debug.Log(Camera.main.ScreenToViewportPoint(m_gameArrows.transform.position));
-      //Debug.Log(coords);
-      //Debug.Log(coords.magnitude);
       float ang360 = Vector3.Angle(coords, Vector3.right);
       if (coords.y < 0)
         ang360 = 360 - ang360;

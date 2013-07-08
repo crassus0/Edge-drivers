@@ -1,0 +1,33 @@
+using UnityEngine;
+using System.Collections;
+
+public class CancelAction : ButtonObject
+{
+  public static Texture2D objectTexture;
+
+  public override Texture2D GetObjectTexture()
+  {
+    return objectTexture;
+  }
+
+  protected override void InitGUI(int index)
+  {
+    if (!Application.isPlaying) return;
+    Button = (GUITexture)Instantiate(buttonPrefab);
+    Button.transform.position = new Vector3(1, 1 - (float)((index + 2)) / GUIButtonControls.numColumnTextures, 0);
+    Button.GetComponent<GUIButtonControls>().Init(this, Allign.Left, index);
+    Button.name = "ControlButton";
+  }
+  protected override void OnLoop()
+  {
+    
+  }
+  public override string GetName()
+  {
+    throw new System.NotImplementedException();
+  }
+  public override void Activate()
+  {
+    ParentPlaner.CancelTarget();
+  }
+}

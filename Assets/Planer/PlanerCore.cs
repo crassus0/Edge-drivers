@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlanerCore : CustomObject
+public class PlanerCore : CustomObject, IPlanerLike
 {
   public static float BasicScale = 1.2f;
   uint id;
@@ -15,16 +15,24 @@ public class PlanerCore : CustomObject
 
   //	float time=1;
   //public PlanerVisualControls m_visualiser;
-  bool m_isPlayer = false;
   [SerializeField]
   int direction = 0;
   PlanerMoveControls m_moveControls;
   BasicPlanerAI m_basicAI;
   MineController m_mineController;
-  Action<PlanerCore> m_updateFunc;
+  Action<IPlanerLike> m_updateFunc;
+  CancelAction m_cancelAction;
   bool m_renewedUpdater = false;
   public bool EnteredPortal;// { get; set; }
-  public bool HasTarget { get { return m_basicAI.HasTarget; } }
+  public bool HasTarget
+  {
+    get { return HasAction(); }
+    set { m_hasTarget = value; }
+  }
+  bool m_hasTarget=false;
+  public override void OnStart()
+  {
+  }
   public List<string> Upgrades
   {
     get { return m_upgrades; }
@@ -37,7 +45,6 @@ public class PlanerCore : CustomObject
   {
     get { return id; }
   }
-  public int Energy { get { return m_moveControls.Energy; } set { m_moveControls.Energy = value; } }
   public List<ButtonObject> Mines { get { return m_mineController.Mines; } }
   public GraphNode prevNode { get; set; }
   public PlanerMoveControls MoveControls
@@ -72,9 +79,19 @@ public class PlanerCore : CustomObject
   }
   public float Concentration
   {
-    get { return 0; }
-    set { }
+    get { return m_concentration; }
+    set { m_concentration = value; }
   }
+  [SerializeField]
+  float m_concentration=0.5f;
+  public float MaxConcentration
+  {
+    get { return m_MaxConcentration; }
+    set { m_MaxConcentration = value; }
+  }
+  [SerializeField]
+  float m_MaxConcentration=1;
+  static readonly int MaxConcentrationIncrement = 2;
   public int Direction
   {
     get
@@ -87,7 +104,9 @@ public class PlanerCore : CustomObject
     set
     {
       if (Application.isPlaying)
-        m_moveControls.Direction = value;
+      {
+        SetNewDirection(value);
+      }
       else
       {
         direction = value;
@@ -95,9 +114,25 @@ public class PlanerCore : CustomObject
     }
   }
   public int MaxRotateAngle { get { return m_moveControls.MaxRotationAngle; } }
-  public int Stopped { get { return m_moveControls.Stopped; } }
-
-  public void AddUpdateFunc(Action<PlanerCore> newUpdateFunc)
+  public void CancelTarget()
+  {
+    m_basicAI.SetTarget(null);
+  }
+  public void AddConcentration(float t)
+  {
+    float t1 = Mathf.Sqrt(1 / (MaxConcentration - Concentration)) + t;
+    Concentration =MaxConcentration*(1- 1 / (t1 * t1));
+  }
+  public void RemoveConcentration(float t)
+  {
+    Concentration -= t;
+  }
+  public void AddMaxConcentration(float t)
+  {
+    float t1=Mathf.Pow(MaxConcentrationIncrement, MaxConcentration)+t;
+    MaxConcentration = Mathf.Log(t1) / Mathf.Log(MaxConcentrationIncrement);
+  }
+  public void AddUpdateFunc(Action<IPlanerLike> newUpdateFunc)
   {
     //Debug.Log("add");
     if (!m_renewedUpdater)
@@ -112,9 +147,8 @@ public class PlanerCore : CustomObject
     }
 
   }
-  public void RemoveUpdateFunc(Action<PlanerCore> newUpdateFunc)
+  public void RemoveUpdateFunc(Action<IPlanerLike> newUpdateFunc)
   {
-
     m_updateFunc -= newUpdateFunc;
 
     if (m_updateFunc == null)
@@ -127,11 +161,9 @@ public class PlanerCore : CustomObject
     }
   }
   public void OnLevelChange(int i) { m_basicAI.ChangeLevel(i); }
-  public int AdditionalDirection() { return m_moveControls.AdditionalRotateDirection(); }
   public void OnDamageDealt(int damage)
   {
     if (!m_initislized) return;
-    m_moveControls.HitEnergy(damage);
   }
   public void DestroyPlaner()
   {
@@ -143,17 +175,13 @@ public class PlanerCore : CustomObject
   public void Init()
   {
     //Debug.Log(direction);
-    
-    //bug.Log(Level);
+    OnUpdate = OnUpdated;
+    Interact = OnInteract;
     EnteredPortal = false;
     if (m_initislized) return;
     prevNode = GetNode();
     //	  Debug.Log(m_init);
     m_updateFunc = UpdateFuncBasic;
-    m_isPlayer = (name == "Player");
-    //	  Debug.Log("node set");
-    //Awake();
-
     Type = ObjectType.Planer;
     id = Creator.GetID();
     m_moveControls = ScriptableObject.CreateInstance<PlanerMoveControls>();
@@ -162,10 +190,7 @@ public class PlanerCore : CustomObject
     moveParameters.direction = direction;
 
     m_moveControls.Initialize(this, moveParameters);
-    if (m_isPlayer)
-      m_basicAI = ScriptableObject.CreateInstance<BasicPlanerAI>();
-    else
-      m_basicAI = ScriptableObject.CreateInstance<AdvancedPlanerAI>();
+    m_basicAI = ScriptableObject.CreateInstance<BasicPlanerAI>();
     m_basicAI.Init(this);
     m_mineController = ScriptableObject.CreateInstance<MineController>();
     m_mineController.Init(this);
@@ -174,29 +199,42 @@ public class PlanerCore : CustomObject
     //m_visualiser.Init(this);
     //	  GetComponent<Catcher>().Init(this);
     m_initislized = true;
+    m_cancelAction = ScriptableObject.CreateInstance<CancelAction>();
+    m_cancelAction.Init(this, 0);
     //Debug.Log(m_initislized);
 
   }
   public void SetTarget(GraphNode x, int angle)
   {
-    m_basicAI.SetTarget(x, angle);
+    if (!Node.Equals(x))
+      m_basicAI.SetTarget(x, angle);
+    else
+    {
+      if(angle>=0)
+        Direction = angle;
+      m_hasTarget = true;
+      m_basicAI.SetTarget(null);
+    }
   }
-  public override void OnUpdate()
+  bool HasAction()
+  {
+    return m_basicAI.HasTarget || m_hasTarget;
+  }
+  void OnUpdated()
   {
     EnteredPortal = false;
-    //Debug.Log(m_updateFunc.Method.Name);
-    //Debug.Log("update");
     if (m_updateFunc != null)
       m_updateFunc(this);
+   
   }
-  public void UpdateFuncBasic(PlanerCore planer)
+  void UpdateFuncBasic(IPlanerLike planer)
   {
-    //Debug.Log(Node.GetDirections()[0]);
 
     m_basicAI.OnUpdate();
     m_moveControls.OnUpdate();
     m_mineController.OnUpdate();
-
+    m_basicAI.CheckTarget();
+    m_hasTarget = false;
   }
   public void Rotate(int angle)
   {
@@ -219,7 +257,7 @@ public class PlanerCore : CustomObject
     //	  transform.position=newPosition;
     for (int i = 0; i < 6; i++)
     {
-      dir = new Vector3(Mathf.Cos(i * Mathf.PI / 3f), 0, Mathf.Sin(i * Mathf.PI / 3f));
+      dir = new Vector3(Mathf.Cos(i * Mathf.PI / 3f), 0, Mathf.Sin(i * Mathf.PI / 3f))*16;
       //		Debug.Log(direction+","+i);
 
       if (directions[i] && planerDirections[i])
@@ -233,19 +271,21 @@ public class PlanerCore : CustomObject
     //	  SetFlags();
     Init();
   }
-  public override void Interact(CustomObject obj, InteractType type)
+  void OnInteract(CustomObject obj, InteractType type)
   {
-    PlanerCore planer = obj as PlanerCore;
-    if (planer == null) return;
-
+    if (type == InteractType.Stay)
+    {
+      WarmingControls warm = obj as WarmingControls;
+      if (warm != null)
+      {
+        AddConcentration(warm.m_warmingConcentration);
+        Destroy(warm.gameObject);
+      }
+    }
   }
   public void OnEnterPortal(GraphNode node)
   {
-    //m_freese = 1;
-    
     Node = node;
-    
-    //Debug.Log(node);
     m_basicAI.ChangeLevel(node.Level);
   }
   public void OnWeaponsChanged()
@@ -254,6 +294,16 @@ public class PlanerCore : CustomObject
       Destroy(m_mineController);
     m_mineController = ScriptableObject.CreateInstance<MineController>() as MineController;
     m_mineController.Init(this);
+  }
+  public float EntityValue(CustomObject entity)
+  {
+    //const int m_maxWeight = 500;
+    if (entity.Node ==  m_basicAI.Target.node) return 0;
+    if (entity.GetType() == typeof(BasicMine)) return 0.1f;
+    if (entity.GetType() == typeof(Portal)) return BasicPlanerAI.MaxWeight;
+    if (entity.GetType() == typeof(DistantPortal)) return BasicPlanerAI.MaxWeight;
+    if (entity.GetType() == typeof(WeaponPrototype)) return BasicPlanerAI.MaxWeight;
+    return 0;
   }
   //TODO
 }

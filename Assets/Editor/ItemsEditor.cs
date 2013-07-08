@@ -1,21 +1,21 @@
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
-public class ItemsEditor : MonoBehaviour
+public static class ItemsEditor
 {
 
-  [MenuItem("EdgeDrivers/AddLevel")]
+  [MenuItem("EdgeDrivers/Add Level")]
   static void AddLevel()
   {
     GameObject levelPrefab = AssetDatabase.LoadAssetAtPath("Assets/Terrain/BareerLevels/LevelPrefab.prefab", typeof(GameObject)) as GameObject;
-    BareerLevelControls level = (Instantiate(levelPrefab) as GameObject).GetComponent<BareerLevelControls>();
+    BareerLevelControls level = (Object.Instantiate(levelPrefab) as GameObject).GetComponent<BareerLevelControls>();
     //	  Debug.Log(EditorAdditionalGUI.EditorOptions);
     level.name = "Level" + EditorAdditionalGUI.EditorOptions.levels.Count;
     EditorAdditionalGUI.EditorOptions.levels.Add(level);
     level.transform.parent = GameObject.Find("Creator").transform;
     level.Init();
   }
-  [MenuItem("EdgeDrivers/ShowHidden")]
+  [MenuItem("EdgeDrivers/Show Hidden")]
   static void ShowHidden()
   {
     Object[] x = Resources.FindObjectsOfTypeAll(typeof(Object));
@@ -24,7 +24,7 @@ public class ItemsEditor : MonoBehaviour
       a.hideFlags = 0;
     }
   }
-  [MenuItem("EdgeDrivers/HideSelected")]
+  //[MenuItem("EdgeDrivers/Hide Selected")]
   static void HideSelected()
   {
     foreach (GameObject x in Selection.objects)
@@ -32,14 +32,34 @@ public class ItemsEditor : MonoBehaviour
       x.gameObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.HideInInspector;
     }
   }
-  [MenuItem("EdgeDrivers/AddScene")]
+  [MenuItem("EdgeDrivers/Scene/Add Scene")]
   static void AddScene()
   {
-    ScriptableWizard.DisplayWizard<AddSceneDialog>("AddScene");
+    ScriptableWizard.DisplayWizard<AddSceneDialog>("Add Scene");
   }
-  [MenuItem("EdgeDrivers/DeleteScene")]
+  [MenuItem("EdgeDrivers/Scene/Select Scene")]
+  static void SelectScene()
+  {
+    ScriptableWizard.DisplayWizard<SelectSceneDialog>("Select Scene");
+  }
+  [MenuItem("EdgeDrivers/Scene/Delete Scene")]
   static void RemoveScene()
   {
-    ScriptableWizard.DisplayWizard<DeleteSceneDialog>("Delete scene");
+    DeleteSceneDialog.Enable();
+  }
+  [MenuItem("EdgeDrivers/Scene/Export Scene")]
+  static void ExportScene()
+  {
+    ExportSceneDialog.Export();
+  }
+  [MenuItem("EdgeDrivers/Scene/Import Scene")]
+  static void ImportScene()
+  {
+    ImportSceneDialog.Import();
+  }
+  [MenuItem("EdgeDrivers/Clear saves")]
+  static void ClearSaves()
+  {
+    PlayerSaveData.Clear();
   }
 }

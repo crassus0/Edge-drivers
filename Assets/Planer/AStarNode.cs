@@ -64,6 +64,7 @@ public class AStarNode : System.IComparable<AStarNode>
   {
     if (x == null) return false;
     bool equals = node.Equals(x.node);
+    //Debug.Log(node);
     if (direction >= 0 && x.direction >= 0)
       equals = equals && direction == x.direction;
     return equals;

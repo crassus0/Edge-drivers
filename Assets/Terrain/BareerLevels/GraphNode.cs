@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 [System.Serializable]
-public class GraphNode: System.IComparable<GraphNode>
+public class GraphNode : System.IComparable<GraphNode>
 {
   [SerializeField]
   int m_i;
@@ -19,57 +19,78 @@ public class GraphNode: System.IComparable<GraphNode>
   [System.NonSerialized]
   List<CustomObject> m_objects;
 
-  
-
   [System.NonSerialized]
   List<CustomObject> m_toEnter;
 
-  
-  public int Level{get{return m_level;}}
-  public int Index{get{return m_index;}}
-  public int X{get{return m_i;}}
-  public int Y{get{return m_j;}}
+
+  public int Level { get { return m_level; } }
+  public int Index { get { return m_index; } }
+  public int X { get { return m_i; } }
+  public int Y { get { return m_j; } }
   static List<GraphNode> s_usedNodes;
   static HashSet<CustomObject> s_interact;
-  public static readonly float graphDistance=32/Mathf.Sqrt(3);
+  public static readonly float graphDistance = 32 / Mathf.Sqrt(3);
   int nodeGraph;
-  GraphNode[] adjacent=new GraphNode[3];
+  int basicNodeGraph;
+  GraphNode[] adjacent = new GraphNode[3];
   int triangleRow;
   [System.NonSerialized]
-  bool setGraph=false;
-	
+  bool setGraph = false;
+  public static void ClearAll()
+  {
+    s_interact.Clear();
+    s_usedNodes.Clear();
+  }
+  public bool IsOnField()
+  {
+
+    return (m_i >= 0 && m_i < triangleRow && m_j > 0 && m_j < triangleRow);
+  }
   public void ChangeState(byte[] states, List<BareerLevelControls> levels)
   {
-    
+    //Debug.Log(Application.loadedLevelName);
+    //Application.loa
     triangleRow = BareerAreaControls.areaSize * levels[m_level].NumAreas;
-    if (m_index > 0) return;
+    if (m_index > 0)
+    {
+      GraphNode[] adj = GetAdjacent();
+      byte[] x = { 6, 6, 6 };
+      //Debug.Log(states.Length);
+      x[0]=states[0];
+      adj[0].ChangeState(x, levels);
+      x[0] = 6;
+      x[1] = states[2];
+      adj[2].ChangeState(x, levels);
+      x[1] = 6;
+      x[2] = states[1];
+      adj[1].ChangeState(x, levels);
+      return;
+    }
+
     if (m_i < 0 || m_i >= triangleRow || m_j < 0 || m_j >= triangleRow) return;
     nodeGraph = levels[m_level].m_bareers[m_i + m_j * triangleRow];
-    int oldNodeGraph = nodeGraph;
-    int[] oldStates = new int[3];
-    for (int i = 0; i < 3; i++)
-    {
-      oldStates[i] = oldNodeGraph % 4;
-      oldNodeGraph /= 4;
-    }
-    bool[] changed = new bool[3];
-    for (int i = 0; i < 3; i++)
-      changed[i] = false;
     for (int i = 0; i < 3; i++)
     {
       byte curentState = (byte)((nodeGraph >> (i * 2)) % 4);
-      if (curentState == states[i] || states[i] == 6) continue;
+      if (curentState == states[i]||states[i]==6) continue;
       byte zeroState = (byte)~(3 << (i * 2));
       byte changingState = states[i];
-      if (changingState == 4)
-        changingState = 3;
       nodeGraph = nodeGraph & zeroState;
-
       nodeGraph = nodeGraph | (changingState << (i * 2));
-      changed[i] = true;
     }
     levels[m_level].m_bareers[m_i + m_j * triangleRow] = (byte)nodeGraph;
     levels[m_level].OnChanged(m_i, m_j);
+    if (nodeGraph > 63)
+      Debug.LogError(nodeGraph);
+  }
+  public void Reactivate()
+  {
+    if(m_objects!=null)
+      foreach (CustomObject x in m_objects)
+      {
+        if (x.Activate != null)
+          x.Activate();
+      }
   }
   public GraphNode()
   {
@@ -102,7 +123,7 @@ public class GraphNode: System.IComparable<GraphNode>
     if (!setGraph)
       savedNode.SetNodeGraph();
   }
-  public static  void InteractAll()
+  public static void InteractAll()
   {
     foreach (CustomObject enteringObject in s_interact)
     {
@@ -111,19 +132,33 @@ public class GraphNode: System.IComparable<GraphNode>
       {
         if (CustomObject.ReferenceEquals(x, enteringObject)) continue;
         //Debug.Log(x.name);
-        enteringObject.Interact(x, InteractType.Enter);
-        x.Interact(enteringObject, InteractType.Stay);
+        if (enteringObject.Interact != null)
+          enteringObject.Interact(x, InteractType.Enter);
+        if (x.Interact != null)
+          x.Interact(enteringObject, InteractType.Stay);
         if (enteringObject.GetNode() != savedNode)
           break;
       }
     }
-    s_interact.Clear();	
+    s_interact.Clear();
   }
   public void Leave(CustomObject leavingObject)
   {
-    
-    if(m_objects!=null)
+
+    if (m_objects != null)
       m_objects.Remove(leavingObject);
+  }
+  public bool HasObject(System.Type type)
+  {
+    
+    foreach (CustomObject x in m_objects)
+    {
+      if (type.IsInstanceOfType(x))
+        return true;
+    }
+    
+    return false;
+
   }
   public Vector3 NodeCoords()
   {
@@ -183,7 +218,7 @@ public class GraphNode: System.IComparable<GraphNode>
     }
     return dirs;
   }
-  
+
   public static GraphNode GetNodeByCoords(Vector3 coords, int level)
   {
     float triangleHeight = BareerAreaControls.triangleHeight;
@@ -213,6 +248,19 @@ public class GraphNode: System.IComparable<GraphNode>
       index = 1;
     }
     return GetNodeByParameters(i, j, index, level);
+  }
+  public byte[] GetNodeGraph()
+  {
+    byte[] nodes = new byte[3];
+    if (!setGraph)
+      SetNodeGraph();
+    int graph = basicNodeGraph;
+    for (int i = 0; i < 3; i++)
+    {
+      nodes[i] = (byte)(graph % 4);
+      graph = graph / 4;
+    }
+    return nodes;
   }
   public bool[] GetDirections()
   {
@@ -282,29 +330,32 @@ public class GraphNode: System.IComparable<GraphNode>
     }
     return newDir % 6;
   }
-  public GraphNode GetUpperNode()
-  {
-    if (m_level == 3) return null;
-    return GetNodeByCoords(NodeCoords(), m_level + 1);
-  }
-  public GraphNode GetLowerNode()
-  {
-    if (m_level == 1) return null;
-    return GetNodeByCoords(NodeCoords(), m_level - 1);
-  }
   public GraphNode GetNodeByDirection(int direction)
   {
     GraphNode[] adj = GetAdjacent();
-    int newInd;
-    if (m_index == 0)
+    int newInd=0;
+    try
     {
-      newInd = ((direction + 5) % 6) / 2;
-      return adj[newInd];
+
+      if (m_index == 0)
+      {
+        newInd = ((direction + 5) % 6) / 2;
+        return adj[newInd];
+      }
+      else
+      {
+
+        newInd = (5 - direction) / 2;
+        return adj[newInd];
+      }
     }
-    else
+    catch (System.Exception x)
     {
-      newInd = (5 - direction) / 2;
-      return adj[newInd];
+      Debug.LogError(x.Message);
+      Debug.Log(adj.Length);
+      Debug.Log(newInd);
+      Debug.Log(direction);
+      return null;
     }
   }
 
@@ -326,23 +377,27 @@ public class GraphNode: System.IComparable<GraphNode>
       if (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow)
       {
         nodeGraph = Creator.GetBareerMap(m_level)[m_i + m_j * triangleRow];
-      
+        
       }
       else
-        nodeGraph = (byte)Random.Range(0, 64);
+        nodeGraph = 63;
     }
     else
     {
+      
       int node = 0;
       GraphNode[] adj = GetAdjacent();
-      adj[0].SetNodeGraph();
-      node += (adj[0].nodeGraph) % 4;
-      adj[1].SetNodeGraph();
-      node += ((adj[1].nodeGraph >> 4) % 4) << 2;
-      adj[2].SetNodeGraph();
-      node += ((adj[2].nodeGraph >> 2) % 4) << 4;
+      //adj[0].SetNodeGraph();
+      
+      node += adj[0].GetNodeGraph()[0];
+      //adj[1].SetNodeGraph();
+      node += (adj[1].GetNodeGraph()[2]) << 2;
+      //adj[2].SetNodeGraph();
+      node += (adj[2].GetNodeGraph()[1]) << 4;
+      
       nodeGraph = node;
     }
+    basicNodeGraph = nodeGraph;
     setGraph = true;
   }
   public static GraphNode GetNodeByParameters(int i, int j, int index, int level)
@@ -364,12 +419,21 @@ public class GraphNode: System.IComparable<GraphNode>
     {
       newNode = s_usedNodes[findIndex];
     }
-    newNode.triangleRow = BareerAreaControls.areaSize * Creator.creator.levels[level].NumAreas;
-
+    try
+    {
+      newNode.triangleRow = BareerAreaControls.areaSize * Creator.creator.levels[level].NumAreas;
+    }
+    catch(System.Exception x)
+    {
+      Debug.Log(x.Message);
+      Debug.Log(level);
+      Debug.Log(Application.loadedLevelName);
+      throw (x);
+    }
     return newNode;
   }
 
-  GraphNode[] GetAdjacent()
+  public GraphNode[] GetAdjacent()
   {
     if (adjacent[0] == null)
       adjacent[0] = GetNodeByParameters(m_i, m_j, 1 - m_index, m_level);
@@ -383,6 +447,7 @@ public class GraphNode: System.IComparable<GraphNode>
   }
   public override bool Equals(object o)
   {
+
     if (o == null) return false;
     GraphNode x = o as GraphNode;
     if (x == null) return false;
@@ -414,7 +479,6 @@ public class GraphNode: System.IComparable<GraphNode>
   {
     s_usedNodes = new List<GraphNode>();
     s_interact = new HashSet<CustomObject>();
-
   }
   public delegate float evaluator(CustomObject x);
   public struct NodeInformation

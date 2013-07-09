@@ -53,7 +53,7 @@ public class PlanerCore : CustomObject, IPlanerLike
   }
   public PlanerVisualControls Visualiser
   {
-    get { return m_visualiser as PlanerVisualControls; }
+    get { return m_visualiser.GetComponent<PlanerVisualControls>(); }
   }
   public MineController MineController
   {
@@ -195,7 +195,7 @@ public class PlanerCore : CustomObject, IPlanerLike
     m_mineController = ScriptableObject.CreateInstance<MineController>();
     m_mineController.Init(this);
     //Debug.Log(m_initislized);
-    (m_visualiser as PlanerVisualControls).Init(this);
+    (m_visualiser.GetComponent<PlanerVisualControls>()).Init(this);
     //m_visualiser.Init(this);
     //	  GetComponent<Catcher>().Init(this);
     m_initislized = true;
@@ -244,8 +244,10 @@ public class PlanerCore : CustomObject, IPlanerLike
   {
     m_moveControls.SetNewDirection(newDirection);
   }
-  void MUpdate()
+  protected new void OnDrawGizmos()
   {
+    base.OnDrawGizmos();
+    if (!Application.isPlaying) return;
     Vector3 dir;
     //	  Debug.Log(Energy);
 

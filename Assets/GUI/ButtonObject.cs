@@ -37,8 +37,7 @@ public abstract class ButtonObject : ScriptableObject
   {
     if (!Application.isPlaying) return;
     Button = (GUITexture)Instantiate(buttonPrefab);
-    Button.transform.position = new Vector3(1, 1 - (float)((index + 2)) / GUIButtonControls.numColumnTextures, 0);
-    Button.GetComponent<GUIButtonControls>().Init(this, Allign.Right);
+    Button.GetComponent<GUIButtonControls>().Init(this, Allign.Right, index);
     Button.name = "ControlButton";
   }
   public virtual void SetIndex(int i)

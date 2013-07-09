@@ -21,6 +21,14 @@ public static class PlayerSaveData
     {
       PlayerPrefs.SetString("Mine" + i, planer.MineController.Mines[i].GetType().ToString());
     }
+    if (onPlaySave)
+    {
+      PlayerPrefs.SetInt("XCoord", node.X);
+      PlayerPrefs.SetInt("YCoord", node.Y);
+      PlayerPrefs.SetInt("IndexCoord", node.Index);
+      PlayerPrefs.SetInt("LevelCoord", node.Level);
+      PlayerPrefs.SetInt("Direction", planer.Direction);
+    }
   }
   public static void Clear()
   {
@@ -57,7 +65,23 @@ public static class PlayerSaveData
       return false;
     if (PlayerPrefs.GetString("CurrentLevel") != Application.loadedLevelName && firstLoad)
       Application.LoadLevel(PlayerPrefs.GetString("CurrentLevel"));
+    if (!firstLoad)
+    {
+      try
+      {
+        int x = PlayerPrefs.GetInt("XCoord");
+        int y = PlayerPrefs.GetInt("YCoord");
+        int index = PlayerPrefs.GetInt("IndexCoord");
+        int level = PlayerPrefs.GetInt("LevelCoord");
+        int direction = PlayerPrefs.GetInt("Direction");
+        planer.Node = GraphNode.GetNodeByParameters(x, y, index, level).GetNodeByDirection(direction);
+        planer.Direction = direction;
+      }
+      catch (System.Exception)
+      {
 
+      }
+    }
     planer.Concentration = PlayerPrefs.GetFloat("Concentration");
     planer.MaxConcentration = PlayerPrefs.GetFloat("MaxConcentration");
     string[] mines = GetMines();

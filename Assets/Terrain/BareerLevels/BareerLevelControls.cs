@@ -187,7 +187,7 @@ public class BareerLevelControls : MonoBehaviour
     gameObject.SetActive(true);
     Init();   
   }
-  void MUpdate()
+  void OnDrawGizmosSelected()
   {
     DebugGraphWatch();
   }

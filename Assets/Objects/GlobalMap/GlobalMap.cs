@@ -6,7 +6,8 @@ public class GlobalMap : DistantPortal
 {
   public override void OnStart()
   {
-    base.OnStart();
     m_targetScene = Creator.PreviousLevel;
+    PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
+    base.OnStart();
   }
 }

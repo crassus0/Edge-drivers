@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 //[ExecuteInEditMode()]
-public class CustomObjectEditorSupply : MonoBehaviour {
+public class CustomObjectEditorSupply : MonoBehaviour 
+{
 
 	
 

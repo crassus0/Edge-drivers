@@ -56,7 +56,7 @@ public class GraphNode : System.IComparable<GraphNode>
       GraphNode[] adj = GetAdjacent();
       byte[] x = { 6, 6, 6 };
       //Debug.Log(states.Length);
-      x[0]=states[0];
+      x[0] = states[0];
       adj[0].ChangeState(x, levels);
       x[0] = 6;
       x[1] = states[2];
@@ -72,7 +72,7 @@ public class GraphNode : System.IComparable<GraphNode>
     for (int i = 0; i < 3; i++)
     {
       byte curentState = (byte)((nodeGraph >> (i * 2)) % 4);
-      if (curentState == states[i]||states[i]==6) continue;
+      if (curentState == states[i] || states[i] == 6) continue;
       byte zeroState = (byte)~(3 << (i * 2));
       byte changingState = states[i];
       nodeGraph = nodeGraph & zeroState;
@@ -85,7 +85,7 @@ public class GraphNode : System.IComparable<GraphNode>
   }
   public void Reactivate()
   {
-    if(m_objects!=null)
+    if (m_objects != null)
       foreach (CustomObject x in m_objects)
       {
         if (x.Activate != null)
@@ -148,15 +148,15 @@ public class GraphNode : System.IComparable<GraphNode>
     if (m_objects != null)
       m_objects.Remove(leavingObject);
   }
-  public bool HasObject(System.Type type)
+  public bool HasObjectOfType(System.Type type)
   {
-    
+
     foreach (CustomObject x in m_objects)
     {
       if (type.IsInstanceOfType(x))
         return true;
     }
-    
+
     return false;
 
   }
@@ -249,12 +249,12 @@ public class GraphNode : System.IComparable<GraphNode>
     }
     return GetNodeByParameters(i, j, index, level);
   }
-  public byte[] GetNodeGraph()
+  public byte[] GetNodeGraph(bool getUpdated=false)
   {
     byte[] nodes = new byte[3];
     if (!setGraph)
       SetNodeGraph();
-    int graph = basicNodeGraph;
+    int graph = getUpdated?nodeGraph: basicNodeGraph;
     for (int i = 0; i < 3; i++)
     {
       nodes[i] = (byte)(graph % 4);
@@ -333,29 +333,17 @@ public class GraphNode : System.IComparable<GraphNode>
   public GraphNode GetNodeByDirection(int direction)
   {
     GraphNode[] adj = GetAdjacent();
-    int newInd=0;
-    try
+    int newInd = 0;
+    if (m_index == 0)
     {
-
-      if (m_index == 0)
-      {
-        newInd = ((direction + 5) % 6) / 2;
-        return adj[newInd];
-      }
-      else
-      {
-
-        newInd = (5 - direction) / 2;
-        return adj[newInd];
-      }
+      newInd = ((direction + 5) % 6) / 2;
+      return adj[newInd];
     }
-    catch (System.Exception x)
+    else
     {
-      Debug.LogError(x.Message);
-      Debug.Log(adj.Length);
-      Debug.Log(newInd);
-      Debug.Log(direction);
-      return null;
+
+      newInd = (5 - direction) / 2;
+      return adj[newInd];
     }
   }
 
@@ -371,33 +359,31 @@ public class GraphNode : System.IComparable<GraphNode>
   //technicals
   void SetNodeGraph()
   {
-    
+
     if (m_index == 0)
     {
       if (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow)
       {
         nodeGraph = Creator.GetBareerMap(m_level)[m_i + m_j * triangleRow];
-        
+        basicNodeGraph = nodeGraph;
       }
       else
         nodeGraph = 63;
     }
     else
     {
-      
       int node = 0;
       GraphNode[] adj = GetAdjacent();
-      //adj[0].SetNodeGraph();
-      
       node += adj[0].GetNodeGraph()[0];
-      //adj[1].SetNodeGraph();
       node += (adj[1].GetNodeGraph()[2]) << 2;
-      //adj[2].SetNodeGraph();
       node += (adj[2].GetNodeGraph()[1]) << 4;
-      
+      basicNodeGraph = nodeGraph;
+      node += adj[0].GetNodeGraph(true)[0];
+      node += (adj[1].GetNodeGraph(true)[2]) << 2;
+      node += (adj[2].GetNodeGraph(true)[1]) << 4;
       nodeGraph = node;
     }
-    basicNodeGraph = nodeGraph;
+    
     setGraph = true;
   }
   public static GraphNode GetNodeByParameters(int i, int j, int index, int level)
@@ -419,17 +405,7 @@ public class GraphNode : System.IComparable<GraphNode>
     {
       newNode = s_usedNodes[findIndex];
     }
-    try
-    {
-      newNode.triangleRow = BareerAreaControls.areaSize * Creator.creator.levels[level].NumAreas;
-    }
-    catch(System.Exception x)
-    {
-      Debug.Log(x.Message);
-      Debug.Log(level);
-      Debug.Log(Application.loadedLevelName);
-      throw (x);
-    }
+    newNode.triangleRow = BareerAreaControls.areaSize * Creator.creator.levels[level].NumAreas;
     return newNode;
   }
 

@@ -31,7 +31,7 @@ public class WebMine : CustomObject
         x = x.GetNodeByDirection(direction);
 
         i--;
-        if (x.HasObject(typeof(IPlanerLike)))
+        if (x.HasObjectOfType(typeof(IPlanerLike)))
           i = -1;
       }
       else
@@ -41,7 +41,7 @@ public class WebMine : CustomObject
     }
     //placed = true;
     Node = x;
-    (m_visualiser as WebCatapultVisualiser).Push(parent);
+    (m_visualiser.GetComponent<WebCatapultVisualiser>()).Push(parent);
   }
   void OnUpdated()
   {

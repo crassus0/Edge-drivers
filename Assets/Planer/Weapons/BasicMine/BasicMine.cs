@@ -16,7 +16,7 @@ public class BasicMine : CustomObject
     Node = parent.prevNode;
     gameObject.SetActive(true);
     
-    (m_visualiser as BasicMineVisualiser).OnInstall(parent);
+    (m_visualiser.GetComponent<BasicMineVisualiser>()).OnInstall(parent);
   }
 
   void OnInteract(CustomObject obj, InteractType type)
@@ -27,7 +27,7 @@ public class BasicMine : CustomObject
       PlanerCore planer = obj as PlanerCore;
       if (planer == null) return;
       planer.OnDamageDealt(damage);
-      (m_visualiser as BasicMineVisualiser).OnDestroy();
+      (m_visualiser.GetComponent<BasicMineVisualiser>()).OnDestroy();
     }
   }
 

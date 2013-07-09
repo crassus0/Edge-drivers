@@ -14,7 +14,11 @@ public class PlanerMoveControls : ScriptableObject
   public int Agility
   {
     get { return m_agility; }
-    set { m_agility = value; }
+    set 
+    {
+      m_agility = value;
+      m_maxRotationAngle = (6 - m_agility) / 3 + 1;
+    }
   }
   public int Direction
   {
@@ -30,12 +34,12 @@ public class PlanerMoveControls : ScriptableObject
   public void Initialize(PlanerCore planer, MoveParameters parameters)
   {
 
-    m_agility = parameters.agility;
+    Agility = parameters.agility;
     m_direction = parameters.direction;
     m_planer = planer;
     m_planer.transform.rotation = Quaternion.identity;
     m_planer.transform.Rotate(new Vector3(0, -60 * m_direction, 0));
-    m_maxRotationAngle = (6 - m_agility) / 3 + 1;
+    
 
   }
   public void OnUpdate()

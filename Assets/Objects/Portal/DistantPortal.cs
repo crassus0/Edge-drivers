@@ -44,7 +44,7 @@ public class DistantPortal : CustomObject
           Status = 1;
         if (object.ReferenceEquals(x, Creator.Player))
         {
-          PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
+          //PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
           PlayerSaveData.Save(x, m_targetNode, true);
           Application.LoadLevel(m_targetScene);
         }

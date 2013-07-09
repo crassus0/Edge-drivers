@@ -22,7 +22,7 @@ public class YellowFirefly : CustomObject, IAutoMove
   public override void OnStart()
   {
     Direction = m_direction;
-    m_visualiser.SetSpeed(0.25f);
+    m_visualiser.GetComponent<CustomObjectVisualiser>().SetSpeed(0.25f);
     OnUpdate = OnUpdated;
     Interact = OnInteract;
   }
@@ -50,7 +50,7 @@ public class YellowFirefly : CustomObject, IAutoMove
   public void Move()
   {
     Move(Direction);
-    (m_visualiser as FireflyVisualiser).Move((Node.Index+Direction % 2)%2);
+    (m_visualiser.GetComponent<FireflyVisualiser>()).Move((Node.Index+Direction % 2)%2);
     if (Camera.main.WorldToViewportPoint(transform.position).magnitude > 4 && !Node.IsOnField())
       Destroy(gameObject);
   }

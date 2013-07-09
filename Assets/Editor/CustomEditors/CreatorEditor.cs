@@ -163,6 +163,7 @@ public class CreatorEditor : Editor
     Event currentEvent = Event.current;
     if (currentEvent.type == EventType.ScrollWheel) return;
     if (currentEvent.button == 2) return;
+    if (currentEvent.type == EventType.Repaint) return;
     if (currentEvent.type == EventType.KeyDown || currentEvent.type == EventType.KeyUp) return;
     Event.current.Use();
   }
@@ -261,6 +262,7 @@ public class CreatorEditor : Editor
     if (targ.objectToMove != null)
     {
       targ.objectToMove.transform.position = GraphNode.GetNodeByCoords(mouseCoords, targ.ActiveLevel).NodeCoords();
+      targ.objectToMove.Node = GraphNode.GetNodeByCoords(targ.objectToMove.transform.position, targ.ActiveLevel);
     }
     if (Event.current.button == 1 && Event.current.type == EventType.MouseUp)
     {
@@ -272,6 +274,7 @@ public class CreatorEditor : Editor
       else
       {
         EditorWindow.GetWindow<EditorMenu>().m_selectedOption = 0;
+        
         targ.objectToMove = null;
       }
     }

@@ -5,9 +5,16 @@ public class GreenFirefly : CustomObject, IAutoMove
 {
   public int Direction
   {
-    get;
-    set;
+    get { return m_direction;}
+    set 
+    {
+      m_direction=value;
+      transform.rotation = Quaternion.identity;
+      transform.Rotate(new Vector3(0, -60 * m_direction, 0));
+    }
   }
+  [SerializeField]
+  int m_direction;
   public override int GetStepCount()
   {
     return 1;
@@ -37,7 +44,7 @@ public class GreenFirefly : CustomObject, IAutoMove
       //		Debug.Log(m_hiroscope+","+rotated);
       Move(Direction);
       //Visualiser.Move(rotatedAngle);
-      (m_visualiser as FireflyVisualiser).Move((Node.Index + Direction % 2) % 2);
+      (m_visualiser.GetComponent<FireflyVisualiser>()).Move((Node.Index + Direction % 2) % 2);
     }
     else
     {
@@ -46,9 +53,8 @@ public class GreenFirefly : CustomObject, IAutoMove
       if (changeDirection < -1) changeDirection += 6;
       if (changeDirection > 1) changeDirection %= 6;
       Direction = newDirection;
-      transform.rotation = Quaternion.identity;
-      transform.Rotate(new Vector3(0, -60 * Direction, 0));
-      (m_visualiser as FireflyVisualiser).Hit((Node.Index + Direction % 2) % 2);
+
+      (m_visualiser.GetComponent<FireflyVisualiser>()).Hit((Node.Index + Direction % 2) % 2);
     }
   }
 }

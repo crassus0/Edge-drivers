@@ -64,7 +64,7 @@ public class WarmingControls : CustomObject, IPlanerLike
   void OnUpdated(IPlanerLike warming)
   {
     
-    (m_visualiser as WarmingVisualiser).Rewind();
+    (m_visualiser.GetComponent<WarmingVisualiser>()).Rewind();
     OnMove();
   }
   void Update()
@@ -97,8 +97,8 @@ public class WarmingControls : CustomObject, IPlanerLike
     index = (Node.Index + Direction % 2) % 2;
 
 
-    (m_visualiser as WarmingVisualiser).PassiveAnimations();
-    (m_visualiser as WarmingVisualiser).Move(index);
+    (m_visualiser.GetComponent<WarmingVisualiser>()).PassiveAnimations();
+    (m_visualiser.GetComponent<WarmingVisualiser>()).Move(index);
     m_ai.CheckTarget();
   }
   public void AddUpdateFunc(Action<IPlanerLike> newUpdateFunc)

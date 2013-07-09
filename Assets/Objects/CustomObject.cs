@@ -7,7 +7,7 @@ using System;
 public abstract class CustomObject : MonoBehaviour
 {
   
-  public CustomObjectVisualiser m_visualiser;
+  public GameObject m_visualiser;
   public ObjectType Type { get; set; }
   public abstract void OnStart();
   public virtual int GetStepCount()
@@ -34,6 +34,7 @@ public abstract class CustomObject : MonoBehaviour
     }
     set
     {
+      
       if (value == null) return;
       if (node != null)
         node.Leave(this);

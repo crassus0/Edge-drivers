@@ -169,7 +169,7 @@ public class CreatorEditor : Editor
   }
   void OnInstrument()
   {
-    if ((targ.selected > 0) && (targ.selected < 4))
+    if ((targ.selected > 0) && (targ.selected < 5))
     {
       Vector3 mouseCoords = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
       mouseCoords.y = 0;
@@ -183,11 +183,10 @@ public class CreatorEditor : Editor
   void OnBareerEditCheck()
   {
     int index = targ.selected;
-    if (targ.selected == 0 || targ.selected > 3) return;
+    if (targ.selected == 0 || targ.selected > 4) return;
     if (index == 0) return;
-    index = 3 - index;
-    if (index == 2) index++;
-
+    index = 4 - index;
+    
     if (Event.current.type != EventType.MouseDrag || Event.current.button != 1) return;
     //Debug.Log("Index " +index);
     float triangleWidth = BareerAreaControls.triangleWidth;
@@ -253,7 +252,7 @@ public class CreatorEditor : Editor
   }
   void OnObjectMove()
   {
-    if (targ.selected < 4) return;
+    if (targ.selected < 5) return;
     EditorMenu curentWindow = EditorWindow.GetWindow<EditorMenu>();
     //	  if(targ.selected<4)return;
     //	  Debug.Log(targ.selected);

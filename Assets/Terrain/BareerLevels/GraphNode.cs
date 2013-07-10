@@ -6,23 +6,16 @@ public class GraphNode : System.IComparable<GraphNode>
 {
   [SerializeField]
   int m_i;
-
   [SerializeField]
   int m_j;
-
   [SerializeField]
   int m_level;
-
   [SerializeField]
   int m_index;
-
   [System.NonSerialized]
   List<CustomObject> m_objects;
-
   [System.NonSerialized]
   List<CustomObject> m_toEnter;
-
-
   public int Level { get { return m_level; } }
   public int Index { get { return m_index; } }
   public int X { get { return m_i; } }
@@ -73,6 +66,10 @@ public class GraphNode : System.IComparable<GraphNode>
     {
       byte curentState = (byte)((nodeGraph >> (i * 2)) % 4);
       if (curentState == states[i] || states[i] == 6) continue;
+      if(Application.isPlaying&&(curentState==0||curentState==2))
+      {
+        continue;
+      }
       byte zeroState = (byte)~(3 << (i * 2));
       byte changingState = states[i];
       nodeGraph = nodeGraph & zeroState;

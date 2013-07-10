@@ -75,9 +75,9 @@ public class EditorMenu : EditorWindow
 
     Selection.activeObject = editor.gameObject;
     editor.selected = m_selectedOption;
-    if (m_selectedOption >= 4)
+    if (m_selectedOption >= 5)
     {
-      CreateObject(editor.objectNames[m_selectedOption - 4]);
+      CreateObject(editor.objectNames[m_selectedOption - 5]);
     }
   }
   void CreateObject(string type)

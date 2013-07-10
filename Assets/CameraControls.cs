@@ -29,8 +29,8 @@ public class CameraControls:MonoBehaviour
 	    CameraSize-=0.3f*deltha;
 	    if(Camera.main.GetComponent<CameraControls>().CameraSize>300)
 	      Camera.main.GetComponent<CameraControls>().CameraSize=300;
-		if(Camera.main.GetComponent<CameraControls>().CameraSize<100)
-		  Camera.main.GetComponent<CameraControls>().CameraSize=100;
+		  if(Camera.main.GetComponent<CameraControls>().CameraSize<100)
+		    Camera.main.GetComponent<CameraControls>().CameraSize=100;
 	  }
 	}
 	void Update () 

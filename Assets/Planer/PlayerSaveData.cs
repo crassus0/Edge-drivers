@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 [Serializable]
 public static class PlayerSaveData
 {
-  public static void Save(PlanerCore planer, GraphNode node, bool onPlaySave)
+  public static void Save(PlanerCore planer, GraphNode node, int direction, bool onPlaySave)
   {
     //Debug.Log("OnSave");
     //PlayerPrefs.DeleteAll();
@@ -27,7 +27,9 @@ public static class PlayerSaveData
       PlayerPrefs.SetInt("YCoord", node.Y);
       PlayerPrefs.SetInt("IndexCoord", node.Index);
       PlayerPrefs.SetInt("LevelCoord", node.Level);
-      PlayerPrefs.SetInt("Direction", planer.Direction);
+      if(direction<0)
+        direction=planer.Direction;
+      PlayerPrefs.SetInt("Direction", direction);
     }
   }
   public static void Clear()
@@ -60,7 +62,7 @@ public static class PlayerSaveData
 
   public static bool SetPlanerData(PlanerCore planer, bool firstLoad)
   {
-
+    planer.InitInterface();
     if (!PlayerPrefs.HasKey("CurrentLevel") || !PlayerPrefs.HasKey("Concentration") || !PlayerPrefs.HasKey("MaxConcentration"))
       return false;
     if (PlayerPrefs.GetString("CurrentLevel") != Application.loadedLevelName && firstLoad)
@@ -74,16 +76,24 @@ public static class PlayerSaveData
         int index = PlayerPrefs.GetInt("IndexCoord");
         int level = PlayerPrefs.GetInt("LevelCoord");
         int direction = PlayerPrefs.GetInt("Direction");
-        planer.Node = GraphNode.GetNodeByParameters(x, y, index, level).GetNodeByDirection(direction);
-        planer.Direction = direction;
+        planer.Node = GraphNode.GetNodeByParameters(x, y, index, level);
+        planer.SetNewDirection(direction, true);
       }
       catch (System.Exception)
       {
-
+        
       }
+    }
+    else
+    {
+      DistantPortalExit enter=Creator.creator.defaultPortal;
+      planer.Node=enter.Node;
+      if(enter.Direction>=0)
+        planer.SetNewDirection(enter.Direction, true);
     }
     planer.Concentration = PlayerPrefs.GetFloat("Concentration");
     planer.MaxConcentration = PlayerPrefs.GetFloat("MaxConcentration");
+    planer.m_visualiser.transform.position=planer.transform.position;
     string[] mines = GetMines();
     ScriptableObject.Destroy(planer.MineController);
     planer.MineController = MineController.GetMineController(mines, planer);

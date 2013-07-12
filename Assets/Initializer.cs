@@ -9,7 +9,8 @@ public class Initializer : MonoBehaviour {
 	public Texture2D basicMineTexture;
 	public Texture2D webMineTexture;
   public Texture2D cancelActionTexture;
-
+  public Texture2D homePortalTexture;
+  
 	void Awake () 
 	{
 	  BasicMineActivator.minePrefab=basicMinePrefab;
@@ -18,6 +19,7 @@ public class Initializer : MonoBehaviour {
 	  WebCatapultActivator.mineTexture=webMineTexture;
 	  ButtonObject.buttonPrefab=buttonPrefab.guiTexture;
     CancelAction.objectTexture = cancelActionTexture;
+    HomePortal.homeTexture=homePortalTexture;
 	}
 
 	//TODO

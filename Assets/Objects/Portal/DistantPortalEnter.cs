@@ -3,10 +3,11 @@ using System.Collections;
 
 
 
-public class DistantPortal : CustomObject
+public class DistantPortalEnter : CustomObject
 {
   public string m_targetScene="";
   public GraphNode m_targetNode;
+  public int direction;
   public int m_targetPortalID;
   public int Status
   {
@@ -42,11 +43,13 @@ public class DistantPortal : CustomObject
       {
         if (Status == 2)
           Status = 1;
+        
         if (object.ReferenceEquals(x, Creator.Player))
         {
           //PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
-          PlayerSaveData.Save(x, m_targetNode, true);
+          PlayerSaveData.Save(x, m_targetNode, direction, true);
           Application.LoadLevel(m_targetScene);
+          Destroy(Creator.creator);
         }
         else
         {
@@ -57,22 +60,9 @@ public class DistantPortal : CustomObject
   }
   void SetActiveVisualiser(int status)
   {
-    m_visualiser.gameObject.SetActive(status>0);
+    if(m_visualiser!=null)
+      m_visualiser.gameObject.SetActive(status>0);
 
   }
-  public DistantPortalSaveData GetData()
-  {
-    DistantPortalSaveData x;
-    x.name = name;
-    x.node = Node;
-    x.portalID = this.GetInstanceID();
-    return x;
-  }
-  [System.Serializable]
-  public struct DistantPortalSaveData
-  {
-    public GraphNode node;
-    public int portalID;
-    public string name;
-  }
+
 }

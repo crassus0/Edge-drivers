@@ -37,6 +37,7 @@ public abstract class ButtonObject : ScriptableObject
   {
     if (!Application.isPlaying) return;
     Button = (GUITexture)Instantiate(buttonPrefab);
+    DontDestroyOnLoad(Button);
     Button.GetComponent<GUIButtonControls>().Init(this, Allign.Right, index);
     Button.name = "ControlButton";
   }

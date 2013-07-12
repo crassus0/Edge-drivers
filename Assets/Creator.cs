@@ -12,6 +12,7 @@ public class Creator : MonoBehaviour
   public GameObject debugGraphNodes;
   int subStep = 0;
   public int size = 1;
+  public bool isSafeHouse=false;
   public bool randomLevel = false;
   public List<BareerLevelControls> levels;
   public string levelName;
@@ -20,6 +21,10 @@ public class Creator : MonoBehaviour
   public Texture m_concentrationBackground;
   public Texture m_concentrationProgress;
   public static bool IsLoading { get; set; }
+  public GameObject playerPrefab;
+  public DistantPortalExit defaultPortal;
+  static GraphNode savedNode;
+  static int savedDirection;
   public float TurnDuration
   {
     get
@@ -38,24 +43,26 @@ public class Creator : MonoBehaviour
   static float m_ratio;
   static Creator m_creator;
   static int m_energy;
-  static List<CustomObject> m_objects;
-  static HashSet<CustomObject> m_removeObjects;
-  static HashSet<CustomObject> m_addObjects;
-  static HashSet<CustomObject> m_startObjects;
+  List<CustomObject> m_objects;
+  HashSet<CustomObject> m_removeObjects;
+  HashSet<CustomObject> m_addObjects;
+  HashSet<CustomObject> m_startObjects;
   //    static int m_step=0;
   int numObjects;
   bool m_init = false;
   static uint m_curentID = 1;
-  public PlanerCore m_player;
+  static Creator prevCreator;
+  public static PlanerCore m_player;
   int m_direction;
   float m_turnTime = 0.1f;
   float m_pauseTime;
   PhaseType m_phaseType=PhaseType.OnAction;
   static bool firstLoad=true;
+  bool isMainCreator=true;
   public static string NextLevel { get { return creator.m_nextLevel; } set { creator.m_nextLevel = value; } }
   public static Vector3 ScreenSize { get { return m_screenSize; } }
   public static Creator creator { get { return m_creator; } }
-  public static PlanerCore Player { get { return m_creator.m_player; } }
+  public static PlanerCore Player { get { return m_player; } }
   public static bool OnPause { get; set; }
   public static int Level { get { return Player.Level; } }
   //public static int Size{get{return m_staticSize;}}
@@ -71,7 +78,14 @@ public class Creator : MonoBehaviour
     m_ratio = (float)Screen.width / Screen.height;
     m_screenSize.y = ((Camera.mainCamera.orthographicSize));
     m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
-    m_player.Init();
+    if(m_player==null)
+    {
+      m_player=(Instantiate(playerPrefab) as GameObject).GetComponent<PlanerCore>();
+      DontDestroyOnLoad(m_player.gameObject);
+      m_player.Init();
+      m_player.name="Player";
+    }
+    m_player.Hidden=false;
     LoadGame();
     if (m_ratio > 1)
       m_screenSize.z = m_ratio;
@@ -91,11 +105,12 @@ public class Creator : MonoBehaviour
     foreach (UnityEngine.Object x in customObjects)
     {
       //Debug.Log(x.name);
-      if (!x.name.Contains("Prefab"))
+      if (!x.name.Contains("Prefab")&&!(x as CustomObject).Hidden)
       {
         //Debug.Log(x.name);
         m_objects.Add((x as CustomObject));
         (x as CustomObject).gameObject.SetActive(true);
+        (x as CustomObject).gameObject.transform.parent=transform;
         m_startObjects.Add(x as CustomObject);
       }
     }
@@ -140,7 +155,7 @@ public class Creator : MonoBehaviour
           m_objects.Add(x);
         x.gameObject.SetActive(x.Level == m_energy);
         m_startObjects.Add(x);
-
+        x.transform.parent=transform;
       }
     m_addObjects.Clear();
     foreach (CustomObject x in m_startObjects)
@@ -161,6 +176,11 @@ public class Creator : MonoBehaviour
   void Update()
   {
     if (!m_init) return;
+    if(!isMainCreator)
+    {
+
+      return;
+    }
     UpdateObjectList();
     GraphNode.InteractAll();
     if (OnPause) return;
@@ -211,27 +231,68 @@ public class Creator : MonoBehaviour
   public static void AddObject(CustomObject newObject)
   {
     //Debug.Log(newObject.Node);
-    if (m_addObjects == null)
-      m_addObjects = new HashSet<CustomObject>();
-    if (m_startObjects == null)
-      m_startObjects = new HashSet<CustomObject>();
-    m_addObjects.Add(newObject);
+    if (creator.m_addObjects == null)
+      creator.m_addObjects = new HashSet<CustomObject>();
+    if (creator.m_startObjects == null)
+      creator.m_startObjects = new HashSet<CustomObject>();
+    creator.m_addObjects.Add(newObject);
     // if(m_init)
     // 
   }
   public static void RemoveObject(CustomObject obj)
   {
-    if (m_removeObjects == null)
-      m_removeObjects = new HashSet<CustomObject>();
-    m_removeObjects.Add(obj);
+    if (creator.m_removeObjects == null)
+      creator.m_removeObjects = new HashSet<CustomObject>();
+    creator.m_removeObjects.Add(obj);
   }
-  public Creator()
+
+  public void LoadHome()
   {
-    m_creator = this;
+    if(isSafeHouse)return;
+    DontDestroyOnLoad(gameObject);
+    isMainCreator=false;
+    if(prevCreator!=null)
+      Destroy(prevCreator);
+    prevCreator=this;
+    gameObject.SetActive(false);
+    Application.LoadLevel("SafeHouse");
+    savedNode=m_player.Node;
+    savedDirection=m_player.Direction;
+    foreach(CustomObject x in m_objects)
+      x.Hidden=true;
+    try
+    {
+      m_addObjects.Clear();
+      m_removeObjects.Clear();
+    }
+    catch (System.NullReferenceException)
+    {
+    }
+  }
+  public void LoadPrev()
+  {
+    if(prevCreator==null)return;
+    prevCreator.isMainCreator=true;
+    m_creator=prevCreator;
+    prevCreator.gameObject.SetActive(true);
+    m_energy = -1;
+    prevCreator.SwitchLevel();
+    
+    m_player.Node=savedNode;
+    m_player.SetNewDirection(savedDirection, true);
+    m_player.transform.parent=prevCreator.transform;
+    //GetComponent<InputControls>().Start();
+    foreach(CustomObject x in prevCreator.m_objects)
+    {
+      x.Hidden=false;
+      if(x.Activate!=null)
+        x.Activate();
+    }
+    Destroy(gameObject);
   }
   void SaveGame()
   {
-    PlayerSaveData.Save(m_player, null, false);
+    PlayerSaveData.Save(m_player, null,-1, false);
   }
   bool LoadGame()
   {
@@ -247,8 +308,12 @@ public class Creator : MonoBehaviour
   }
   void OnDestroy()
   {
+    if(m_player!=null)
+      m_player.transform.parent=null;
     PreviousLevel = Application.loadedLevelName;
     GraphNode.ClearAll();
+    if(prevCreator!=null&&!prevCreator.isMainCreator)
+      Destroy( prevCreator.gameObject);
     try
     {
       m_addObjects.Clear();
@@ -268,6 +333,10 @@ public class Creator : MonoBehaviour
   {
     DrawConcentration();
   }
+  public Creator()
+  {
+    m_creator=this;
+  }
   void DrawConcentration()
   {
 
@@ -276,7 +345,6 @@ public class Creator : MonoBehaviour
 
     Rect porgressCoords = new Rect(0, 0, ((float)screenWidth)*(m_player.Concentration/m_player.MaxConcentration), Screen.height * 0.05f);
     Rect texCoords = new Rect(0,0,  m_player.Concentration/m_player.MaxConcentration,1 );
-    //Debug.Log(porgressCoords);
     GUI.DrawTexture(coords, m_concentrationBackground);
     GUI.DrawTextureWithTexCoords(porgressCoords, m_concentrationProgress, texCoords);//, progressTexCoords);
   }

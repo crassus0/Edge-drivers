@@ -69,7 +69,7 @@ public class EditorAdditionalGUI : MonoBehaviour
     //	  Debug.Log(ActiveLevel);
     SetFlags();
 
-    if (!Application.isEditor)
+    if (Application.isPlaying)
     {
 
       Destroy(this);

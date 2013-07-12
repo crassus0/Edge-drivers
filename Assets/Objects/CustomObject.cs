@@ -9,7 +9,9 @@ public abstract class CustomObject : MonoBehaviour
   
   public GameObject m_visualiser;
   public ObjectType Type { get; set; }
+  public bool Hidden{get; set;}
   public abstract void OnStart();
+  
   public virtual int GetStepCount()
   {
     return 4;
@@ -46,7 +48,7 @@ public abstract class CustomObject : MonoBehaviour
       transform.position = newPosition;
     }
   }
-  [HideInInspector]
+  //[HideInInspector]
   [SerializeField]
   GraphNode node=new GraphNode();
 

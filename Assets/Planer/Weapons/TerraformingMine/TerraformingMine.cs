@@ -25,7 +25,7 @@ public class TerraformingMine : CustomObject
   void OnActivate()
   {
     m_prevState = Node.GetNodeGraph();
-    Node.ChangeState(states, Creator.creator.levels);
+     Node.ChangeState(states, Creator.creator.levels);
   }
   void OnUpdated()
   {

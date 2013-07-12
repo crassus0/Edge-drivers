@@ -8,7 +8,6 @@ public static class SceneDataSaver
 {
   public static void SaveSceneData()
   {
-    //Debug.Log("Save");
     string name = EditorApplication.currentScene;
     string path = name;
    // Debug.Log(path);
@@ -18,24 +17,24 @@ public static class SceneDataSaver
 
     FileStream fout = File.Open(path, FileMode.Create);
     BinaryFormatter bFormatter = new BinaryFormatter();
-    List<DistantPortal.DistantPortalSaveData> data = new List<DistantPortal.DistantPortalSaveData>();
-    foreach (Object x in Resources.FindObjectsOfTypeAll(typeof(DistantPortal)))
+    List<DistantPortalExit.DistantPortalSaveData> data = new List<DistantPortalExit.DistantPortalSaveData>();
+    foreach (Object x in Resources.FindObjectsOfTypeAll(typeof(DistantPortalExit)))
     {
-      DistantPortal portal = x as DistantPortal;
+      DistantPortalExit portal = x as DistantPortalExit;
       if (!portal.name.Contains("Prefab"))
         data.Add(portal.GetData());
     }
     bFormatter.Serialize(fout, data);
     fout.Close();
   }
-  public static List<DistantPortal.DistantPortalSaveData> LoadSceneData(string sceneName)
+  public static List<DistantPortalExit.DistantPortalSaveData> LoadSceneData(string sceneName)
   {
 
     string path = "Assets/Levels/" + sceneName + "/" + sceneName + ".pdt";
     FileStream fin = File.Open(path, FileMode.Open);
     BinaryFormatter bFormatter = new BinaryFormatter();
-    List<DistantPortal.DistantPortalSaveData> data;
-    data = bFormatter.Deserialize(fin) as List<DistantPortal.DistantPortalSaveData>;
+    List<DistantPortalExit.DistantPortalSaveData> data;
+    data = bFormatter.Deserialize(fin) as List<DistantPortalExit.DistantPortalSaveData>;
     fin.Close();
     return data;
   }

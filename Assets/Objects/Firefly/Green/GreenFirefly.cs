@@ -26,7 +26,7 @@ public class GreenFirefly : CustomObject, IAutoMove
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
-    DistantPortal x = obj as DistantPortal;
+    DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null)
     {
       x.Status = 1;

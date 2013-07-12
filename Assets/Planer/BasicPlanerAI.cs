@@ -44,7 +44,7 @@ public class BasicPlanerAI : ScriptableObject
     if (!AStarSearch())
     {
       m_target = null;
-
+      Debug.Log("fail");
     }
 
     //Debug.Log(m_target);
@@ -85,7 +85,8 @@ public class BasicPlanerAI : ScriptableObject
     try
     {
       int newDir = route.Dequeue();
-
+  //    if(Application.loadedLevelName=="GlobalMap")
+//        Debug.Log(newDir);
       float newWeight = weights.Dequeue();
       if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(m_planer.EntityValue) - 0.5f)
         AStarSearch();

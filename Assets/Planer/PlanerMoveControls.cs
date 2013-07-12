@@ -90,12 +90,19 @@ public class PlanerMoveControls : ScriptableObject
     }
     return dirs;
   }
-  public void SetNewDirection(int newDirection)
+  public void SetNewDirection(int newDirection, bool forced)
   {
-    int angle = newDirection - m_direction;
-    if (angle < 0)
-      angle += 6;
-    Rotate(angle);
+    if(!forced)
+    {
+      int angle = newDirection - m_direction;
+      if (angle < 0)
+        angle += 6;
+      Rotate(angle);
+    }
+    else
+    {
+      Direction=newDirection;
+    }
   }
   public void Rotate(int angle)
   {

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-public class GlobalMap : DistantPortal
+public class GlobalMap : DistantPortalEnter
 {
   public override void OnStart()
   {

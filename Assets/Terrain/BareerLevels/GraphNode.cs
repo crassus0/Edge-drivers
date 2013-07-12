@@ -23,7 +23,17 @@ public class GraphNode : System.IComparable<GraphNode>
   static List<GraphNode> s_usedNodes;
   static HashSet<CustomObject> s_interact;
   public static readonly float graphDistance = 32 / Mathf.Sqrt(3);
-  int nodeGraph;
+  int nodeGraph
+  {
+    get{return DebugNodeGraph;}
+    set
+    {
+      DebugNodeGraph=value;
+      //if(this==GetNodeByParameters(2,0,1,0))
+        //Debug.Log(DebugNodeGraph);
+    }
+  }
+  int DebugNodeGraph;
   int basicNodeGraph;
   GraphNode[] adjacent = new GraphNode[3];
   int triangleRow;
@@ -272,6 +282,7 @@ public class GraphNode : System.IComparable<GraphNode>
     int bareers = nodeGraph;
     if (m_index == 0)
     {
+      
       if ((bareers % 4) / 2 == 0)
       {
         directions[1] = true;
@@ -374,7 +385,8 @@ public class GraphNode : System.IComparable<GraphNode>
       node += adj[0].GetNodeGraph()[0];
       node += (adj[1].GetNodeGraph()[2]) << 2;
       node += (adj[2].GetNodeGraph()[1]) << 4;
-      basicNodeGraph = nodeGraph;
+      basicNodeGraph = node;
+      node=0;
       node += adj[0].GetNodeGraph(true)[0];
       node += (adj[1].GetNodeGraph(true)[2]) << 2;
       node += (adj[2].GetNodeGraph(true)[1]) << 4;

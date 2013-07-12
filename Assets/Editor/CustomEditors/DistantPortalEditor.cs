@@ -3,20 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
-[CustomEditor(typeof(DistantPortal))]
+[CustomEditor(typeof(DistantPortalEnter))]
 public class DistantPortalEditor : Editor
 {
   string[] m_portalNames;
   int m_portalIndex=-1;
   int[] m_indexes;
   int m_index=-1;
-  DistantPortal targ;
-  List<DistantPortal.DistantPortalSaveData> m_portalList;
+  DistantPortalEnter targ;
+  List<DistantPortalExit.DistantPortalSaveData> m_portalList;
   List<string> m_levelNames;
   int[] m_sceneIndexes;
   void OnEnable()
   {
-    targ = target as DistantPortal;
+    targ = target as DistantPortalEnter;
     SceneDataSaver.SaveSceneData();
     UpdateSceneList();
     if (m_index >= 0)

@@ -7,6 +7,13 @@ public class Portal : CustomObject
 {
   public Portal PairPortal;
   bool m_awaken;
+  public int LeavingDirection
+  {
+    get{return m_direction;}
+    set{m_direction=value;}
+  }
+  [SerializeField]
+  int m_direction=-1;
   public override void OnStart()
   {
     if (m_awaken) return;
@@ -17,7 +24,6 @@ public class Portal : CustomObject
   
   void OnInteract(CustomObject obj, InteractType type)
   {
-    //Debug.Log("Interact");
     if (PairPortal == null) return;
     if (type == InteractType.Stay)
     {
@@ -33,7 +39,7 @@ public class Portal : CustomObject
   {
     //Debug.Log(PairPortal);
     PlanerCore x = planer as PlanerCore;
-    x.OnEnterPortal(PairPortal.GetNode());
+    x.OnEnterPortal(PairPortal.GetNode(), PairPortal.LeavingDirection);
     x.RemoveUpdateFunc(OnPlanerEnter);
     x.EnteredPortal = true;
   }

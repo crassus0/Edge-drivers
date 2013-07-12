@@ -22,6 +22,7 @@ public class PlanerCore : CustomObject, IPlanerLike
   MineController m_mineController;
   Action<IPlanerLike> m_updateFunc;
   CancelAction m_cancelAction;
+  HomePortal m_homePortal;
   bool m_renewedUpdater = false;
   public bool EnteredPortal;// { get; set; }
   public bool HasTarget
@@ -199,10 +200,16 @@ public class PlanerCore : CustomObject, IPlanerLike
     //m_visualiser.Init(this);
     //	  GetComponent<Catcher>().Init(this);
     m_initislized = true;
-    m_cancelAction = ScriptableObject.CreateInstance<CancelAction>();
-    m_cancelAction.Init(this, 0);
+   
     //Debug.Log(m_initislized);
 
+  }
+  public void InitInterface()
+  {
+    m_cancelAction = ScriptableObject.CreateInstance<CancelAction>();
+    m_cancelAction.Init(this, 0);
+    m_homePortal=ScriptableObject.CreateInstance<HomePortal>();
+    m_homePortal.Init(this,1);
   }
   public void SetTarget(GraphNode x, int angle)
   {
@@ -240,9 +247,9 @@ public class PlanerCore : CustomObject, IPlanerLike
   {
     m_moveControls.Rotate(angle);
   }
-  public void SetNewDirection(int newDirection)
+  public void SetNewDirection(int newDirection, bool forced=false)
   {
-    m_moveControls.SetNewDirection(newDirection);
+    m_moveControls.SetNewDirection(newDirection, forced);
   }
   protected new void OnDrawGizmos()
   {
@@ -285,9 +292,11 @@ public class PlanerCore : CustomObject, IPlanerLike
       }
     }
   }
-  public void OnEnterPortal(GraphNode node)
+  public void OnEnterPortal(GraphNode node, int direction)
   {
     Node = node;
+    if(direction>=0)
+      Direction=direction;
     m_basicAI.ChangeLevel(node.Level);
   }
   public void OnWeaponsChanged()
@@ -303,7 +312,7 @@ public class PlanerCore : CustomObject, IPlanerLike
     if (entity.Node ==  m_basicAI.Target.node) return 0;
     if (entity.GetType() == typeof(BasicMine)) return 0.1f;
     if (entity.GetType() == typeof(Portal)) return BasicPlanerAI.MaxWeight;
-    if (entity.GetType() == typeof(DistantPortal)) return BasicPlanerAI.MaxWeight;
+    if (entity.GetType() == typeof(DistantPortalEnter)) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(WeaponPrototype)) return BasicPlanerAI.MaxWeight;
     return 0;
   }

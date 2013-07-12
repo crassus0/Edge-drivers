@@ -12,7 +12,7 @@ public class InputControls : MonoBehaviour
     
   bool m_hasTarget = false;
   float screenSensivity = 0.05f;
-  void Start()
+  public void Start()
   {
     m_gameArrows = GameObject.Find("GameArrows").GetComponent<GameArrowsControls>();
   }

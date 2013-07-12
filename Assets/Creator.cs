@@ -260,14 +260,7 @@ public class Creator : MonoBehaviour
     savedDirection=m_player.Direction;
     foreach(CustomObject x in m_objects)
       x.Hidden=true;
-    try
-    {
-      m_addObjects.Clear();
-      m_removeObjects.Clear();
-    }
-    catch (System.NullReferenceException)
-    {
-    }
+    
   }
   public void LoadPrev()
   {

@@ -5,7 +5,7 @@ public class ObjectSpawner : CustomObject
 {
   public GameObject prefab;
   protected int step=0;
-  public int cooldown;
+  public int cooldown=1;
   public int Direction 
   {
     get { return m_direction;}
@@ -44,5 +44,14 @@ public class ObjectSpawner : CustomObject
   {
     base.OnDrawGizmos();
     Gizmos.DrawIcon(transform.position, "Spawner.png");
+    if (prefab != null&& (prefab.GetComponent<CustomObject>() as IAutoMove)!=null)
+    {
+      
+      Gizmos.color=Color.yellow;
+      float ang = (1f/3f)*Mathf.PI* m_direction;  
+      Vector3 dest=Vector3.right*Mathf.Cos (ang)+Vector3.forward*Mathf.Sin(ang);
+      //Debug.Log(dest);
+      Gizmos.DrawRay(transform.position, dest*20);
+    }
   }
 }

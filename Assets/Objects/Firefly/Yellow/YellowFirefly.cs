@@ -28,7 +28,6 @@ public class YellowFirefly : CustomObject, IAutoMove
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
-
     if (type == InteractType.Stay) return;
     DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null)

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 using System;
+[ExecuteInEditMode]
 [Serializable]
 public class Portal : CustomObject
 {
@@ -43,5 +44,18 @@ public class Portal : CustomObject
     x.RemoveUpdateFunc(OnPlanerEnter);
     x.EnteredPortal = true;
   }
-
+  protected new void OnDrawGizmos()
+  {
+    base.OnDrawGizmos();
+    
+    if(m_direction>=0)
+    {
+      
+      Gizmos.color=Color.yellow;
+      float ang = (1f/3f)*Mathf.PI* m_direction;  
+      Vector3 dest=Vector3.right*Mathf.Cos (ang)+Vector3.forward*Mathf.Sin(ang);
+      //Debug.Log(dest);
+      Gizmos.DrawRay(transform.position, dest*16);
+    }
+  }
 }

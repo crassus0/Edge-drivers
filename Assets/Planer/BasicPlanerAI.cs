@@ -44,7 +44,7 @@ public class BasicPlanerAI : ScriptableObject
     if (!AStarSearch())
     {
       m_target = null;
-      Debug.Log("fail");
+//      Debug.Log("fail");
     }
 
     //Debug.Log(m_target);

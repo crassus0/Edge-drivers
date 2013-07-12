@@ -137,6 +137,17 @@ public class CreatorEditor : Editor
       if (GUILayout.Button("DeleteLevel") && EditorUtility.DisplayDialog("Delete level", "Are you sure?", "Yes", "No"))
       {
         BareerLevelControls x = targ.levels[(targ.ActiveLevel)];
+        foreach(CustomObject z in targ.Objects)
+        {
+          if(z.Level>targ.ActiveLevel)
+          {
+            z.Level--;
+          }
+          else if(z.Level==targ.ActiveLevel)
+          {
+            DestroyImmediate(z.gameObject);
+          }
+        }
         targ.levels.Remove(x);
         DestroyImmediate(x.gameObject);
         targ.ActiveLevel = 0;

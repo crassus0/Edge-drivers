@@ -16,6 +16,8 @@ public class GraphNode : System.IComparable<GraphNode>
   List<CustomObject> m_objects;
   [System.NonSerialized]
   List<CustomObject> m_toEnter;
+  [System.NonSerialized]
+  List<CustomObject> m_toLeave;
   public int Level { get { return m_level; } }
   public int Index { get { return m_index; } }
   public int X { get { return m_i; } }
@@ -47,7 +49,7 @@ public class GraphNode : System.IComparable<GraphNode>
   public bool IsOnField()
   {
 
-    return (m_i >= 0 && m_i < triangleRow && m_j > 0 && m_j < triangleRow);
+    return (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow);
   }
   public void ChangeState(byte[] states, List<BareerLevelControls> levels)
   {
@@ -147,13 +149,21 @@ public class GraphNode : System.IComparable<GraphNode>
           break;
       }
     }
+    foreach(GraphNode x in s_usedNodes)
+    {
+      foreach(CustomObject y in x.m_toLeave)
+      {
+        x.m_objects.Remove(y);
+      }
+      x.m_toLeave.Clear();
+    }
     s_interact.Clear();
   }
   public void Leave(CustomObject leavingObject)
   {
 
     if (m_objects != null)
-      m_objects.Remove(leavingObject);
+      m_toLeave.Add(leavingObject);
   }
   public bool HasObjectOfType(System.Type type)
   {
@@ -409,6 +419,7 @@ public class GraphNode : System.IComparable<GraphNode>
     {
       newNode = node;
       newNode.m_objects = new List<CustomObject>();
+      newNode.m_toLeave = new List<CustomObject>();
     }
     else
     {

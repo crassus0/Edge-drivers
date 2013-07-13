@@ -9,7 +9,7 @@ public class PlanerMoveControls : ScriptableObject
   int m_direction;
   int m_maxRotationAngle;
   int m_rotationAngle = 0;
-
+  public bool isHit=false;
 
   public int Agility
   {
@@ -52,6 +52,7 @@ public class PlanerMoveControls : ScriptableObject
 
   void Move()
   {
+    isHit=false;
     m_planer.prevNode = m_planer.GetNode();
     m_direction %= 6;
     int rotatedAngle = m_rotationAngle;
@@ -66,6 +67,7 @@ public class PlanerMoveControls : ScriptableObject
     }
     else
     {
+      isHit=true;
       int newDirection = m_planer.GetNode().GetHitDirection(m_direction);
       int changeDirection = (newDirection + 3) % 6 - m_direction;
       if (changeDirection < -1) changeDirection += 6;

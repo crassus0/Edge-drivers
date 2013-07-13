@@ -35,7 +35,7 @@ public class InputControls : MonoBehaviour
 
   void GetMouseInput()
   {
-
+    if(Creator.Player.State==1)return;
     if (Input.touchCount >= 2)
     {
       if(m_gameArrows.IsActive)

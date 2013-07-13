@@ -4,7 +4,7 @@ using System.Collections;
 public class CustomObjectVisualiser : MonoBehaviour 
 {
 
-  public void SetSpeed(float speed)
+  public virtual void SetSpeed(float speed)
   {
     foreach (AnimationState x in animation)
     {

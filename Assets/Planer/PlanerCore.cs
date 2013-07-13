@@ -23,6 +23,7 @@ public class PlanerCore : CustomObject, IPlanerLike
   Action<IPlanerLike> m_updateFunc;
   CancelAction m_cancelAction;
   HomePortal m_homePortal;
+  public int State{get;set;}
   bool m_renewedUpdater = false;
   public bool EnteredPortal;// { get; set; }
   public bool HasTarget
@@ -133,6 +134,12 @@ public class PlanerCore : CustomObject, IPlanerLike
     float t1=Mathf.Pow(MaxConcentrationIncrement, MaxConcentration)+t;
     MaxConcentration = Mathf.Log(t1) / Mathf.Log(MaxConcentrationIncrement);
   }
+  public override int GetStepCount ()
+  {
+    if(State==1)
+      return base.GetStepCount ()/2;
+    return  base.GetStepCount ();
+  }
   public void AddUpdateFunc(Action<IPlanerLike> newUpdateFunc)
   {
     //Debug.Log("add");
@@ -193,8 +200,7 @@ public class PlanerCore : CustomObject, IPlanerLike
     m_moveControls.Initialize(this, moveParameters);
     m_basicAI = ScriptableObject.CreateInstance<BasicPlanerAI>();
     m_basicAI.Init(this);
-    m_mineController = ScriptableObject.CreateInstance<MineController>();
-    m_mineController.Init(this);
+    
     //Debug.Log(m_initislized);
     (m_visualiser.GetComponent<PlanerVisualControls>()).Init(this);
     //m_visualiser.Init(this);
@@ -210,6 +216,14 @@ public class PlanerCore : CustomObject, IPlanerLike
     m_cancelAction.Init(this, 0);
     m_homePortal=ScriptableObject.CreateInstance<HomePortal>();
     m_homePortal.Init(this,1);
+    m_mineController = ScriptableObject.CreateInstance<MineController>();
+    m_mineController.Init(this);
+  }
+  public void CutInterface()
+  {
+    Destroy( m_cancelAction);
+    Destroy(m_homePortal);
+    Destroy(m_mineController);
   }
   public void SetTarget(GraphNode x, int angle)
   {

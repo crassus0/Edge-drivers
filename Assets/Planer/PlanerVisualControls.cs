@@ -9,12 +9,16 @@ public class PlanerVisualControls : CustomObjectVisualiser
   public GameObject body;
   public Texture2D normalHaloTexture;
   public Texture2D hitHaloTexture;
-  public void Init(CustomObject parent)
+  public void Init(PlanerCore parent)
   {
-    m_parentPlaner = parent as PlanerCore;
+    m_parentPlaner = parent;
+    SetSpeed(1);
+  }
+  public override void SetSpeed(float speed)
+  {
     foreach (AnimationState x in animation)
     {
-      x.speed = 0.5f;
+      x.speed = 0.5f*speed;
     }
   }
   public void Move(int rotation)

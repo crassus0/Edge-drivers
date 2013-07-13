@@ -47,6 +47,7 @@ public class EditorMenu : EditorWindow
   // Update is called once per frame
   void OnGUI()
   {
+    //Debug.Log(System.Math.Sign(-1));
     if (Application.isPlaying)
     {
       return;

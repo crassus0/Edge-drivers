@@ -24,6 +24,7 @@ public class DistantPortalEnter : CustomObject
   public int defaultStatus = -1;
   public override void OnStart()
   {
+    m_visualiser.renderer.material = new Material(m_visualiser.renderer.material);
     if (Status < defaultStatus)
       Status = defaultStatus;
     //Status = PlayerSaveData.GetSceneStatus(m_targetScene);
@@ -39,30 +40,43 @@ public class DistantPortalEnter : CustomObject
     {
 
       PlanerCore x = obj as PlanerCore;
-      if (x != null)
+      if (x != null&&x.State==0)
       {
-        if (Status == 2)
-          Status = 1;
-        
-        if (object.ReferenceEquals(x, Creator.Player))
-        {
-          //PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
-          PlayerSaveData.Save(x, m_targetNode, direction, true);
-          Application.LoadLevel(m_targetScene);
-          Destroy(Creator.creator);
-        }
-        else
-        {
-          Destroy(x.gameObject);
-        }
+          if (Status == 2)
+            Status = 1;
+
+          if (object.ReferenceEquals(x, Creator.Player))
+          {
+            //PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
+            PlayerSaveData.Save(x, m_targetNode, direction, true);
+            Application.LoadLevel(m_targetScene);
+            Destroy(Creator.creator);
+          }
+          else
+          {
+            Destroy(x.gameObject);
+          }
       }
     }
   }
   void SetActiveVisualiser(int status)
   {
-    if(m_visualiser!=null)
-      m_visualiser.gameObject.SetActive(status>0);
-
+    if (m_visualiser != null)
+    {
+      m_visualiser.gameObject.SetActive(status > 0);
+      if (status == 1)
+      {
+        m_visualiser.renderer.material.color = new Color(1, 1, 1, 0.5f);
+      }
+      if (status == 2)
+      {
+        m_visualiser.renderer.material.color = Color.red;
+      }
+      if (status == 3)
+      {
+        m_visualiser.renderer.material.color = Color.white;
+      }
+    }
   }
 
 }

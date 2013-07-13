@@ -25,9 +25,6 @@ public class GUIButtonControls : MonoBehaviour {
 	{
 	  m_parent=parent;
 	}
-  void OnGUI()
-  {
 
-  }
 
 }

@@ -239,6 +239,8 @@ public class PlanerCore : CustomObject, IPlanerLike
   }
   bool HasAction()
   {
+    //Debug.Log(State);
+    if (State == 1) return true;
     return m_basicAI.HasTarget || m_hasTarget;
   }
   void OnUpdated()
@@ -294,23 +296,26 @@ public class PlanerCore : CustomObject, IPlanerLike
     //	  SetFlags();
     Init();
   }
+  public void DefaultInteract()
+  {
+    Interact = OnInteract;
+  }
   void OnInteract(CustomObject obj, InteractType type)
   {
-    if (type == InteractType.Stay)
-    {
+    
       WarmingControls warm = obj as WarmingControls;
-      if (warm != null)
+      if (warm != null&&!warm.isEaten)
       {
         AddConcentration(warm.m_warmingConcentration);
-        Destroy(warm.gameObject);
+        warm.isEaten = true;
       }
-    }
+    
   }
   public void OnEnterPortal(GraphNode node, int direction)
   {
     Node = node;
-    if(direction>=0)
-      Direction=direction;
+    if (direction >= 0)
+      SetNewDirection(direction, true);
     m_basicAI.ChangeLevel(node.Level);
   }
   public void OnWeaponsChanged()

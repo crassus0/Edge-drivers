@@ -29,7 +29,7 @@ public class Portal : CustomObject
     if (type == InteractType.Stay)
     {
       PlanerCore x = obj as PlanerCore;
-      if (x != null&&!x.EnteredPortal)
+      if (x != null&&!x.EnteredPortal&&!(x.State==1))
       {
         x.AddUpdateFunc(OnPlanerEnter);
         x.HasTarget = true;

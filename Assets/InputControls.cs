@@ -27,15 +27,26 @@ public class InputControls : MonoBehaviour
     GetMouseInput();
     GetNewDirection();
     GetScroll();
-
+    #if UNITY_EDITOR||UNITY_STANDALONE
+    GetKey();
+    #endif
     //	if(Mathf.Abs(x)>0.0001)
     //		  controledPlaner.
 
   }
-
+#if UNITY_EDITOR||UNITY_STANDALONE
+  void GetKey()
+  {
+    
+    if (Input.GetKey(KeyCode.RightArrow))
+      ArcadeControlButton.KeyPressed(1);
+    if (Input.GetKey(KeyCode.LeftArrow))
+      ArcadeControlButton.KeyPressed(-1);
+  }
+#endif
   void GetMouseInput()
   {
-    if(Creator.Player.State==1)return;
+    
     if (Input.touchCount >= 2)
     {
       if(m_gameArrows.IsActive)
@@ -44,6 +55,7 @@ public class InputControls : MonoBehaviour
     }
     if (Input.GetMouseButtonDown(0) && CheckClick())
     {
+      if (Creator.Player.State == 1) return;
       m_targetPosition = Camera.mainCamera.ScreenToWorldPoint(Input.mousePosition);
       m_targetPosition.y = 0;
       GraphNode targetNode = GraphNode.GetNodeByCoords(m_targetPosition, Creator.Level);
@@ -57,7 +69,7 @@ public class InputControls : MonoBehaviour
     
     if (Input.GetMouseButtonUp(0) && m_hasTarget)
     {
-
+      if (Creator.Player.State == 1) return;
       GraphNode x = GraphNode.GetNodeByCoords(m_targetPosition, (int)Creator.Level);
       m_hasTarget = false;
       Creator.Player.SetTarget(x, GetTargetAngle());
@@ -96,8 +108,8 @@ public class InputControls : MonoBehaviour
   void GetScroll()
   {
     float scaler=0;
-    #if UNITY_EDITOR||UNITY_STANDALONE_WIN
-      scaler = Input.GetAxis("MouseScrollWheel");
+    #if UNITY_EDITOR||UNITY_STANDALONE
+    scaler = Input.GetAxis("MouseScrollWheel");
     #endif
 
 #if UNITY_ANDROID

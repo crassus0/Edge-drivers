@@ -7,6 +7,7 @@ public class WarmingControls : CustomObject, IPlanerLike
   public BasicPlanerAI m_ai { get; set; }
   System.Action<IPlanerLike> m_updateFunc;
   bool m_renewedUpdater = false;
+  public bool isEaten { get; set; }
   public int Direction
   {
     get { return m_direction; }
@@ -74,6 +75,8 @@ public class WarmingControls : CustomObject, IPlanerLike
   public void OnMove()
   {
     //Debug.Log("move");
+    if (isEaten)
+      Destroy(gameObject);
     m_ai.OnUpdate();
     int index = (Node.Index + Direction % 2) % 2;
     while (!Node.GetDirections()[m_direction])

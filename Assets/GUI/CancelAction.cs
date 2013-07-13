@@ -24,7 +24,7 @@ public class CancelAction : ButtonObject
   }
   public override string GetName()
   {
-    throw new System.NotImplementedException();
+    return "CancelAction";
   }
   public override void Activate()
   {

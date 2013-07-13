@@ -1,15 +1,19 @@
 using UnityEngine;
 using System.Collections;
 
-public class RedFireflySpawner : MonoBehaviour {
+public class RedFireflySpawner : CustomObject
+{
+  public override void OnStart()
+  {
+    Interact = OnInteract;
+  }
+  void OnInteract(CustomObject obj, InteractType type)
+  {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    if (obj as PlanerCore != null&&(obj as PlanerCore).State==0)
+    {
+      RedFirefly x= ScriptableObject.CreateInstance<RedFirefly>();
+      x.Activate(obj as PlanerCore);
+    }
+  }
 }

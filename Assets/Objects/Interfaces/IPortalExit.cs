@@ -1,9 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public interface IAutoMove 
+public interface IPortalExit
 {
+  int Direction { get; }
   GraphNode GetNode();
-  int Direction { get; set; }
- 
 }

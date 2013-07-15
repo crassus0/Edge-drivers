@@ -18,12 +18,21 @@ public class GraphNode : System.IComparable<GraphNode>
   List<CustomObject> m_toEnter;
   [System.NonSerialized]
   List<CustomObject> m_toLeave;
+  public NodeTag Tag
+  {
+    get { return m_tag; }
+    set { m_tag = value; }
+  }
+  [System.NonSerialized]
+  NodeTag m_tag=NodeTag.None;
+  public int TagModifier { get; set; }
   public int Level { get { return m_level; } }
   public int Index { get { return m_index; } }
   public int X { get { return m_i; } }
   public int Y { get { return m_j; } }
   static List<GraphNode> s_usedNodes;
   static HashSet<CustomObject> s_interact;
+  
   public static readonly float graphDistance = 32 / Mathf.Sqrt(3);
   int nodeGraph
   {
@@ -36,7 +45,7 @@ public class GraphNode : System.IComparable<GraphNode>
     }
   }
   int DebugNodeGraph;
-  int basicNodeGraph;
+  int basicNodeGraph=-1;
   GraphNode[] adjacent = new GraphNode[3];
   int triangleRow;
   [System.NonSerialized]
@@ -51,7 +60,7 @@ public class GraphNode : System.IComparable<GraphNode>
 
     return (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow);
   }
-  public void ChangeState(byte[] states, List<BareerLevelControls> levels)
+  public void ChangeState(byte[] states, List<BareerLevelControls> levels, bool useAbsolute=false)
   {
     //Debug.Log(Application.loadedLevelName);
     //Application.loa
@@ -62,13 +71,15 @@ public class GraphNode : System.IComparable<GraphNode>
       byte[] x = { 6, 6, 6 };
       //Debug.Log(states.Length);
       x[0] = states[0];
-      adj[0].ChangeState(x, levels);
+      adj[0].ChangeState(x, levels, useAbsolute);
       x[0] = 6;
       x[1] = states[2];
-      adj[2].ChangeState(x, levels);
+      adj[2].ChangeState(x, levels, useAbsolute);
       x[1] = 6;
       x[2] = states[1];
-      adj[1].ChangeState(x, levels);
+      adj[1].ChangeState(x, levels, useAbsolute);
+      SetNodeGraph();
+      
       return;
     }
 
@@ -78,7 +89,7 @@ public class GraphNode : System.IComparable<GraphNode>
     {
       byte curentState = (byte)((nodeGraph >> (i * 2)) % 4);
       if (curentState == states[i] || states[i] == 6) continue;
-      if(Application.isPlaying&&(curentState==0||curentState==2))
+      if((curentState==0||curentState==2)&&!useAbsolute)
       {
         continue;
       }
@@ -92,14 +103,19 @@ public class GraphNode : System.IComparable<GraphNode>
     if (nodeGraph > 63)
       Debug.LogError(nodeGraph);
   }
+
   public void Reactivate()
   {
+
     if (m_objects != null)
+    {
       foreach (CustomObject x in m_objects)
       {
+
         if (x.Activate != null)
           x.Activate();
       }
+    }
   }
   public GraphNode()
   {
@@ -127,13 +143,23 @@ public class GraphNode : System.IComparable<GraphNode>
       savedNode = s_usedNodes[index];
 
     }
-    savedNode.m_objects.Add(enteringObject);
-    s_interact.Add(enteringObject);
+    savedNode.m_toEnter.Add(enteringObject);
+    
     if (!setGraph)
       savedNode.SetNodeGraph();
   }
   public static void InteractAll()
   {
+    foreach (GraphNode x in s_usedNodes)
+    {
+      foreach (CustomObject y in x.m_toEnter)
+      {
+        
+        s_interact.Add(y);
+        x.m_objects.Add(y);
+      }
+      x.m_toEnter.Clear();
+    }
     foreach (CustomObject enteringObject in s_interact)
     {
       GraphNode savedNode = enteringObject.GetNode();
@@ -145,17 +171,19 @@ public class GraphNode : System.IComparable<GraphNode>
           enteringObject.Interact(x, InteractType.Enter);
         if (x.Interact != null)
           x.Interact(enteringObject, InteractType.Stay);
-        if (enteringObject.GetNode() != savedNode)
+        if (enteringObject.GetNode() != savedNode )
           break;
       }
     }
     foreach(GraphNode x in s_usedNodes)
     {
+
       foreach(CustomObject y in x.m_toLeave)
       {
         x.m_objects.Remove(y);
       }
       x.m_toLeave.Clear();
+
     }
     s_interact.Clear();
   }
@@ -272,6 +300,10 @@ public class GraphNode : System.IComparable<GraphNode>
     if (!setGraph)
       SetNodeGraph();
     int graph = getUpdated?nodeGraph: basicNodeGraph;
+    if (this.Equals(GetNodeByParameters(1, 2, 1, 0)))
+    {
+      Debug.Log(graph);
+    }
     for (int i = 0; i < 3; i++)
     {
       nodes[i] = (byte)(graph % 4);
@@ -279,60 +311,7 @@ public class GraphNode : System.IComparable<GraphNode>
     }
     return nodes;
   }
-  public bool[] GetDirections()
-  {
-    //Debug.Log(setGraph);
-    if (!setGraph)
-      SetNodeGraph();
-    //Debug.Log(nodeGraph);
 
-    bool[] directions = new bool[6];
-    for (int i = 0; i < 6; i++)
-      directions[i] = false;
-    int bareers = nodeGraph;
-    if (m_index == 0)
-    {
-      
-      if ((bareers % 4) / 2 == 0)
-      {
-        directions[1] = true;
-        directions[2] = true;
-      }
-      bareers /= 4;
-      if ((bareers % 4) / 2 == 0)
-      {
-        directions[3] = true;
-        directions[4] = true;
-      }
-      bareers /= 4;
-      if ((bareers % 4) / 2 == 0)
-      {
-        directions[5] = true;
-        directions[0] = true;
-      }
-    }
-    else
-    {
-      if ((bareers % 4) / 2 == 0)
-      {
-        directions[4] = true;
-        directions[5] = true;
-      }
-      bareers /= 4;
-      if ((bareers % 4) / 2 == 0)
-      {
-        directions[2] = true;
-        directions[3] = true;
-      }
-      bareers /= 4;
-      if ((bareers % 4) / 2 == 0)
-      {
-        directions[1] = true;
-        directions[0] = true;
-      }
-    }
-    return directions;
-  }
   public int GetHitDirection(int direction)
   {
     int newDir = 0;
@@ -361,16 +340,25 @@ public class GraphNode : System.IComparable<GraphNode>
     {
 
       newInd = (5 - direction) / 2;
-      return adj[newInd];
+
+        return adj[newInd];
+
     }
   }
 
   public float NodeValue(evaluator ev)
   {
     float val = 0;
-    foreach (CustomObject x in m_objects)
+    try
     {
-      val += ev(x);
+      foreach (CustomObject x in m_objects)
+      {
+        val += ev(x);
+      }
+    }
+    catch
+    {
+      Debug.Log(m_objects);
     }
     return val;
   }
@@ -383,7 +371,8 @@ public class GraphNode : System.IComparable<GraphNode>
       if (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow)
       {
         nodeGraph = Creator.GetBareerMap(m_level)[m_i + m_j * triangleRow];
-        basicNodeGraph = nodeGraph;
+        if(basicNodeGraph<0)
+          basicNodeGraph = nodeGraph;
       }
       else
         nodeGraph = 63;
@@ -395,12 +384,15 @@ public class GraphNode : System.IComparable<GraphNode>
       node += adj[0].GetNodeGraph()[0];
       node += (adj[1].GetNodeGraph()[2]) << 2;
       node += (adj[2].GetNodeGraph()[1]) << 4;
-      basicNodeGraph = node;
+      if (basicNodeGraph < 0)
+        basicNodeGraph = node;
+
       node=0;
       node += adj[0].GetNodeGraph(true)[0];
       node += (adj[1].GetNodeGraph(true)[2]) << 2;
       node += (adj[2].GetNodeGraph(true)[1]) << 4;
       nodeGraph = node;
+
     }
     
     setGraph = true;
@@ -420,6 +412,7 @@ public class GraphNode : System.IComparable<GraphNode>
       newNode = node;
       newNode.m_objects = new List<CustomObject>();
       newNode.m_toLeave = new List<CustomObject>();
+      newNode.m_toEnter = new List<CustomObject>();
     }
     else
     {
@@ -433,12 +426,19 @@ public class GraphNode : System.IComparable<GraphNode>
   {
     if (adjacent[0] == null)
       adjacent[0] = GetNodeByParameters(m_i, m_j, 1 - m_index, m_level);
+   
     int j = m_j;
     int i = m_i - Utility.Mod2(m_j);
     j += (2 * m_index - 1);
     adjacent[1] = GetNodeByParameters(i, j, 1 - m_index, m_level);
     i++;
     adjacent[2] = GetNodeByParameters(i, j, 1 - m_index, m_level);
+    //if (m_i == 1 && m_j == 2 && m_index == 0 && m_level == 0)
+    //{
+    //  Debug.Log(adjacent[0]);
+    //  Debug.Log(adjacent[1]);
+    //  Debug.Log(adjacent[2]);
+    //}
     return adjacent;
   }
   public override bool Equals(object o)

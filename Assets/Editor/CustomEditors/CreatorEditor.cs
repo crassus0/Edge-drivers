@@ -251,8 +251,8 @@ public class CreatorEditor : Editor
         if (found)
         {
 
-          GraphNode.GetNodeByCoords(left, targ.ActiveLevel).ChangeState(leftActives, targ.levels);
-          GraphNode.GetNodeByCoords(right, targ.ActiveLevel).ChangeState(rightActives, targ.levels);
+          GraphNode.GetNodeByCoords(left, targ.ActiveLevel).ChangeState(leftActives, targ.levels, true);
+          GraphNode.GetNodeByCoords(right, targ.ActiveLevel).ChangeState(rightActives, targ.levels, true);
           left.x -= triangleWidth;
           right.x += triangleWidth;
           numVertecies += 2;

@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class BasicMine : CustomObject
+public class BasicMine : CustomObject, IFireflyDestroyable
 {
   //public BasicMineVisualiser m_visualiser;
   int damage = 5;
@@ -30,5 +30,10 @@ public class BasicMine : CustomObject
       (m_visualiser.GetComponent<BasicMineVisualiser>()).OnDestroy();
     }
   }
-
+  public void FireflyDestroy(YellowFirefly firefly)
+  {
+    firefly.Direction--;
+    Destroy(gameObject);
+    Destroyed = true;
+  }
 }

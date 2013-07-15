@@ -11,7 +11,8 @@ public abstract class CustomObject : MonoBehaviour
   public ObjectType Type { get; set; }
   public bool Hidden{get; set;}
   public abstract void OnStart();
-  
+  public bool Destroyed { get; set; }
+
   public virtual int GetStepCount()
   {
     return 4;

@@ -25,7 +25,7 @@ public class WebMine : CustomObject
     int i = range;
     while (i > 0)
     {
-      if (x.GetDirections()[direction])
+      if (GraphTagMachine.GetDirections(x)[direction]!=WayStatus.Blocked)
       {
 
         x = x.GetNodeByDirection(direction);

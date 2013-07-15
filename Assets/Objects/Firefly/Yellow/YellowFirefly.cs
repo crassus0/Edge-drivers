@@ -2,13 +2,14 @@ using UnityEngine;
 using System.Collections;
 public class YellowFirefly : CustomObject, IAutoMove
 {
-  public float energy=0.5f;
+  bool init = false;
   public int Direction
   {
     get { return m_direction; }
     set
     {
-      m_direction = value;
+      m_direction = (value+6)%6;
+      
       transform.rotation = Quaternion.identity;
       transform.Rotate(0, -60*m_direction, 0);
 
@@ -25,10 +26,12 @@ public class YellowFirefly : CustomObject, IAutoMove
     m_visualiser.GetComponent<CustomObjectVisualiser>().SetSpeed(0.25f);
     OnUpdate = OnUpdated;
     Interact = OnInteract;
+    init = true; 
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
-    if (type == InteractType.Stay) return;
+    if (type == InteractType.Stay||!init) return;
+    
     DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null)
     {
@@ -36,10 +39,10 @@ public class YellowFirefly : CustomObject, IAutoMove
         x.Status = 3;
       Destroy(gameObject);
     }
-    if (obj as PlanerCore != null)
+    IFireflyDestroyable dest = obj as IFireflyDestroyable;
+    if (dest != null&&!obj.Destroyed)
     {
-      (obj as PlanerCore).RemoveConcentration(energy);
-      Direction = (Direction + 1) % 6;
+      dest.FireflyDestroy(this);
     }
   }
   void OnUpdated()
@@ -52,6 +55,10 @@ public class YellowFirefly : CustomObject, IAutoMove
     (m_visualiser.GetComponent<FireflyVisualiser>()).Move((Node.Index+Direction % 2)%2);
     if (Camera.main.WorldToViewportPoint(transform.position).magnitude > 4 && !Node.IsOnField())
       Destroy(gameObject);
+  }
+  public bool CanRotateWithTag(NodeTag tag)
+  {
+    return true;
   }
 }
 

@@ -6,7 +6,7 @@ public class ArmoryGenerator : CustomObject
 {
   public GameObject weaponPrototypePrefab;
   WeaponPrototype[] m_prototypes;
-  static readonly string[] UpgradeNames = { "BasicMineActivator", "WebCatapultActivator" };
+  static readonly string[] UpgradeNames = { "BasicMineActivator", "WebCatapultActivator", "LeftTerraformingMine" };
   List<string> InstalledUpgrades;
 
   public override void OnStart()

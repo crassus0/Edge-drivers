@@ -57,8 +57,8 @@ public class PlanerMoveControls : ScriptableObject
     m_direction %= 6;
     int rotatedAngle = m_rotationAngle;
     ApplyRotation();
-    bool[] directions = m_planer.GetNode().GetDirections();
-    if (directions[m_direction])
+    WayStatus[] directions = GraphTagMachine.GetDirections(m_planer.GetNode());
+    if (directions[m_direction]==WayStatus.Free)
     {
       //		Debug.Log(m_hiroscope+","+rotated);
       m_planer.Move(m_direction);
@@ -108,6 +108,7 @@ public class PlanerMoveControls : ScriptableObject
   }
   public void Rotate(int angle)
   {
+    if (!m_planer.CanRotateWithTag(m_planer.Node.Tag)) return;
     m_rotationAngle += angle;
     if (Mathf.Abs(m_rotationAngle) > 3)
       m_rotationAngle -= 6 * (int)Mathf.Sign(m_rotationAngle);

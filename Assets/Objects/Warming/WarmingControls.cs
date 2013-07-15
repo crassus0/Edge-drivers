@@ -79,7 +79,7 @@ public class WarmingControls : CustomObject, IPlanerLike
       Destroy(gameObject);
     m_ai.OnUpdate();
     int index = (Node.Index + Direction % 2) % 2;
-    while (!Node.GetDirections()[m_direction])
+    while (GraphTagMachine.GetDirections(Node)[m_direction]==WayStatus.Blocked)
     {
       if (index == 0)
       {
@@ -134,11 +134,13 @@ public class WarmingControls : CustomObject, IPlanerLike
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
+    if (Destroyed) return;
     if (type == InteractType.Enter)
     {
       WarmingHole x = obj as WarmingHole;
       if (x != null && !m_ai.HasTarget)
       {
+        Destroyed = true;
         Destroy(gameObject);
       }
     }
@@ -148,5 +150,9 @@ public class WarmingControls : CustomObject, IPlanerLike
     //if(x.Node!=m_ai.Target.node)
       //return BasicPlanerAI.MaxWeight;
     return 0;
+  }
+  public bool CanRotateWithTag(NodeTag tag)
+  {
+    return true;
   }
 }

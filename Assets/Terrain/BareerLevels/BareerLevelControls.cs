@@ -205,20 +205,20 @@ public class BareerLevelControls : MonoBehaviour
         float yCoord = triangleHeight * (j + 0.6666666f);        
         Vector3 position = new Vector3(xCoord, 0, yCoord);
         GraphNode x = GraphNode.GetNodeByCoords(position, Level);
-        bool[] dirs = x.GetDirections();
+        WayStatus[] dirs = GraphTagMachine.GetDirections(x);
         for (int k = 0; k < 6; k++)
         {
           Vector3 direction = new Vector3(Mathf.Cos(Mathf.PI * ((1f / 3f) * k)), 0, Mathf.Sin(Mathf.PI * ((1f / 3f) * k)));
-          Color lineColor = (!dirs[k]) ? Color.red : Color.green;
+          Color lineColor = (dirs[k]!=WayStatus.Free) ? Color.red : Color.green;
           Debug.DrawRay(position, direction * 10, lineColor);
         }
         position = new Vector3(xCoord, 0, triangleHeight * (j + 1.33333333f));        
         x = GraphNode.GetNodeByCoords(position, Level);
-        dirs = x.GetDirections();
+        dirs = GraphTagMachine.GetDirections(x);
         for (int k = 0; k < 6; k++)
         {
           Vector3 direction = new Vector3(Mathf.Cos(Mathf.PI * ((1f / 3f) * k)), 0, Mathf.Sin(Mathf.PI * ((1f / 3f) * k)));
-          Color lineColor = (!dirs[k]) ? Color.red : Color.green;
+          Color lineColor = (dirs[k] != WayStatus.Free) ? Color.red : Color.green;
           Debug.DrawRay(position, direction * 10, lineColor);
         }
       }

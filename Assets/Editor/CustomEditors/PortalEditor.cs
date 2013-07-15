@@ -9,7 +9,7 @@ public class PortalEditor : Editor
   public override void OnInspectorGUI()
   {
     (target as Portal).PairPortal = EditorGUILayout.ObjectField("Destination", (target as Portal).PairPortal, typeof(Portal), !EditorUtility.IsPersistent(target)) as Portal;
-    (target as Portal).LeavingDirection = EditorGUILayout.IntSlider("Direction", (target as Portal).LeavingDirection, -1,5); 
+    (target as Portal).Direction = EditorGUILayout.IntSlider("Direction", (target as Portal).Direction, -1,5); 
     EditorUtility.SetDirty(target);
   }
 }

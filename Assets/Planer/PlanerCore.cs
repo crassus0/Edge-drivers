@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlanerCore : CustomObject, IPlanerLike
+public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 {
   public static float BasicScale = 1.2f;
   uint id;
@@ -13,8 +13,8 @@ public class PlanerCore : CustomObject, IPlanerLike
 
   public int agility;
 
-  //	float time=1;
-  //public PlanerVisualControls m_visualiser;
+  GraphNode m_savedNode;
+  int m_savedDirection;
   [SerializeField]
   int direction = 0;
   PlanerMoveControls m_moveControls;
@@ -107,7 +107,7 @@ public class PlanerCore : CustomObject, IPlanerLike
     {
       if (Application.isPlaying)
       {
-        SetNewDirection(value);
+        SetNewDirection(value, true);
       }
       else
       {
@@ -232,7 +232,7 @@ public class PlanerCore : CustomObject, IPlanerLike
     else
     {
       if(angle>=0)
-        Direction = angle;
+        SetNewDirection(angle);
       m_hasTarget = true;
       m_basicAI.SetTarget(null);
     }
@@ -263,9 +263,13 @@ public class PlanerCore : CustomObject, IPlanerLike
   {
     m_moveControls.Rotate(angle);
   }
-  public void SetNewDirection(int newDirection, bool forced=false)
+  public void SetNewDirection(int newDirection, bool forced)
   {
     m_moveControls.SetNewDirection(newDirection, forced);
+  }
+  public void SetNewDirection(int newDirection)
+  {
+    SetNewDirection(newDirection, false);
   }
   protected new void OnDrawGizmos()
   {
@@ -277,7 +281,7 @@ public class PlanerCore : CustomObject, IPlanerLike
     //Node=GraphNode.GetNodeByCoords(transform.position, (int)Energy);
     //Vector3	newPosition=Node.NodeCoords();
     //newPosition.y=transform.position.y;
-    bool[] directions = Node.GetDirections();
+    WayStatus[] directions = GraphTagMachine.GetDirections(Node);
     bool[] planerDirections = m_moveControls.Directions();
     //	  transform.position=newPosition;
     for (int i = 0; i < 6; i++)
@@ -285,7 +289,7 @@ public class PlanerCore : CustomObject, IPlanerLike
       dir = new Vector3(Mathf.Cos(i * Mathf.PI / 3f), 0, Mathf.Sin(i * Mathf.PI / 3f))*16;
       //		Debug.Log(direction+","+i);
 
-      if (directions[i] && planerDirections[i])
+      if ((directions[i]==WayStatus.Free) && planerDirections[i])
         Debug.DrawRay(transform.position, dir, Color.green);
       else
         Debug.DrawRay(transform.position, dir, Color.red);
@@ -314,6 +318,8 @@ public class PlanerCore : CustomObject, IPlanerLike
   public void OnEnterPortal(GraphNode node, int direction)
   {
     Node = node;
+    m_savedNode=node;
+    m_savedDirection=direction;
     if (direction >= 0)
       SetNewDirection(direction, true);
     m_basicAI.ChangeLevel(node.Level);
@@ -334,6 +340,15 @@ public class PlanerCore : CustomObject, IPlanerLike
     if (entity.GetType() == typeof(DistantPortalEnter)) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(WeaponPrototype)) return BasicPlanerAI.MaxWeight;
     return 0;
+  }
+  public bool CanRotateWithTag(NodeTag tag)
+  {
+    return PlayerSaveData.GetColourStatus(tag);
+  }
+  public void FireflyDestroy(YellowFirefly firefly)
+  {
+    firefly.Direction++;
+    OnEnterPortal(m_savedNode, m_savedDirection);
   }
   //TODO
 }

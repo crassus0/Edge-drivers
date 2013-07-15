@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class DistantPortalExit : CustomObject
+public class DistantPortalExit : CustomObject, IPortalExit
 {
   public int Direction
   {
@@ -9,7 +9,7 @@ public class DistantPortalExit : CustomObject
     set{m_direction=value;}
   }
   [SerializeField]
-  int m_direction=-1;
+  int m_direction=0;
   public override void OnStart ()
   {
   }

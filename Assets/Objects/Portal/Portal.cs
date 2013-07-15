@@ -4,11 +4,11 @@ using System.Collections;
 using System;
 [ExecuteInEditMode]
 [Serializable]
-public class Portal : CustomObject
+public class Portal : CustomObject, IPortalExit
 {
   public Portal PairPortal;
   bool m_awaken;
-  public int LeavingDirection
+  public int Direction
   {
     get{return m_direction;}
     set{m_direction=value;}
@@ -40,7 +40,7 @@ public class Portal : CustomObject
   {
     //Debug.Log(PairPortal);
     PlanerCore x = planer as PlanerCore;
-    x.OnEnterPortal(PairPortal.GetNode(), PairPortal.LeavingDirection);
+    x.OnEnterPortal(PairPortal.GetNode(), PairPortal.Direction);
     x.RemoveUpdateFunc(OnPlanerEnter);
     x.EnteredPortal = true;
   }

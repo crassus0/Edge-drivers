@@ -38,9 +38,9 @@ public class InputControls : MonoBehaviour
   void GetKey()
   {
     
-    if (Input.GetKey(KeyCode.RightArrow))
+    if (Input.GetKeyDown(KeyCode.RightArrow))
       ArcadeControlButton.KeyPressed(1);
-    if (Input.GetKey(KeyCode.LeftArrow))
+    if (Input.GetKeyDown(KeyCode.LeftArrow))
       ArcadeControlButton.KeyPressed(-1);
   }
 #endif

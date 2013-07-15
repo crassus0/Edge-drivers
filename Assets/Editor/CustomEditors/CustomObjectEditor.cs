@@ -12,13 +12,15 @@ public class CustomObjectEditor : Editor
   CustomObject edited;
   void OnEnable()
   {
-    //	Debug.Log(target);
+    
     creator = GameObject.Find("Creator").GetComponent<Creator>();
     edited = (target as CustomObjectEditorSupply).GetComponent<CustomObject>();
 
     (target as CustomObjectEditorSupply).SetFlags();
     CustomObject x = edited.GetComponent<CustomObject>();
     //x.Level = Level;
+    if (Application.isPlaying) return;
+    //	Debug.Log(target);
     if (!EditorAdditionalGUI.EditorOptions.Objects.Contains(x))
       EditorAdditionalGUI.EditorOptions.Objects.Add(x);
   }
@@ -28,7 +30,14 @@ public class CustomObjectEditor : Editor
     //base.OnInspectorGUI();
     //if(Application.isPlaying)return;
     //Debug.Log("1412351345");
-    m_currentNode = edited.Node;
+    try
+    {
+      m_currentNode = edited.Node;
+    }
+    catch
+    {
+      Debug.Log(edited);
+    }
     EditorGUILayout.BeginHorizontal();
     EditorGUILayout.LabelField("X", GUILayout.MaxWidth(45));
     int xCoord = EditorGUILayout.IntField(m_currentNode.X, GUILayout.ExpandWidth(true));
@@ -81,8 +90,10 @@ public class CustomObjectEditor : Editor
   public void OnSceneGUI()
   {
 
-    
-    m_currentNode = GraphNode.GetNodeByCoords(edited.transform.position, edited.Level);
+
+
+      m_currentNode = GraphNode.GetNodeByCoords(edited.transform.position, edited.Level);
+
     edited.Node = m_currentNode;
     edited.transform.position = m_currentNode.NodeCoords();
 

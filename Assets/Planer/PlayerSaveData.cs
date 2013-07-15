@@ -76,7 +76,8 @@ public static class PlayerSaveData
         int index = PlayerPrefs.GetInt("IndexCoord");
         int level = PlayerPrefs.GetInt("LevelCoord");
         int direction = PlayerPrefs.GetInt("Direction");
-        planer.Node = GraphNode.GetNodeByParameters(x, y, index, level);
+        //planer.Node = GraphNode.GetNodeByParameters(x, y, index, level);
+        planer.OnEnterPortal(GraphNode.GetNodeByParameters(x, y, index, level), direction);
         planer.SetNewDirection(direction, true);
       }
       catch (System.Exception)
@@ -87,9 +88,8 @@ public static class PlayerSaveData
     else
     {
       DistantPortalExit enter=Creator.creator.defaultPortal;
-      planer.Node=enter.Node;
-      if(enter.Direction>=0)
-        planer.SetNewDirection(enter.Direction, true);
+      planer.OnEnterPortal(enter.GetNode(), enter.Direction);
+
     }
     planer.Concentration = PlayerPrefs.GetFloat("Concentration");
     planer.MaxConcentration = PlayerPrefs.GetFloat("MaxConcentration");
@@ -98,6 +98,40 @@ public static class PlayerSaveData
     ScriptableObject.Destroy(planer.MineController);
     planer.MineController = MineController.GetMineController(mines, planer);
     return true;
-
+  }
+  public static bool GetColourStatus(NodeTag color)
+  {
+    string colorString;
+    switch (color)
+    {
+      case NodeTag.BlueColoured:
+      {
+        colorString="BlueColor";
+        break;
+      }
+      case NodeTag.RedColoured:
+      {
+        colorString="RedColor";
+        break;
+      }
+      case NodeTag.GreenColoured:
+      {
+        colorString="GreenColor";
+        break;
+      }
+      default:
+      {
+        return true;
+      }
+    }
+    try
+    {
+      return PlayerPrefs.GetInt(colorString)==1;
+    }
+    catch
+    {
+      PlayerPrefs.SetInt(colorString, 0);
+      return false;
+    }
   }
 }

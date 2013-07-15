@@ -11,6 +11,7 @@ public class BasicPlanerAI : ScriptableObject
   AStarNode m_target;
   Queue<int> route;
   Queue<float> weights;
+  Queue<NodeTag> tags;
   int m_maxDistance = 50;
   public static readonly float MaxWeight=5000;
   public AStarNode Target { get { return m_target; } }
@@ -22,6 +23,7 @@ public class BasicPlanerAI : ScriptableObject
     m_planer = planer;
     route = new Queue<int>();
     weights = new Queue<float>();
+    tags = new Queue<NodeTag>();
   }
 	public void SetTarget(GraphNode target, int direction)
 	{
@@ -88,9 +90,9 @@ public class BasicPlanerAI : ScriptableObject
   //    if(Application.loadedLevelName=="GlobalMap")
 //        Debug.Log(newDir);
       float newWeight = weights.Dequeue();
-      if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(m_planer.EntityValue) - 0.5f)
+      if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(m_planer.EntityValue) - 0.5f || m_planer.GetNode().GetNodeByDirection(newDir).Tag!=tags.Dequeue())
         AStarSearch();
-      m_planer.Direction=newDir;
+      m_planer.SetNewDirection(newDir);
     }
     catch (System.Exception x)
     {
@@ -113,6 +115,7 @@ public class BasicPlanerAI : ScriptableObject
     checkedNodes.Clear();
     route.Clear();
     weights.Clear();
+    tags.Clear();
     //Initialising search
     AStarNode startNode = new AStarNode(m_planer.GetNode(), m_planer.Direction, 0, null);
     checkedNodes.Add(startNode);
@@ -182,6 +185,7 @@ public class BasicPlanerAI : ScriptableObject
         {
           //Debug.Log(x.node);
           //Debug.Log(x.direction);
+          tags.Enqueue(x.node.Tag);
           route.Enqueue(x.prevDirection);
           weights.Enqueue(x.previous == null ? 0 : x.distance - x.previous.distance);
         }
@@ -197,6 +201,8 @@ public class BasicPlanerAI : ScriptableObject
   void UpdateAdjacent(AStarNode node, ref List<AStarNode> adj, ref List<AStarNode> check)
   {
     int maxRotateAngle = m_planer.MaxRotateAngle;
+    if (!m_planer.CanRotateWithTag(node.node.Tag))
+      maxRotateAngle = 0;
     int minDirection = (node.direction + 6 - maxRotateAngle);
     int maxDirection = (node.direction + 6 + maxRotateAngle);
     //Debug.Log(minDirection%6);
@@ -211,18 +217,24 @@ public class BasicPlanerAI : ScriptableObject
   void UpdateDirection(AStarNode node, ref List<AStarNode> adj, ref List<AStarNode> check, int index)
   {
     AStarNode newNode;
-    bool[] directions = node.node.GetDirections();
-    if (directions[index])
+    WayStatus[] directions = GraphTagMachine.GetDirections(node.node);
+    if (directions[index]==WayStatus.Free)
     {
       newNode = new AStarNode(node.node.GetNodeByDirection(index), index, node.distance + 1 + 0.01f * Mathf.Abs((node.direction + 6 - index) % 6), node);
       newNode.distance += newNode.node.NodeValue(m_planer.EntityValue);
     }
-    else
+    else if (directions[index] == WayStatus.Blocked)
     {
       newNode = new AStarNode(node.node, node.node.GetHitDirection(index), node.distance + 1 + 0.01f * Mathf.Abs((node.direction + 6 - index) % 6), node);
       newNode.prevDirection = index;
     }
+    else
+    {
+      return;
+    }
     int foundIndex = check.BinarySearch(newNode);
+    if(newNode.node.Tag==NodeTag.Whirlwind)
+      newNode.direction+=newNode.node.TagModifier;
     bool found = false;
     AStarNode existNode;
     if (foundIndex >= 0)

@@ -38,8 +38,8 @@ public class GreenFirefly : CustomObject, IAutoMove
   }
   public void Move()
   {
-    bool[] directions = GetNode().GetDirections();
-    if (directions[Direction])
+    WayStatus[] directions = GraphTagMachine.GetDirections(GetNode());
+    if (directions[Direction]!=WayStatus.Blocked)
     {
       //		Debug.Log(m_hiroscope+","+rotated);
       Move(Direction);
@@ -56,5 +56,9 @@ public class GreenFirefly : CustomObject, IAutoMove
 
       (m_visualiser.GetComponent<FireflyVisualiser>()).Hit((Node.Index + Direction % 2) % 2);
     }
+  }
+  public bool CanRotateWithTag(NodeTag tag)
+  {
+    return true;
   }
 }

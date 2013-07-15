@@ -48,9 +48,8 @@ public class DistantPortalEnter : CustomObject
           if (object.ReferenceEquals(x, Creator.Player))
           {
             //PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
-            PlayerSaveData.Save(x, m_targetNode, direction, true);
-            Application.LoadLevel(m_targetScene);
-            Destroy(Creator.creator);
+            x.AddUpdateFunc(OnPlanerEnter);
+            x.HasTarget = true;
           }
           else
           {
@@ -78,5 +77,14 @@ public class DistantPortalEnter : CustomObject
       }
     }
   }
-
+  void OnPlanerEnter(IPlanerLike planer)
+  {
+    //Debug.Log(PairPortal);
+    PlanerCore x = planer as PlanerCore;
+    x.RemoveUpdateFunc(OnPlanerEnter);
+    x.EnteredPortal = true;
+    PlayerSaveData.Save(x, m_targetNode, direction, true);
+    Application.LoadLevel(m_targetScene);
+    Destroy(Creator.creator);
+  }
 }

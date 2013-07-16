@@ -300,10 +300,7 @@ public class GraphNode : System.IComparable<GraphNode>
     if (!setGraph)
       SetNodeGraph();
     int graph = getUpdated?nodeGraph: basicNodeGraph;
-    if (this.Equals(GetNodeByParameters(1, 2, 1, 0)))
-    {
-      Debug.Log(graph);
-    }
+
     for (int i = 0; i < 3; i++)
     {
       nodes[i] = (byte)(graph % 4);
@@ -349,10 +346,12 @@ public class GraphNode : System.IComparable<GraphNode>
   public float NodeValue(evaluator ev)
   {
     float val = 0;
+    
     try
     {
       foreach (CustomObject x in m_objects)
       {
+
         val += ev(x);
       }
     }

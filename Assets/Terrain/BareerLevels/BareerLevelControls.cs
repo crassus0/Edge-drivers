@@ -23,7 +23,7 @@ public class BareerLevelControls : MonoBehaviour
     set { m_selectionPhase = value; }
   }
   [SerializeField]
-  float m_selectionPhase=1;
+  float m_selectionPhase = 1;
   public PhaseType SelectionPhaseType
   {
     get { return m_selectionPhaseType; }
@@ -37,10 +37,10 @@ public class BareerLevelControls : MonoBehaviour
     set { m_movePhaseDuration = value; }
   }
   [SerializeField]
-  float m_movePhaseDuration=1;
+  float m_movePhaseDuration = 1;
 
   public int NumAreas = 1;
-  
+
   float m_areaWidth;
   float m_areaHeight;
   float leftTime;
@@ -58,13 +58,27 @@ public class BareerLevelControls : MonoBehaviour
     triangleRow = NumAreas * BareerAreaControls.areaSize;
     byte[] newbareers = new byte[(triangleRow) * (triangleRow)];
     int min = (triangleRow > oldTriangleRow) ? oldTriangleRow : triangleRow;
+    int max = (triangleRow < oldTriangleRow) ? oldTriangleRow : triangleRow;
     for (int i = 0; i < min; i++)
     {
       for (int j = 0; j < min; j++)
       {
         newbareers[i + triangleRow * j] = m_bareers[i + oldTriangleRow * j];
       }
+      if (oldTriangleRow < triangleRow)
+        for (int j = min; j < max; j++)
+        {
+          newbareers[i + triangleRow * j] = 21;
+        }
     }
+    if (oldTriangleRow < triangleRow)
+      for (int i = min; i < max; i++)
+      {
+        for (int j = 0; j < max; j++)
+        {
+          newbareers[i + triangleRow * j] = 21;
+        }
+      }
     m_bareers = newbareers;
   }
   public void Init()
@@ -75,8 +89,8 @@ public class BareerLevelControls : MonoBehaviour
     m_areaWidth = BareerAreaControls.areaWidth;
     m_areaHeight = BareerAreaControls.areaHeight;
     triangleRow = NumAreas * BareerAreaControls.areaSize;
-    hideFlags = 0;  
-    m_areas = new BareerAreaControls[NumAreas * NumAreas];       
+    hideFlags = 0;
+    m_areas = new BareerAreaControls[NumAreas * NumAreas];
     for (int i = 0; i < NumAreas; i++)
       for (int j = 0; j < NumAreas; j++)
       {
@@ -119,7 +133,7 @@ public class BareerLevelControls : MonoBehaviour
     int areaY = j / 8;
     i = i - areaX * 8;
     j = j - areaY * 8;
-    if(m_init||!Application.isPlaying)
+    if (m_init || !Application.isPlaying)
       m_areas[areaX + NumAreas * areaY].RedrawTriangle(i, j);
   }
   void SetGraph()
@@ -185,7 +199,7 @@ public class BareerLevelControls : MonoBehaviour
   public void Activate()
   {
     gameObject.SetActive(true);
-    Init();   
+    Init();
   }
   void OnDrawGizmosSelected()
   {
@@ -202,17 +216,17 @@ public class BareerLevelControls : MonoBehaviour
       for (int j = 0; j < triangleRow; j++)
       {
         float xCoord = (i + 0.5f * ((j + 1) % 2 + 1)) * triangleWidth;
-        float yCoord = triangleHeight * (j + 0.6666666f);        
+        float yCoord = triangleHeight * (j + 0.6666666f);
         Vector3 position = new Vector3(xCoord, 0, yCoord);
         GraphNode x = GraphNode.GetNodeByCoords(position, Level);
         WayStatus[] dirs = GraphTagMachine.GetDirections(x);
         for (int k = 0; k < 6; k++)
         {
           Vector3 direction = new Vector3(Mathf.Cos(Mathf.PI * ((1f / 3f) * k)), 0, Mathf.Sin(Mathf.PI * ((1f / 3f) * k)));
-          Color lineColor = (dirs[k]!=WayStatus.Free) ? Color.red : Color.green;
+          Color lineColor = (dirs[k] != WayStatus.Free) ? Color.red : Color.green;
           Debug.DrawRay(position, direction * 10, lineColor);
         }
-        position = new Vector3(xCoord, 0, triangleHeight * (j + 1.33333333f));        
+        position = new Vector3(xCoord, 0, triangleHeight * (j + 1.33333333f));
         x = GraphNode.GetNodeByCoords(position, Level);
         dirs = GraphTagMachine.GetDirections(x);
         for (int k = 0; k < 6; k++)

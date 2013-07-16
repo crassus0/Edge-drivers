@@ -19,7 +19,6 @@ public class BasicPlanerAI : ScriptableObject
   public bool HasTarget { get { return m_target != null; } }
   public virtual void Init(IPlanerLike planer)
   {
-    //Debug.Log("init");
     m_planer = planer;
     route = new Queue<int>();
     weights = new Queue<float>();
@@ -32,7 +31,6 @@ public class BasicPlanerAI : ScriptableObject
 	}
   public void SetTarget(GraphNode target, int direction, int maxDistance)
   {
-    //Debug.Log("set");
     if (target == null)
     {
       m_target = null;
@@ -41,15 +39,10 @@ public class BasicPlanerAI : ScriptableObject
     m_maxDistance = maxDistance;
     m_target = new AStarNode(target, direction, float.MaxValue, null);
     m_target.IsTarget = true;
-    //	Debug.Log(m_target);
-    
     if (!AStarSearch())
     {
       m_target = null;
-//      Debug.Log("fail");
     }
-
-    //Debug.Log(m_target);
   }
   public void SetTarget(GraphNode target)
   {
@@ -83,20 +76,17 @@ public class BasicPlanerAI : ScriptableObject
   }
   void ApplyDirection()
   {
-    //Debug.Log("rotate");
     try
     {
       int newDir = route.Dequeue();
-  //    if(Application.loadedLevelName=="GlobalMap")
-//        Debug.Log(newDir);
       float newWeight = weights.Dequeue();
       if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(m_planer.EntityValue) - 0.5f || m_planer.GetNode().GetNodeByDirection(newDir).Tag!=tags.Dequeue())
         AStarSearch();
       m_planer.SetNewDirection(newDir);
     }
-    catch (System.Exception x)
+    catch (System.InvalidOperationException)
     {
-      Debug.LogError(x);
+
       if(AStarSearch())
         ApplyDirection();
     }
@@ -179,23 +169,17 @@ public class BasicPlanerAI : ScriptableObject
           queue.AddFirst(current);
           current = current.previous;
         }
-        //Debug.Log(m_target+"-target");
-        ///Debug.Log(m_planer.GetNode()+"-current");
         foreach (AStarNode x in queue)
         {
-          //Debug.Log(x.node);
-          //Debug.Log(x.direction);
           tags.Enqueue(x.node.Tag);
           route.Enqueue(x.prevDirection);
           weights.Enqueue(x.previous == null ? 0 : x.distance - x.previous.distance);
         }
         found = true;
-        //Debug.Log((float)(System.DateTime.Now.Ticks-time));
         //Debug.Break();
       }
     }
 
-    //m_planer.Rotate(newDir-m_planer.direction);
     return true;
   }
   void UpdateAdjacent(AStarNode node, ref List<AStarNode> adj, ref List<AStarNode> check)
@@ -221,7 +205,8 @@ public class BasicPlanerAI : ScriptableObject
     if (directions[index]==WayStatus.Free)
     {
       newNode = new AStarNode(node.node.GetNodeByDirection(index), index, node.distance + 1 + 0.01f * Mathf.Abs((node.direction + 6 - index) % 6), node);
-      newNode.distance += newNode.node.NodeValue(m_planer.EntityValue);
+      if(!newNode.EqualWithRandomRotation(Target))
+        newNode.distance += newNode.node.NodeValue(m_planer.EntityValue);
     }
     else if (directions[index] == WayStatus.Blocked)
     {

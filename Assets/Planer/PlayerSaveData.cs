@@ -63,12 +63,20 @@ public static class PlayerSaveData
   public static bool SetPlanerData(PlanerCore planer, bool firstLoad)
   {
     planer.InitInterface();
-    if (!PlayerPrefs.HasKey("CurrentLevel") || !PlayerPrefs.HasKey("Concentration") || !PlayerPrefs.HasKey("MaxConcentration"))
-      return false;
-    if (PlayerPrefs.GetString("CurrentLevel") != Application.loadedLevelName && firstLoad)
-      Application.LoadLevel(PlayerPrefs.GetString("CurrentLevel"));
+
+    if ("SafeHouse" != Application.loadedLevelName && firstLoad)
+    {
+      if (!(Creator.creator.testBuild && Application.isEditor))
+      {
+
+        Application.LoadLevel("SafeHouse");
+        return false;
+      }
+    }
+
     if (!firstLoad)
     {
+      
       try
       {
         int x = PlayerPrefs.GetInt("XCoord");
@@ -77,20 +85,26 @@ public static class PlayerSaveData
         int level = PlayerPrefs.GetInt("LevelCoord");
         int direction = PlayerPrefs.GetInt("Direction");
         //planer.Node = GraphNode.GetNodeByParameters(x, y, index, level);
+        
         planer.OnEnterPortal(GraphNode.GetNodeByParameters(x, y, index, level), direction);
         planer.SetNewDirection(direction, true);
+       
       }
       catch (System.Exception)
       {
-        
+        EnterPortal(planer);
       }
     }
     else
     {
-      DistantPortalExit enter=Creator.creator.defaultPortal;
-      planer.OnEnterPortal(enter.GetNode(), enter.Direction);
+      EnterPortal(planer);
 
     }
+    if (!PlayerPrefs.HasKey("CurrentLevel") || !PlayerPrefs.HasKey("Concentration") || !PlayerPrefs.HasKey("MaxConcentration"))
+    {
+      return true;
+    }
+    planer.prevNode = planer.Node.GetNodeByDirection((planer.Direction + 3) % 6);
     planer.Concentration = PlayerPrefs.GetFloat("Concentration");
     planer.MaxConcentration = PlayerPrefs.GetFloat("MaxConcentration");
     planer.m_visualiser.transform.position=planer.transform.position;
@@ -98,6 +112,17 @@ public static class PlayerSaveData
     ScriptableObject.Destroy(planer.MineController);
     planer.MineController = MineController.GetMineController(mines, planer);
     return true;
+  }
+  static void EnterPortal(PlanerCore planer)
+  {
+    IPortalExit enter = Creator.creator.defaultPortal;
+    if (Creator.creator.testBuild && Application.isEditor && Creator.creator.testEnter != null)
+    {
+      enter = Creator.creator.testEnter;
+      planer.EnteredPortal = true;
+    }
+
+    planer.OnEnterPortal(enter.GetNode(), enter.Direction);
   }
   public static bool GetColourStatus(NodeTag color)
   {

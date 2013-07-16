@@ -11,6 +11,14 @@ public class Creator : MonoBehaviour
   public readonly string VERSION = "0.3.0";
   public GameObject debugGraphNodes;
   int subStep = 0;
+  public bool testBuild = false;
+  public IPortalExit testEnter 
+  {
+    get { return testPortal.GetComponent<CustomObject>() as IPortalExit; }
+  }
+  bool m_safeHouse = false;
+  public string SceneName { get; set; }
+  public GameObject testPortal;
   public int size = 1;
   public bool isSafeHouse=false;
   public bool randomLevel = false;
@@ -71,6 +79,7 @@ public class Creator : MonoBehaviour
 
   public void Start()
   {
+    Debug.Log(m_init);
     if (m_init) return;
     IsLoading = false;
     OnPause = false;
@@ -86,7 +95,12 @@ public class Creator : MonoBehaviour
       m_player.name="Player";
     }
     m_player.Hidden=false;
-    LoadGame();
+    if (!m_safeHouse)
+    {
+      LoadGame();
+      SceneName = Application.loadedLevelName;
+      isSafeHouse = false;
+    }
     if (m_ratio > 1)
       m_screenSize.z = m_ratio;
     else
@@ -96,10 +110,9 @@ public class Creator : MonoBehaviour
       levels[i].Level = i;
     //Camera.main.GetComponent<CameraControls>().ForceSetPosition(m_player.transform.position);
     m_init = true;
-    if (m_objects == null)
-      m_objects = new List<CustomObject>();
-    if(m_startObjects==null)
-      m_startObjects=new HashSet<CustomObject>();
+
+    m_objects = new List<CustomObject>();
+    m_startObjects=new HashSet<CustomObject>();
     UnityEngine.Object[] customObjects = Resources.FindObjectsOfTypeAll(typeof(CustomObject));
     //levels[m_player.Level].Activate();
     foreach (UnityEngine.Object x in customObjects)
@@ -128,8 +141,15 @@ public class Creator : MonoBehaviour
         levels[m_energy].Deactivate();
         Camera.main.animation.Play("CameraAnimation");
       }
-      levels[newEnergy].Activate();
-      levels[newEnergy].gameObject.SetActive(true);
+      try
+      {
+        levels[newEnergy].Activate();
+        levels[newEnergy].gameObject.SetActive(true);
+      }
+      catch
+      {
+        Debug.Log(newEnergy);
+      }
       foreach (CustomObject x in m_objects)
         if (x != null)
         {
@@ -248,19 +268,21 @@ public class Creator : MonoBehaviour
 
   public void LoadHome()
   {
-    if(isSafeHouse)return;
     DontDestroyOnLoad(gameObject);
     isMainCreator=false;
+    m_init = false;
+    m_player.MineController = null;
     if(prevCreator!=null)
       Destroy(prevCreator);
     prevCreator=this;
+    m_safeHouse = true;
     gameObject.SetActive(false);
-    Application.LoadLevel("SafeHouse");
+    
     savedNode=m_player.Node;
     savedDirection=m_player.Direction;
     foreach(CustomObject x in m_objects)
       x.Hidden=true;
-    
+    Application.LoadLevel("SafeHouse");
   }
   public void LoadPrev()
   {
@@ -268,19 +290,18 @@ public class Creator : MonoBehaviour
     prevCreator.isMainCreator=true;
     m_creator=prevCreator;
     prevCreator.gameObject.SetActive(true);
-    m_energy = -1;
-    prevCreator.SwitchLevel();
-    
+    isMainCreator = false;
     m_player.Node=savedNode;
     m_player.SetNewDirection(savedDirection, true);
     m_player.transform.parent=prevCreator.transform;
-    //GetComponent<InputControls>().Start();
     foreach(CustomObject x in prevCreator.m_objects)
     {
       x.Hidden=false;
       if(x.Activate!=null)
         x.Activate();
     }
+    prevCreator.SendMessage("Start");
+    prevCreator = null;
     Destroy(gameObject);
   }
   void SaveGame()
@@ -289,8 +310,11 @@ public class Creator : MonoBehaviour
   }
   bool LoadGame()
   {
+
     bool t =PlayerSaveData.SetPlanerData(m_player, firstLoad);
-    firstLoad=false;
+
+    firstLoad=!t;
+    SaveGame();
     return t;
     
   }
@@ -301,6 +325,7 @@ public class Creator : MonoBehaviour
   }
   void OnDestroy()
   {
+    
     if(m_player!=null)
       m_player.transform.parent=null;
     PreviousLevel = Application.loadedLevelName;
@@ -317,28 +342,19 @@ public class Creator : MonoBehaviour
     {
     }
   }
+  void OnApplicationQuit()
+  {
+    PlayerSaveData.Clear();
+  }
   struct xTest
   {
     int x;
     GraphNode t;
   }
-  void OnGUI()
-  {
-    DrawConcentration();
-  }
+
   public Creator()
   {
     m_creator=this;
   }
-  void DrawConcentration()
-  {
-
-    int screenWidth = Screen.width;
-    Rect coords = new Rect(0, 0, screenWidth, Screen.height * 0.1f);
-
-    Rect porgressCoords = new Rect(0, 0, ((float)screenWidth)*(m_player.Concentration/m_player.MaxConcentration), Screen.height * 0.05f);
-    Rect texCoords = new Rect(0,0,  m_player.Concentration/m_player.MaxConcentration,1 );
-    GUI.DrawTexture(coords, m_concentrationBackground);
-    GUI.DrawTextureWithTexCoords(porgressCoords, m_concentrationProgress, texCoords);//, progressTexCoords);
-  }
+  
 }

@@ -97,6 +97,8 @@ public class GraphNode : System.IComparable<GraphNode>
       byte changingState = states[i];
       nodeGraph = nodeGraph & zeroState;
       nodeGraph = nodeGraph | (changingState << (i * 2));
+      foreach (GraphNode x in GetAdjacent())
+        x.SetNodeGraph();
     }
     levels[m_level].m_bareers[m_i + m_j * triangleRow] = (byte)nodeGraph;
     levels[m_level].OnChanged(m_i, m_j);

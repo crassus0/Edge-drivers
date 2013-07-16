@@ -7,7 +7,7 @@ public class ArcadeControlButton : ButtonObject
   int direction;
   public static Texture2D[] arcadeControlsTexture=new Texture2D[2];
   static ArcadeControlButton[] buttons=new ArcadeControlButton[2];
-  public override void Activate()
+  public override void Activate(bool isUp)
   {
 
     m_controlled.Rotate(direction);
@@ -45,8 +45,8 @@ public class ArcadeControlButton : ButtonObject
   public static void KeyPressed(int key)
   {
     if (key == -1)
-      buttons[0].Activate();
+      buttons[0].Activate(true);
     else
-      buttons[1].Activate();
+      buttons[1].Activate(true);
   }
 }

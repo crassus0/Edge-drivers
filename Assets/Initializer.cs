@@ -7,6 +7,7 @@ public class Initializer : MonoBehaviour {
     public GameObject basicMinePrefab;
 	public GameObject webMinePrefab;
   public GameObject terraformingMinePrefab;
+  public GameObject weaponIconPrefab;
 	public Texture2D basicMineTexture;
 	public Texture2D webMineTexture;
   public Texture2D cancelActionTexture;
@@ -15,6 +16,7 @@ public class Initializer : MonoBehaviour {
   public Texture2D leftTerraformingMineIcon;
 	void Awake () 
 	{
+    Armory.weaponPrototypePrefab = weaponIconPrefab;
 	  BasicMineActivator.minePrefab=basicMinePrefab;
 	  BasicMineActivator.mineTexture=basicMineTexture;
 	  WebCatapultActivator.minePrefab=webMinePrefab;

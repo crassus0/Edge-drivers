@@ -21,6 +21,7 @@ public class MineController : ScriptableObject
     {
       //Debug.Log(x);
       ButtonObject obj = ScriptableObject.CreateInstance(x) as ButtonObject;
+
       obj.Init(planer, i);
       m_mines.Add(obj);
       i++;
@@ -37,6 +38,7 @@ public class MineController : ScriptableObject
   }
   public void RenewObjectList(string[] mines)
   {
+    DestroyMines();
     m_mines = new List<ButtonObject>();
     for (int i = 0; i < mines.Length; i++)
     {
@@ -49,9 +51,14 @@ public class MineController : ScriptableObject
   void OnDestroy()
   {
     //Debug.Log("adfsdf");
+    DestroyMines();
+  }
+  void DestroyMines()
+  {
     for (int i = 0; i < m_mines.Count; i++)
     {
-      Destroy(m_mines[i]);
+      if(m_mines[i]!=null)
+        Destroy(m_mines[i]);
     }
   }
   public static MineController GetMineController(string[] mines, PlanerCore planer)

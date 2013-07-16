@@ -8,9 +8,14 @@ public class WebCatapultActivator : ButtonObject
   int range = 3;
   public static GameObject minePrefab;
   public static Texture2D mineTexture;
-  public override void Activate()
+  public bool IsActive { get; set; }
+  public override void Activate(bool isUp)
   {
-    //	Debug.Log("hit");
+    if (!isUp)
+    {
+      Armory.ShowUpgrades(Index);
+      return;
+    }
     if (cooldown > 0) return;
     if (number == 0) return;
     //	Debug.Log("hithit");
@@ -19,12 +24,9 @@ public class WebCatapultActivator : ButtonObject
     //	Debug.Log(ParentPlaner.prevNode.NodeCoords());
     GameObject mine = Instantiate(minePrefab) as GameObject;
     mine.transform.localScale = ParentPlaner.transform.localScale * 0.5f;
-    
     mine.GetComponent<WebMine>().Init(ParentPlaner, range);
-    if (HasGUI)
-      Button.guiTexture.color = new Color(1, 0, 0, 1) * 0.5f;
     if (number > 0) number--;
-    cooldown = 3;
+    cooldown =1;
     Activated = true;
   }
 
@@ -35,11 +37,11 @@ public class WebCatapultActivator : ButtonObject
   protected override void OnLoop()
   {
     //Debug.Log("Loop"+ cooldown);
-    if (cooldown > 0) cooldown--;
-    else Activated = false;
-    if (HasGUI)
-      Button.guiTexture.color = new Color(1, 1 - 0.33333f * cooldown, 1 - 0.33333f * cooldown, 1) * 0.5f;
-
+    if (cooldown > 0)
+      cooldown--;
+    else
+      Activated = false;
+   
   }
   public override string GetName()
   {

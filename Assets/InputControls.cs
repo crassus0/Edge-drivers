@@ -9,7 +9,6 @@ public class InputControls : MonoBehaviour
   Vector3 m_screenPosition;
   Vector2 prevTouch;
   Vector2 prevTouch2;
-    
   bool m_hasTarget = false;
   float screenSensivity = 0.05f;
   public void Start()
@@ -25,11 +24,10 @@ public class InputControls : MonoBehaviour
       return;
     }
     GetMouseInput();
-    GetNewDirection();
     GetScroll();
-    #if UNITY_EDITOR||UNITY_STANDALONE
+#if UNITY_EDITOR||UNITY_STANDALONE
     GetKey();
-    #endif
+#endif
     //	if(Mathf.Abs(x)>0.0001)
     //		  controledPlaner.
 
@@ -37,7 +35,7 @@ public class InputControls : MonoBehaviour
 #if UNITY_EDITOR||UNITY_STANDALONE
   void GetKey()
   {
-    
+
     if (Input.GetKeyDown(KeyCode.RightArrow))
       ArcadeControlButton.KeyPressed(1);
     if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -46,14 +44,14 @@ public class InputControls : MonoBehaviour
 #endif
   void GetMouseInput()
   {
-    
+
     if (Input.touchCount >= 2)
     {
-      if(m_gameArrows.IsActive)
+      if (m_gameArrows.IsActive)
         m_gameArrows.Disappear();
       return;
     }
-    if (Input.GetMouseButtonDown(0) && CheckClick())
+    if (Input.GetMouseButtonDown(0) && CheckClick(false))
     {
       if (Creator.Player.State == 1) return;
       m_targetPosition = Camera.mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -62,12 +60,12 @@ public class InputControls : MonoBehaviour
       m_gameArrows.transform.position = targetNode.NodeCoords();
       m_hasTarget = true;
 
-      m_gameArrows.transform.localScale=Vector3.one*Camera.main.GetComponent<CameraControls>().CameraSize/10;
+      m_gameArrows.transform.localScale = Vector3.one * Camera.main.GetComponent<CameraControls>().CameraSize / 10;
       m_gameArrows.Appear();
       //Debug.Log("press");
     }
-    
-    if (Input.GetMouseButtonUp(0) && m_hasTarget)
+
+    if (Input.GetMouseButtonUp(0) && CheckClick(true) && m_hasTarget)
     {
       if (Creator.Player.State == 1) return;
       GraphNode x = GraphNode.GetNodeByCoords(m_targetPosition, (int)Creator.Level);
@@ -107,10 +105,10 @@ public class InputControls : MonoBehaviour
 
   void GetScroll()
   {
-    float scaler=0;
-    #if UNITY_EDITOR||UNITY_STANDALONE
+    float scaler = 0;
+#if UNITY_EDITOR||UNITY_STANDALONE
     scaler = Input.GetAxis("MouseScrollWheel");
-    #endif
+#endif
 
 #if UNITY_ANDROID
 
@@ -134,29 +132,25 @@ public class InputControls : MonoBehaviour
       scaler = curDist.magnitude - prevDist.magnitude;
 
 #endif
-      //Debug.Log(scaler);
+    //Debug.Log(scaler);
 
     Camera.main.GetComponent<CameraControls>().OnMouseScrollWheel(scaler);
   }
-
-  void GetNewDirection()
+  bool CheckClick(bool isUp)
   {
-
-
-
-
-  }
-  bool CheckClick()
-  {
-
+    
     GUIElement button = Camera.main.GetComponent<GUILayer>().HitTest(Input.mousePosition);
     if (button != null)
     {
-      GUIButtonControls controls = button.GetComponent<GUIButtonControls>();
+      IButton controls = button.GetComponent<MonoBehaviour>() as IButton;
       if (controls != null)
-        controls.OnPressed();
+        controls.OnPressed(isUp);
+      if (isUp)
+        Armory.HideUpgrades();
       return false;
     }
+    if (isUp)
+      Armory.HideUpgrades();
     return true;
   }
   //TODO

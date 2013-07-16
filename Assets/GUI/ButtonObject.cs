@@ -11,7 +11,7 @@ public abstract class ButtonObject : ScriptableObject
   int m_index;
   GUITexture m_button;
 
-  protected GUITexture Button
+  public GUITexture Button
   {
     get { return m_button; }
     set { m_button = value; }
@@ -32,7 +32,7 @@ public abstract class ButtonObject : ScriptableObject
   protected bool Activated { get; set; }
 
   public abstract Texture2D GetObjectTexture();
-  public abstract void Activate();
+  public abstract void Activate(bool isUp);
   protected virtual void InitGUI(int index)
   {
     if (!Application.isPlaying) return;
@@ -62,7 +62,6 @@ public abstract class ButtonObject : ScriptableObject
   {
     if(m_button!=null)
       Destroy(m_button.gameObject);
-    //Debug.Log("DestroyButton");
   }
   protected abstract void OnLoop();
   public void OnUpdate() { if (Activated) OnLoop(); }

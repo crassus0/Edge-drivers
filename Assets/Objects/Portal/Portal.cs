@@ -29,6 +29,7 @@ public class Portal : CustomObject, IPortalExit
     if (type == InteractType.Stay)
     {
       PlanerCore x = obj as PlanerCore;
+
       if (x != null&&!x.EnteredPortal&&!(x.State==1))
       {
         x.AddUpdateFunc(OnPlanerEnter);

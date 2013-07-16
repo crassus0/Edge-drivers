@@ -60,7 +60,12 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   public MineController MineController
   {
     get { return m_mineController; }
-    set { m_mineController = value; }
+    set 
+    {
+      if (m_mineController != null)
+        Destroy(m_mineController);
+      m_mineController = value; 
+    }
   }
   public int Agility
   {
@@ -182,10 +187,12 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 
   public void Init()
   {
-    //Debug.Log(direction);
+    if(Creator.creator.testBuild)
+      PlayerSaveData.Clear();
     OnUpdate = OnUpdated;
     Interact = OnInteract;
-    EnteredPortal = false;
+    if (!Creator.creator.testBuild) 
+      EnteredPortal = false;
     if (m_initislized) return;
     prevNode = GetNode();
     //	  Debug.Log(m_init);
@@ -334,11 +341,11 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   public float EntityValue(CustomObject entity)
   {
     //const int m_maxWeight = 500;
-    if (entity.Node ==  m_basicAI.Target.node) return 0;
-    if (entity.GetType() == typeof(BasicMine)) return 0.1f;
+    if (entity.GetType() == typeof(BasicMine)) return 5f;
     if (entity.GetType() == typeof(Portal)) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(DistantPortalEnter)) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(WeaponPrototype)) return BasicPlanerAI.MaxWeight;
+    if (entity.GetType() == typeof(RedFireflySpawner)) return BasicPlanerAI.MaxWeight;
     return 0;
   }
   public bool CanRotateWithTag(NodeTag tag)
@@ -348,6 +355,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   public void FireflyDestroy(YellowFirefly firefly)
   {
     firefly.Direction++;
+    EnteredPortal = true;
     OnEnterPortal(m_savedNode, m_savedDirection);
   }
   //TODO

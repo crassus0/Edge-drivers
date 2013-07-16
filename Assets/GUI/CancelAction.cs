@@ -26,8 +26,9 @@ public class CancelAction : ButtonObject
   {
     return "CancelAction";
   }
-  public override void Activate()
+  public override void Activate(bool isUp)
   {
+    if (!isUp) return;
     ParentPlaner.CancelTarget();
   }
 }

@@ -23,7 +23,6 @@ public class YellowFirefly : CustomObject, IAutoMove
   public override void OnStart()
   {
     Direction = m_direction;
-    m_visualiser.GetComponent<CustomObjectVisualiser>().SetSpeed(0.25f);
     OnUpdate = OnUpdated;
     Interact = OnInteract;
     init = true; 

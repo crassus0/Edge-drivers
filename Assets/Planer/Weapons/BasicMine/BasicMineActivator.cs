@@ -5,12 +5,17 @@ public class BasicMineActivator : ButtonObject
 {
   int cooldown = 0;
   int number = -1;
+
   public static GameObject minePrefab;
   public static Texture2D mineTexture;
-  public override void Activate()
+  public bool IsActive { get; set; }
+  public override void Activate(bool isUp)
   {
-    //	Debug.Log(ParentPlaner);
-    //	Debug.Log("hit");
+    if (!isUp)
+    {
+      Armory.ShowUpgrades(Index);
+      return;
+    }
     if (cooldown > 0) return;
     if (number == 0) return;
     //	Debug.Log("hithit");
@@ -20,10 +25,8 @@ public class BasicMineActivator : ButtonObject
     GameObject mine = Instantiate(minePrefab) as GameObject;
     mine.transform.localScale = ParentPlaner.transform.localScale * 0.5f;
     mine.GetComponent<BasicMine>().Init(ParentPlaner);
-    if (HasGUI)
-      Button.guiTexture.color = new Color(1, 0, 0, 1) * 0.5f;
     if (number > 0) number--;
-    cooldown = 3;
+    cooldown = 1;
     Activated = true;
   }
 
@@ -36,9 +39,7 @@ public class BasicMineActivator : ButtonObject
     //Debug.Log("Loop"+ cooldown);
     if (cooldown > 0) cooldown--;
     else Activated = false;
-    if (HasGUI)
-      Button.guiTexture.color = new Color(1, 1 - 0.33333f * cooldown, 1 - 0.33333f * cooldown, 1) * 0.5f;
-
+    
   }
   public override string GetName()
   {

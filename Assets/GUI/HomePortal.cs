@@ -8,9 +8,10 @@ public class HomePortal : ButtonObject
   {
     return homeTexture;
   }
-  public override void Activate ()
+  public override void Activate (bool isUp)
   {
-    if(Application.loadedLevelName=="SafeHouse")
+    if (!isUp) return;
+    if(Creator.creator.SceneName =="SafeHouse")
       Creator.creator.LoadPrev();
     else
       Creator.creator.LoadHome();

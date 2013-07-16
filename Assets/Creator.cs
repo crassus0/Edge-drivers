@@ -79,7 +79,6 @@ public class Creator : MonoBehaviour
 
   public void Start()
   {
-    Debug.Log(m_init);
     if (m_init) return;
     IsLoading = false;
     OnPause = false;

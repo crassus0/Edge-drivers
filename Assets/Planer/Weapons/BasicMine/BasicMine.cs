@@ -13,7 +13,7 @@ public class BasicMine : CustomObject, IFireflyDestroyable
   public void Init(PlanerCore parent)
   {
     //Destroy(GetComponent<CustomObjectEditorSupply>());
-    Node = parent.prevNode;
+    Node = parent.Node;
     gameObject.SetActive(true);
     
     (m_visualiser.GetComponent<BasicMineVisualiser>()).OnInstall(parent);

@@ -51,7 +51,6 @@ public abstract class ButtonObject : ScriptableObject
     Activated = false;
     if (planer == Creator.Player)
     {
-
       m_index = index;
       InitGUI(index);
       m_hasGUI = true;

@@ -121,7 +121,9 @@ public class Creator : MonoBehaviour
       {
         //Debug.Log(x.name);
         m_objects.Add((x as CustomObject));
+        
         (x as CustomObject).gameObject.SetActive(true);
+        (x as CustomObject).SetNode();
         (x as CustomObject).gameObject.transform.parent=transform;
         m_startObjects.Add(x as CustomObject);
       }
@@ -170,6 +172,7 @@ public class Creator : MonoBehaviour
     foreach (CustomObject x in m_addObjects)
       if (x != null)
       {
+        x.SetNode();
         if (!m_objects.Contains(x))
           m_objects.Add(x);
         x.gameObject.SetActive(x.Level == m_energy);
@@ -279,6 +282,7 @@ public class Creator : MonoBehaviour
     
     savedNode=m_player.Node;
     savedDirection=m_player.Direction;
+    GraphNode.ClearAll();
     foreach(CustomObject x in m_objects)
       x.Hidden=true;
     Application.LoadLevel("SafeHouse");
@@ -299,8 +303,12 @@ public class Creator : MonoBehaviour
       if(x.Activate!=null)
         x.Activate();
     }
+    foreach (CustomObject x in prevCreator.m_objects)
+      x.Hidden = false;
+    GraphNode.ClearAll();
     prevCreator.SendMessage("Start");
     prevCreator = null;
+
     Destroy(gameObject);
   }
   void SaveGame()
@@ -320,7 +328,7 @@ public class Creator : MonoBehaviour
   public void SetSpeed(float modifier=1)
   {
     Time.timeScale = modifier/ TurnDuration;
-    //Time.fixedDeltaTime *= 1 / TurnDuration;
+    Time.fixedDeltaTime *= 1 / TurnDuration;
   }
   void OnDestroy()
   {
@@ -328,7 +336,8 @@ public class Creator : MonoBehaviour
     if(m_player!=null)
       m_player.transform.parent=null;
     PreviousLevel = Application.loadedLevelName;
-    GraphNode.ClearAll();
+    if(isMainCreator)
+      GraphNode.ClearAll();
     if(prevCreator!=null&&!prevCreator.isMainCreator)
       Destroy( prevCreator.gameObject);
     try

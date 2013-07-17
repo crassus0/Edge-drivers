@@ -1,15 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class CustomObjectVisualiser : MonoBehaviour 
+public class CustomObjectVisualiser : MonoBehaviour
 {
 
-  public virtual void SetSpeed(float speed)
+
+  public void SetSpeed(int counts)
   {
-    foreach (AnimationState x in animation)
-    {
-      x.speed = speed;
-    }
+    if (animation != null)
+      foreach (AnimationState x in animation)
+      {
+        x.layer = counts;
+        x.normalizedSpeed = (4 / (counts * x.length));
+      }
   }
-  
 }

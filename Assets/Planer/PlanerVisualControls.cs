@@ -12,19 +12,15 @@ public class PlanerVisualControls : CustomObjectVisualiser
   public void Init(PlanerCore parent)
   {
     m_parentPlaner = parent;
-    SetSpeed(1);
+
   }
-  public override void SetSpeed(float speed)
-  {
-    foreach (AnimationState x in animation)
-    {
-      x.speed = 0.5f*speed;
-    }
-  }
+
   public void Move(int rotation)
   {
+    
     string anim = "MoveR" + rotation + "I" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
-    //	Debug.Log(anim);
+    //Debug.Log("Planer");
+    //Debug.Log(animation[anim].normalizedSpeed);
     animation.Play(anim);
     //animation[anim].speed = 1/Creator.turnDuration;
   }

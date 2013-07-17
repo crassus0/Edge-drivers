@@ -31,6 +31,7 @@ public class ObjectSpawner : CustomObject
       if (prefab != null)
       {
         GameObject x = Instantiate(prefab) as GameObject;
+        x.name = x.name.Replace("Prefab(Clone)", "");
         CustomObject y = x.GetComponent<CustomObject>();
         y.Node = Node;
         x.SetActive(true);

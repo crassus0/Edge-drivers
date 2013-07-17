@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 public class YellowFirefly : CustomObject, IAutoMove
 {
-  bool init = false;
+  
   public int Direction
   {
     get { return m_direction; }
@@ -25,11 +25,11 @@ public class YellowFirefly : CustomObject, IAutoMove
     Direction = m_direction;
     OnUpdate = OnUpdated;
     Interact = OnInteract;
-    init = true; 
+    
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
-    if (type == InteractType.Stay||!init) return;
+    if (type == InteractType.Stay) return;
     
     DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null)
@@ -46,6 +46,7 @@ public class YellowFirefly : CustomObject, IAutoMove
   }
   void OnUpdated()
   {
+
     Move();
   }
   public void Move()

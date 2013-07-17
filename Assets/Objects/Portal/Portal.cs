@@ -7,7 +7,6 @@ using System;
 public class Portal : CustomObject, IPortalExit
 {
   public Portal PairPortal;
-  bool m_awaken;
   public int Direction
   {
     get{return m_direction;}
@@ -17,8 +16,7 @@ public class Portal : CustomObject, IPortalExit
   int m_direction=-1;
   public override void OnStart()
   {
-    if (m_awaken) return;
-    m_awaken = true;
+
     Interact = OnInteract;
     
   }

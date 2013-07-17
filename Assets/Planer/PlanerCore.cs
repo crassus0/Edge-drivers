@@ -26,7 +26,19 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   int m_hitPoints;
   static readonly int maxHp = 1;
   int m_regenCooldown;
-  public int State{get;set;}
+  public int State
+  {
+    get { return m_state;}
+    set
+    {
+      m_state=value;
+      if (m_state == 1)
+        m_visualiser.GetComponent<PlanerVisualControls>().SetSpeed(2);
+      if (m_state == 0)
+        m_visualiser.GetComponent<PlanerVisualControls>().SetSpeed(4);
+    }
+  }
+  int m_state=0;
   bool m_renewedUpdater = false;
   public bool EnteredPortal;// { get; set; }
   public bool HasTarget
@@ -58,13 +70,18 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   }
   public PlanerVisualControls Visualiser
   {
-    get { return m_visualiser.GetComponent<PlanerVisualControls>(); }
+    get
+    {
+
+      return m_visualiser.GetComponent<PlanerVisualControls>();
+    }
   }
   public MineController MineController
   {
     get { return m_mineController; }
     set 
     {
+
       if (m_mineController != null)
         Destroy(m_mineController);
       m_mineController = value; 
@@ -190,8 +207,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 
   public void Init()
   {
-    if(Creator.creator.testBuild)
-      PlayerSaveData.Clear();
+    
+    PlayerSaveData.Clear();
     OnUpdate = OnUpdated;
     Interact = OnInteract;
     if (!Creator.creator.testBuild) 
@@ -226,8 +243,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     m_cancelAction.Init(this, 0);
     m_homePortal=ScriptableObject.CreateInstance<HomePortal>();
     m_homePortal.Init(this,1);
-    m_mineController = ScriptableObject.CreateInstance<MineController>();
-    m_mineController.Init(this);
+    MineController = ScriptableObject.CreateInstance<MineController>();
+    MineController.Init(this);
   }
   public void CutInterface()
   {

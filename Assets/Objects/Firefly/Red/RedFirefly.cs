@@ -18,8 +18,6 @@ public class RedFirefly : ScriptableObject
     m_planer.Visualiser.body.renderer.material.color = Color.red;
     planer.AddUpdateFunc(UpdatePlaner);
     planer.State=1;
-    
-    planer.m_visualiser.GetComponent<PlanerVisualControls>().SetSpeed(2);
     planer.CutInterface();
     planer.Interact = OnInteract;
     AddButtons();
@@ -46,7 +44,6 @@ public class RedFirefly : ScriptableObject
   {
     m_planer.RemoveUpdateFunc(UpdatePlaner);
     m_planer.State = 0;
-    m_planer.m_visualiser.GetComponent<PlanerVisualControls>().SetSpeed(1);
     m_planer.InitInterface();
     m_planer.Visualiser.body.renderer.material = defaultPlanerMaterial;
     m_planer.DefaultInteract();

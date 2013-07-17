@@ -6,10 +6,10 @@ using System;
 [RequireComponent(typeof(CustomObjectEditorSupply))]
 public abstract class CustomObject : MonoBehaviour
 {
-  
+
   public GameObject m_visualiser;
   public ObjectType Type { get; set; }
-  public bool Hidden{get; set;}
+  public bool Hidden { get; set; }
   public abstract void OnStart();
   public bool Destroyed { get; set; }
 
@@ -37,7 +37,7 @@ public abstract class CustomObject : MonoBehaviour
     }
     set
     {
-      
+
       if (value == null) return;
       if (node != null)
         node.Leave(this);
@@ -51,7 +51,7 @@ public abstract class CustomObject : MonoBehaviour
   }
   //[HideInInspector]
   [SerializeField]
-  GraphNode node=new GraphNode();
+  GraphNode node = new GraphNode();
 
   //public abstract void OnStart();
   public GraphNode GetNode()
@@ -60,25 +60,22 @@ public abstract class CustomObject : MonoBehaviour
     return node;
   }
   public Action OnUpdate;
-  
+
   //protected void OnStart(){}
   protected void Awake()
   {
-    
+
     if (m_init) return;
-    try
-    {
-      Node = GraphNode.GetNodeByParameters(node.X, node.Y, node.Index, node.Level);
-    }
-    catch (System.Exception x)
-    {
-      Debug.Log(x);
-      Debug.Log(name);
-    }
+    if (m_visualiser != null && m_visualiser.GetComponent<CustomObjectVisualiser>())
+      m_visualiser.GetComponent<CustomObjectVisualiser>().SetSpeed(GetStepCount());
     Creator.AddObject(this);
     m_init = true;
   }
+  public void SetNode()
+  {
+    Node = GraphNode.GetNodeByParameters(node.X, node.Y, node.Index, node.Level);
 
+  }
   protected void OnDestroy()
   {
     if (Application.isPlaying)
@@ -90,7 +87,7 @@ public abstract class CustomObject : MonoBehaviour
 
   }
   public Action<CustomObject, InteractType> Interact;
-  public Action Activate; 
+  public Action Activate;
   public void Move(int direction)
   {
     if (direction < 6)
@@ -103,7 +100,6 @@ public abstract class CustomObject : MonoBehaviour
 
   protected void OnDrawGizmos()
   {
-    //GameObject targetObject = (target as PlanerCore).gameObject;
     Gizmos.color = new Color(0, 0, 0, 0);
     Gizmos.DrawSphere(transform.position, 20);
   }

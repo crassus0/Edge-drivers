@@ -12,6 +12,7 @@ public class YellowFireflySpawner : ObjectSpawner
   }
   protected override void OnUpdated()
   {
+
     base.OnUpdated();
     if (step == 1)
     {

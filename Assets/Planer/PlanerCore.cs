@@ -23,6 +23,9 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   Action<IPlanerLike> m_updateFunc;
   CancelAction m_cancelAction;
   HomePortal m_homePortal;
+  int m_hitPoints;
+  static readonly int maxHp = 1;
+  int m_regenCooldown;
   public int State{get;set;}
   bool m_renewedUpdater = false;
   public bool EnteredPortal;// { get; set; }
@@ -203,7 +206,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     PlanerMoveControls.MoveParameters moveParameters;
     moveParameters.agility = agility;
     moveParameters.direction = direction;
-
+    
     m_moveControls.Initialize(this, moveParameters);
     m_basicAI = ScriptableObject.CreateInstance<BasicPlanerAI>();
     m_basicAI.Init(this);
@@ -252,6 +255,13 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   }
   void OnUpdated()
   {
+    if (m_regenCooldown == 0 && m_hitPoints != maxHp)
+    {
+      m_hitPoints = maxHp;
+      Creator.creator.SetSpeed();
+    }
+    else
+      m_regenCooldown--;
     EnteredPortal = false;
     if (m_updateFunc != null)
       m_updateFunc(this);
@@ -355,8 +365,18 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   public void FireflyDestroy(YellowFirefly firefly)
   {
     firefly.Direction++;
-    EnteredPortal = true;
-    OnEnterPortal(m_savedNode, m_savedDirection);
+    //SetNewDirection(Direction - 1, true);
+    if (m_hitPoints == 0)
+    {
+      EnteredPortal = true;
+      OnEnterPortal(m_savedNode, m_savedDirection);
+    }
+    else
+    {
+      m_hitPoints--;
+      m_regenCooldown = 10;
+      Creator.creator.SetSpeed(0.5f);
+    }
   }
   //TODO
 }

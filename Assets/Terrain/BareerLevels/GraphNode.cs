@@ -30,6 +30,7 @@ public class GraphNode : System.IComparable<GraphNode>
   public int Index { get { return m_index; } }
   public int X { get { return m_i; } }
   public int Y { get { return m_j; } }
+
   static List<GraphNode> s_usedNodes;
   static HashSet<CustomObject> s_interact;
   

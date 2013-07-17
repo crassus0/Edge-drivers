@@ -317,10 +317,10 @@ public class Creator : MonoBehaviour
     return t;
     
   }
-  void SetSpeed()
+  public void SetSpeed(float modifier=1)
   {
-    Time.timeScale = 1/ TurnDuration;
-    Time.fixedDeltaTime *= 1 / TurnDuration;
+    Time.timeScale = modifier/ TurnDuration;
+    //Time.fixedDeltaTime *= 1 / TurnDuration;
   }
   void OnDestroy()
   {

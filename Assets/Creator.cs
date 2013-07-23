@@ -157,8 +157,6 @@ public class Creator : MonoBehaviour
           x.gameObject.SetActive(x.Level == newEnergy);
         }
       m_energy = newEnergy;
-      if (m_energy > 2)
-        m_energy = 2;
       TurnDuration = levels[newEnergy].MovePhaseDuration;
       m_pauseTime = levels[newEnergy].SelectionPhaseDuration;
       m_phaseType = levels[newEnergy].SelectionPhaseType;

@@ -117,11 +117,9 @@ public class Creator : MonoBehaviour
     foreach (UnityEngine.Object x in customObjects)
     {
       //Debug.Log(x.name);
-      if (!x.name.Contains("Prefab")&&!(x as CustomObject).Hidden)
+      if (!x.name.Contains("Prefab")&&!(x as CustomObject).Hidden&&!(x as CustomObject).Destroyed)
       {
-        //Debug.Log(x.name);
         m_objects.Add((x as CustomObject));
-        
         (x as CustomObject).gameObject.SetActive(true);
         (x as CustomObject).SetNode();
         (x as CustomObject).gameObject.transform.parent=transform;
@@ -295,6 +293,18 @@ public class Creator : MonoBehaviour
     m_player.Node=savedNode;
     m_player.SetNewDirection(savedDirection, true);
     m_player.transform.parent=prevCreator.transform;
+    foreach(CustomObject x in m_objects)
+    {
+      if(!ReferenceEquals( m_player, x))
+      {
+        Destroy(x.gameObject);
+        x.Destroyed=true; 
+      }
+    }
+    foreach(BareerLevelControls x in levels)
+    {
+      Destroy(x.gameObject);
+    }
     foreach(CustomObject x in prevCreator.m_objects)
     {
       x.Hidden=false;

@@ -23,8 +23,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   Action<IPlanerLike> m_updateFunc;
   CancelAction m_cancelAction;
   HomePortal m_homePortal;
-  int m_hitPoints;
-  static readonly int maxHp = 1;
+  int m_hitPoints=maxHp;
+  static readonly int maxHp = 3;
   int m_regenCooldown;
   public int State
   {
@@ -227,7 +227,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     m_moveControls.Initialize(this, moveParameters);
     m_basicAI = ScriptableObject.CreateInstance<BasicPlanerAI>();
     m_basicAI.Init(this);
-    
+    Agility=3-m_hitPoints;
     //Debug.Log(m_initislized);
     (m_visualiser.GetComponent<PlanerVisualControls>()).Init(this);
     //m_visualiser.Init(this);
@@ -274,8 +274,10 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     if (m_regenCooldown == 0 && m_hitPoints != maxHp)
     {
-      m_hitPoints = maxHp;
-      Creator.creator.SetSpeed();
+      m_hitPoints++;
+      Agility=3-m_hitPoints;
+      m_regenCooldown = 10;
+      Creator.creator.SetSpeed(1-0.3f*Agility);
     }
     else
       m_regenCooldown--;
@@ -383,7 +385,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     firefly.Direction++;
     //SetNewDirection(Direction - 1, true);
-    if (m_hitPoints == 0)
+    if (m_hitPoints == 1)
     {
       EnteredPortal = true;
       OnEnterPortal(m_savedNode, m_savedDirection);
@@ -391,8 +393,9 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     else
     {
       m_hitPoints--;
+      Agility=3-m_hitPoints;
       m_regenCooldown = 10;
-      Creator.creator.SetSpeed(0.5f);
+      Creator.creator.SetSpeed(1-0.3f*Agility);
     }
   }
   //TODO

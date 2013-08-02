@@ -17,7 +17,7 @@ public class PlanerMoveControls : ScriptableObject
     set 
     {
       m_agility = value;
-      m_maxRotationAngle = (6 - m_agility) / 3 + 1;
+      m_maxRotationAngle = (2 - m_agility) + 1;
     }
   }
   public int Direction

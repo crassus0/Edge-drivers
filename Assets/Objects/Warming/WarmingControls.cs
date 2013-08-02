@@ -76,7 +76,7 @@ public class WarmingControls : CustomObject, IPlanerLike
   {
     //Debug.Log("move");
     if (isEaten)
-      Destroy(gameObject);
+      Creator.DestroyObject(this);
     m_ai.OnUpdate();
     int index = (Node.Index + Direction % 2) % 2;
     while (GraphTagMachine.GetDirections(Node)[m_direction]==WayStatus.Blocked)
@@ -134,14 +134,12 @@ public class WarmingControls : CustomObject, IPlanerLike
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
-    if (Destroyed) return;
     if (type == InteractType.Enter)
     {
       WarmingHole x = obj as WarmingHole;
       if (x != null && !m_ai.HasTarget)
       {
-        Destroyed = true;
-        Destroy(gameObject);
+        Creator.DestroyObject(this);
       }
     }
   }

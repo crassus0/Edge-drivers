@@ -22,8 +22,8 @@ public class GlobalMapPortal : DistantPortalEnter
     {
       foreach (TerraformingMine x in m_path)
       {
-        if(x!=null)
-          Destroy(x.gameObject);
+        if (x != null)
+          Creator.DestroyObject(x);
       }
       
     }

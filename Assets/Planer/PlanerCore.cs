@@ -198,16 +198,12 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     if (!m_initislized) return;
   }
-  public void DestroyPlaner()
-  {
-
-    Destroy(this.gameObject);
-  }
 
 
   public void Init()
   {
-    
+    for (int i = 0; i < transform.GetChildCount(); i++)
+      DontDestroyOnLoad(transform.GetChild(i).gameObject);
     PlayerSaveData.Clear();
     OnUpdate = OnUpdated;
     Interact = OnInteract;
@@ -372,7 +368,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     //const int m_maxWeight = 500;
     if (entity.GetType() == typeof(BasicMine)) return 5f;
     if (entity.GetType() == typeof(Portal)) return BasicPlanerAI.MaxWeight;
-    if (entity.GetType() == typeof(DistantPortalEnter)) return BasicPlanerAI.MaxWeight;
+    if (entity.GetType() == typeof(DistantPortalEnter)&&(entity as DistantPortalEnter).Status>0) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(WeaponPrototype)) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(RedFireflySpawner)) return BasicPlanerAI.MaxWeight;
     return 0;

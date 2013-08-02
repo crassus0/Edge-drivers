@@ -53,7 +53,7 @@ public class DistantPortalEnter : CustomObject
           }
           else
           {
-            Destroy(x.gameObject);
+            Creator.DestroyObject(x);
           }
       }
     }

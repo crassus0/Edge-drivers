@@ -14,7 +14,12 @@ public class Creator : MonoBehaviour
   public bool testBuild = false;
   public IPortalExit testEnter 
   {
-    get { return testPortal.GetComponent<CustomObject>() as IPortalExit; }
+    get 
+    {
+      if(testPortal!=null)
+        return testPortal.GetComponent<CustomObject>() as IPortalExit;
+      return null;
+    }
   }
   bool m_safeHouse = false;
   public string SceneName { get; set; }
@@ -186,7 +191,14 @@ public class Creator : MonoBehaviour
     foreach (CustomObject x in m_removeObjects)
       if (x != null)
       {
-        m_objects.Remove(x);
+        
+        if(m_objects.Contains(x))
+        {
+          m_objects.Remove(x);
+          x.Node.LeaveImmidiately(x);
+          Destroy(x.gameObject);
+
+        }
       }
 
     m_removeObjects.Clear();
@@ -257,7 +269,7 @@ public class Creator : MonoBehaviour
     // if(m_init)
     // 
   }
-  public static void RemoveObject(CustomObject obj)
+  public static void DestroyObject(CustomObject obj)
   {
     if (creator.m_removeObjects == null)
       creator.m_removeObjects = new HashSet<CustomObject>();

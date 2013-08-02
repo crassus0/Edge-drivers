@@ -34,9 +34,10 @@ public class YellowFirefly : CustomObject, IAutoMove
     DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null)
     {
+      if (x.Status == 0) return;
       if(x.Status==2)
         x.Status = 3;
-      Destroy(gameObject);
+      Creator.DestroyObject(this);
     }
     IFireflyDestroyable dest = obj as IFireflyDestroyable;
     if (dest != null&&!obj.Destroyed)
@@ -54,7 +55,7 @@ public class YellowFirefly : CustomObject, IAutoMove
     Move(Direction);
     (m_visualiser.GetComponent<FireflyVisualiser>()).Move((Node.Index+Direction % 2)%2);
     if (Camera.main.WorldToViewportPoint(transform.position).magnitude > 4 && !Node.IsOnField())
-      Destroy(gameObject);
+      Creator.DestroyObject(this);
   }
   public bool CanRotateWithTag(NodeTag tag)
   {

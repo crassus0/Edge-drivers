@@ -17,6 +17,13 @@ public abstract class CustomObject : MonoBehaviour
   {
     return 4;
   }
+  public new static void Destroy(UnityEngine.Object obj)
+  {
+    //Debug.Log(obj);
+    if (obj as GameObject != null&&(obj as GameObject).GetComponent<CustomObject>()!=null)
+      throw new Exception("Custom object destroy exeption. Use Creator.Destroy instead.");
+    UnityEngine.Object.Destroy(obj);
+  }
   public int Level
   {
     get
@@ -82,7 +89,7 @@ public abstract class CustomObject : MonoBehaviour
     {
       if (node != null)
         node.Leave(this);
-      Creator.RemoveObject(this);
+      
     }
 
   }

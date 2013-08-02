@@ -192,9 +192,12 @@ public class GraphNode : System.IComparable<GraphNode>
   }
   public void Leave(CustomObject leavingObject)
   {
-
-    if (m_objects != null)
+    if (m_objects != null) 
       m_toLeave.Add(leavingObject);
+  }
+  public void LeaveImmidiately(CustomObject leavingObject)
+  {
+    m_objects.Remove(leavingObject);
   }
   public bool HasObjectOfType(System.Type type)
   {

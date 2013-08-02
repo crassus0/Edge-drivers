@@ -8,7 +8,7 @@ public class Whirlwind : CustomObject
   {
     if (Node.Tag != NodeTag.None)
     {
-      Destroy(gameObject);
+      Creator.DestroyObject(this);
       return;
     }
     Node.Tag = NodeTag.Whirlwind;

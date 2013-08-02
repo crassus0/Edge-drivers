@@ -36,7 +36,8 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable
       OnUpdate = null;
     if (steps-- == 0)
     {
-      Destroy(gameObject);
+      Creator.DestroyObject(this);
+
     }
   }
   new void OnDestroy()
@@ -91,7 +92,9 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable
     newFirefly.Direction--;
     firefly.Direction++;
     Interact = null;
-    Destroy(gameObject);
-    Destroyed = true;
+
+      Creator.DestroyObject(this);
+
+
   }
 }

@@ -116,9 +116,10 @@ public static class PlayerSaveData
   static void EnterPortal(PlanerCore planer)
   {
     IPortalExit enter = Creator.creator.defaultPortal;
-    if (Creator.creator.testBuild && Application.isEditor && Creator.creator.testEnter != null)
+    if (Creator.creator.testBuild && Application.isEditor )
     {
-      enter = Creator.creator.testEnter;
+      if(Creator.creator.testEnter != null)
+        enter = Creator.creator.testEnter;
       planer.EnteredPortal = true;
     }
 

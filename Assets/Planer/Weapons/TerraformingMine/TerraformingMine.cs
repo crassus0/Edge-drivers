@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TerraformingMine : CustomObject, IFireflyDestroyable
+public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatable
 {
   public int steps = -1;
   public byte[] states= new byte[3];
@@ -9,7 +9,14 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable
   byte[] m_prevState;
   public bool visible = true;
   bool m_initialized = false;
-  
+  public bool ActivateOnStart
+  { 
+    get { return m_activateOnStart;}
+    set { m_activateOnStart=value;}
+  }
+  [SerializeField]
+  bool m_activateOnStart;
+
   public override void OnStart()
   {
     if (!m_initialized)
@@ -19,16 +26,33 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable
       if (!visible)
         Destroy(transform.GetChild(0).gameObject);
       OnUpdate = OnUpdated;
-      Activate = OnActivate;
-      Activate();
+      if(ActivateOnStart)
+        Activate();
+			ActivateOnStart=false;
     }
 	}
-  void OnActivate()
+  public void Activate()
   {
 
+    if (Destroyed) return;
     m_prevState = Node.GetNodeGraph();
 
     Node.ChangeState(states, Creator.creator.levels);
+  }
+  public void Deactivate()
+  {
+		
+    if (ActivateOnStart && !Destroyed) return;
+    if (m_prevState != null)
+    {
+      Node.ChangeState(m_prevState, Creator.creator.levels, true);
+
+    }
+    Node.Reactivate();
+    foreach (GraphNode x in Node.GetAdjacent())
+    {
+      x.Reactivate();
+    }
   }
   void OnUpdated()
   {
@@ -43,18 +67,12 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable
   new void OnDestroy()
   {
     if (Creator.IsLoading) return;
+    Destroyed = true;
     base.OnDestroy();
-    Activate = null;
+    //Activate = null;
     //Debug.Log(Application.loadedLevelName);
-    
-    if (m_prevState != null)
-    {
-      Node.ChangeState(m_prevState, Creator.creator.levels, true);
+    Deactivate();
 
-    }
-    Node.Reactivate();
-    foreach(GraphNode x in Node.GetAdjacent())
-      x.Reactivate();
   }
   protected new void OnDrawGizmos()
   {
@@ -92,9 +110,6 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable
     newFirefly.Direction--;
     firefly.Direction++;
     Interact = null;
-
-      Creator.DestroyObject(this);
-
-
+    Creator.DestroyObject(this);
   }
 }

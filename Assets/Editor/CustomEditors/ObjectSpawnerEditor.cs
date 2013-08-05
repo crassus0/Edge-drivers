@@ -25,7 +25,7 @@ public class ObjectSpawnerEditor : Editor
   public override void OnInspectorGUI()
   {
     
-    targ.cooldown = EditorGUILayout.IntField("Cooldown", targ.cooldown);
+    targ.cooldown = EditorGUILayout.IntSlider("Cooldown", targ.cooldown, 0, 10);
     int[] arr = new int[m_names.Length];
     for (int i = 0; i < arr.Length; i++)
       arr[i] = i;

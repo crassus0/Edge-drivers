@@ -94,7 +94,6 @@ public abstract class CustomObject : MonoBehaviour
 
   }
   public Action<CustomObject, InteractType> Interact;
-  public Action Activate;
   public void Move(int direction)
   {
     if (direction < 6)

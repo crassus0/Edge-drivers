@@ -26,6 +26,7 @@ public class TerraformingMineEditor:Editor
     }
     
     targ.steps = EditorGUILayout.IntSlider("Steps", targ.steps, -1, 50);
+    targ.ActivateOnStart = EditorGUILayout.Toggle("Activate on start", targ.ActivateOnStart);
   }
 }
 

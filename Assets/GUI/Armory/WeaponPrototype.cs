@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class WeaponPrototype : CustomObject
+public class WeaponPrototype : CustomObject, IActivatable
 {
   public string UpgradeName{get;set;}
   public int IsActive { get; set; }
+  public bool ActivateOnStart { get { return false; } }
   public override void OnStart()
   {
     Interact = OnInteract;
@@ -26,7 +27,7 @@ public class WeaponPrototype : CustomObject
       }
     }
   }
-  public void OnActivate()
+  public void Activate()
   {
 
     IsActive = 1;

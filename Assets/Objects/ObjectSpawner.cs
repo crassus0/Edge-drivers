@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode()]
-public class ObjectSpawner : CustomObject
+public class ObjectSpawner : CustomObject, IActivatable
 {
   public GameObject prefab;
   protected int step=0;
@@ -16,29 +16,40 @@ public class ObjectSpawner : CustomObject
         m_direction += 6;
     }
   }
+  public bool ActivateOnStart { get { return false; } }
   [SerializeField]
   int m_direction;
   public override void OnStart()
   {
-    OnUpdate = OnUpdated;
+    if(cooldown>0)
+      OnUpdate = OnUpdated;
     //throw new System.NotImplementedException();
   }
   protected virtual void OnUpdated()
   {
+    if (prefab == null) return;
     if (!Node.HasObjectOfType(prefab.GetComponent<CustomObject>().GetType() )&&--step<=0)
     {
-      
-      if (prefab != null)
-      {
-        GameObject x = Instantiate(prefab) as GameObject;
-        x.name = x.name.Replace("Prefab(Clone)", "");
-        CustomObject y = x.GetComponent<CustomObject>();
-        y.Node = Node;
-        x.SetActive(true);
-        if (y as IAutoMove != null)
-          (y as IAutoMove).Direction = Direction;
-      }
+
+      Spawn();
       step = cooldown;
+    }
+  }
+  public void Activate()
+  {
+    Spawn();
+  }
+  void Spawn()
+  {
+    if (prefab != null)
+    {
+      GameObject x = Instantiate(prefab) as GameObject;
+      x.name = x.name.Replace("Prefab(Clone)", "");
+      CustomObject y = x.GetComponent<CustomObject>();
+      y.Node = Node;
+      x.SetActive(true);
+      if (y as IAutoMove != null)
+        (y as IAutoMove).Direction = Direction;
     }
   }
   protected new void OnDrawGizmos()

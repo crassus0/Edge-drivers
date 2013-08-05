@@ -124,6 +124,7 @@ public class Creator : MonoBehaviour
       //Debug.Log(x.name);
       if (!x.name.Contains("Prefab")&&!(x as CustomObject).Hidden&&!(x as CustomObject).Destroyed)
       {
+				
         m_objects.Add((x as CustomObject));
         (x as CustomObject).gameObject.SetActive(true);
         (x as CustomObject).SetNode();
@@ -131,6 +132,7 @@ public class Creator : MonoBehaviour
         m_startObjects.Add(x as CustomObject);
       }
     }
+		GraphNode.InteractAll();
     m_energy = -1;
     SwitchLevel();
     m_turnTime = levels[m_energy].SelectionPhaseDuration;
@@ -212,7 +214,7 @@ public class Creator : MonoBehaviour
       return;
     }
     UpdateObjectList();
-    GraphNode.InteractAll();
+    
     if (OnPause) return;
     Camera.main.GetComponent<CameraControls>().SetNewTargetPosition(m_player.Visualiser.transform.position, m_player.Level, m_turnDuration);
     if (m_turnTime >= 0)
@@ -240,8 +242,8 @@ public class Creator : MonoBehaviour
       {
         x.OnUpdate();
       }
-    
 
+    GraphNode.InteractAll();
     SwitchLevel();
   }
   public void RenewTurnTime()
@@ -320,8 +322,9 @@ public class Creator : MonoBehaviour
     foreach(CustomObject x in prevCreator.m_objects)
     {
       x.Hidden=false;
-      if(x.Activate!=null)
-        x.Activate();
+      IActivatable y = x as IActivatable;
+      if (y != null && y.ActivateOnStart)
+        y.Activate();
     }
     foreach (CustomObject x in prevCreator.m_objects)
       x.Hidden = false;

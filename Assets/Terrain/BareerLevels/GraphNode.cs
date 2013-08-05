@@ -31,7 +31,7 @@ public class GraphNode : System.IComparable<GraphNode>
   public int X { get { return m_i; } }
   public int Y { get { return m_j; } }
 
-  static List<GraphNode> s_usedNodes;
+  public static List<GraphNode> s_usedNodes;
   static HashSet<CustomObject> s_interact;
   
   public static readonly float graphDistance = 32 / Mathf.Sqrt(3);
@@ -55,7 +55,7 @@ public class GraphNode : System.IComparable<GraphNode>
   {
     s_interact.Clear();
     s_usedNodes.Clear();
-  }
+	}
   public bool IsOnField()
   {
 
@@ -114,9 +114,9 @@ public class GraphNode : System.IComparable<GraphNode>
     {
       foreach (CustomObject x in m_objects)
       {
-
-        if (x.Activate != null)
-          x.Activate();
+        IActivatable y = x as IActivatable;
+        if (y != null&&y.ActivateOnStart)
+          y.Activate();
       }
     }
   }
@@ -201,10 +201,9 @@ public class GraphNode : System.IComparable<GraphNode>
   }
   public bool HasObjectOfType(System.Type type)
   {
-
     foreach (CustomObject x in m_objects)
     {
-      if (type.IsInstanceOfType(x))
+      if (x.GetType().IsAssignableFrom(type))
         return true;
     }
 
@@ -429,9 +428,9 @@ public class GraphNode : System.IComparable<GraphNode>
 
   public GraphNode[] GetAdjacent()
   {
-    if (adjacent[0] == null)
-      adjacent[0] = GetNodeByParameters(m_i, m_j, 1 - m_index, m_level);
-   
+    
+    adjacent[0] = GetNodeByParameters(m_i, m_j, 1 - m_index, m_level);
+       
     int j = m_j;
     int i = m_i - Utility.Mod2(m_j);
     j += (2 * m_index - 1);

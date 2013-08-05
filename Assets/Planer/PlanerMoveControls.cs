@@ -10,7 +10,7 @@ public class PlanerMoveControls : ScriptableObject
   int m_maxRotationAngle;
   int m_rotationAngle = 0;
   public bool isHit=false;
-
+	bool m_stay=false;
   public int Agility
   {
     get { return m_agility; }
@@ -58,7 +58,11 @@ public class PlanerMoveControls : ScriptableObject
     int rotatedAngle = m_rotationAngle;
     ApplyRotation();
     WayStatus[] directions = GraphTagMachine.GetDirections(m_planer.GetNode());
-    if (directions[m_direction]==WayStatus.Free)
+    if(m_agility==0&&m_stay)
+		{
+       m_planer.Visualiser.Stay();
+		}
+		else if (directions[m_direction]==WayStatus.Free)
     {
       //		Debug.Log(m_hiroscope+","+rotated);
       m_planer.Move(m_direction);
@@ -77,6 +81,8 @@ public class PlanerMoveControls : ScriptableObject
       m_planer.transform.Rotate(new Vector3(0, -60 * m_direction, 0));
       m_planer.Visualiser.Hit(rotatedAngle);
     }
+		m_stay=false;
+		
   }
   public bool[] Directions()
   {
@@ -115,7 +121,15 @@ public class PlanerMoveControls : ScriptableObject
     if (Mathf.Abs(m_rotationAngle) > m_maxRotationAngle)
       m_rotationAngle = (int)(m_maxRotationAngle * Mathf.Sign(m_rotationAngle));
   }
-
+	public void Stay()
+	{
+		int ang=3;
+//		Debug.Log("sasd");
+		if((m_planer.GetNode().Index + m_planer.Direction % 2) % 2==1)
+			ang=-3;
+    Rotate(ang);
+    m_stay=true;
+	}
   void ApplyRotation()
   {
     m_direction += m_rotationAngle;

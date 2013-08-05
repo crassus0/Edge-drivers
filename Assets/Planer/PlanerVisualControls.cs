@@ -17,8 +17,12 @@ public class PlanerVisualControls : CustomObjectVisualiser
 
   public void Move(int rotation)
   {
-    
-    string anim = "MoveR" + rotation + "I" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
+		int index=(m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
+    if(rotation==-3)
+		{
+			rotation=3;
+		}
+    string anim = "MoveR" + rotation + "I" + index;
     //Debug.Log("Planer");
     //Debug.Log(animation[anim].normalizedSpeed);
     animation.Play(anim);
@@ -29,6 +33,11 @@ public class PlanerVisualControls : CustomObjectVisualiser
     string anim = "HitR" + rotation + "I" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
     animation.Play(anim);
   }
+	public void Stay()
+	{
+		string anim = "StayI" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
+		animation.Play(anim);
+	}
   public void OnHit()
   {
     if (m_isHit)

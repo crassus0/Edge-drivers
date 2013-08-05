@@ -14,6 +14,7 @@ public class Initializer : MonoBehaviour {
   public Texture2D homePortalTexture;
   public Texture2D[] arcadeRotateButtons;
   public Texture2D leftTerraformingMineIcon;
+	public Texture2D stayButtonTexture;
 	void Awake () 
 	{
     Armory.weaponPrototypePrefab = weaponIconPrefab;
@@ -27,6 +28,7 @@ public class Initializer : MonoBehaviour {
     ArcadeControlButton.arcadeControlsTexture = arcadeRotateButtons;
     LeftTerraformingMine.minePrefab = terraformingMinePrefab;
     LeftTerraformingMine.mineTexture = leftTerraformingMineIcon;
+		StayButton.objectTexture=stayButtonTexture;
 	}
 
 	//TODO

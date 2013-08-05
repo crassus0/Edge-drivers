@@ -23,6 +23,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   Action<IPlanerLike> m_updateFunc;
   CancelAction m_cancelAction;
   HomePortal m_homePortal;
+	StayButton m_stayButton;
   int m_hitPoints=maxHp;
   static readonly int maxHp = 3;
   int m_regenCooldown;
@@ -229,7 +230,10 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     //m_visualiser.Init(this);
     //	  GetComponent<Catcher>().Init(this);
     m_initislized = true;
-   
+		Vector3 newPosition=new Vector3(0,0,-0.5773503f);
+		if((Node.Index +Direction % 2) % 2==1)
+			newPosition.z=-newPosition.z;
+    m_visualiser.transform.localPosition=newPosition;
     //Debug.Log(m_initislized);
 
   }
@@ -239,6 +243,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     m_cancelAction.Init(this, 0);
     m_homePortal=ScriptableObject.CreateInstance<HomePortal>();
     m_homePortal.Init(this,1);
+		m_stayButton=ScriptableObject.CreateInstance<StayButton>();
+		m_stayButton.Init(this,2);
     MineController = ScriptableObject.CreateInstance<MineController>();
     MineController.Init(this);
   }
@@ -248,6 +254,12 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     Destroy(m_homePortal);
     Destroy(m_mineController);
   }
+	public void Stay()
+	{
+		m_moveControls.Stay();
+		HasTarget=true;
+		
+	}
   public void SetTarget(GraphNode x, int angle)
   {
     if (!Node.Equals(x))
@@ -262,7 +274,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   }
   bool HasAction()
   {
-    //Debug.Log(State);
     if (State == 1) return true;
     return m_basicAI.HasTarget || m_hasTarget;
   }
@@ -338,14 +349,12 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   }
   void OnInteract(CustomObject obj, InteractType type)
   {
-    
       WarmingControls warm = obj as WarmingControls;
       if (warm != null&&!warm.isEaten)
       {
         AddConcentration(warm.m_warmingConcentration);
         warm.isEaten = true;
       }
-    
   }
   public void OnEnterPortal(GraphNode node, int direction)
   {

@@ -1,6 +1,14 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml; 
+using System.Xml.Serialization; 
+using System.IO; 
+
+using System.Text; 
+ 
 [CustomEditor(typeof(EditorAdditionalGUI))]
 public class CreatorEditor : Editor
 {
@@ -303,4 +311,35 @@ public class CreatorEditor : Editor
   {
     SceneDataSaver.SaveSceneData();
   }
+	public static void SaveLevel()
+	{
+		string m_path="Assets/Resources";
+		FileStream fout = File.OpenWrite(m_path+"/asd.xed");
+		MemoryStream stream=new MemoryStream();
+		LevelObjects objects=new LevelObjects();
+		objects.objectsInfo=EditorAdditionalGUI.EditorOptions.Objects.ConvertAll<CustomObjectInfo>(x=>x.SerializeObject());
+		objects.info=EditorAdditionalGUI.EditorOptions.levels[EditorAdditionalGUI.EditorOptions.ActiveLevel].SerializeLevel();
+		BinaryFormatter formatter= new BinaryFormatter();
+		//XmlSerializer serializer=new XmlSerializer(typeof(LevelObjects));
+		//XmlTextWriter writer=new XmlTextWriter(stream, Encoding.UTF8);
+		formatter.Serialize(stream, objects);
+		//Debug.Log(stream.Length);
+		string str = stream.ToString();
+		
+	  fout.Write(stream.ToArray(), 0, stream.ToArray().Length);
+		Debug.Log(fout.Name);
+		fout.Close();
+		
+		//EditorUtility.SetDirty();
+	}
+	public static void LoadLevel()
+	{
+	}
+	
+}
+[System.Serializable]
+public class LevelObjects
+{
+  public List<CustomObjectInfo> objectsInfo;
+	public LevelInfo info;
 }

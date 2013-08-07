@@ -266,6 +266,7 @@ public class BareerLevelControls : MonoBehaviour
 		x.SelectionPhaseType=SelectionPhaseType;
 		x.MovePhaseDuration=MovePhaseDuration;
 		x.NumAreas=NumAreas;
+		return x;
 	}
 	public void Deserialize(LevelInfo x)
 	{

@@ -9,10 +9,16 @@ public class EditorMenu : EditorWindow
   {
     get
     {
+			if(EditorAdditionalGUI.EditorOptions==null)
+			{
+				
+        GameObject m_editorPrefab = AssetDatabase.LoadAssetAtPath("Assets/ObjectPrefabs/EditorOptionsPrefab.prefab", typeof(GameObject)) as GameObject;
+				EditorAdditionalGUI.EditorOptions=(GameObject.Instantiate(m_editorPrefab) as GameObject).GetComponent<EditorAdditionalGUI>();
+				EditorAdditionalGUI.EditorOptions.gameObject.name="EditorOptions";
+			}
       return EditorAdditionalGUI.EditorOptions;
     }
   }
-  GameObject m_editorPrefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/EditorOptionsPrefab.prefab", typeof(GameObject)) as GameObject;
   public int m_selectedOption = 0;
   [MenuItem("EdgeDrivers/Editor Menu")]
   static void Init()
@@ -33,13 +39,7 @@ public class EditorMenu : EditorWindow
     //m_selectedOption=0;
     //editor.selected=0;
 
-    if (EditorAdditionalGUI.EditorOptions == null)
-    {
-      GameObject newEditor = Instantiate(m_editorPrefab) as GameObject;
-      newEditor.name = "EditorOptions";
 
-    }
-    
     //EditorAdditionalGUI.editorPrefab = m_editorPrefab;
     Selection.activeGameObject = editor.gameObject;
   }

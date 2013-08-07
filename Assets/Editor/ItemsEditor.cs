@@ -57,6 +57,11 @@ public static class ItemsEditor
   {
     ImportSceneDialog.Import();
   }
+	[MenuItem("EdgeDrivers/SaveLevel")]
+	static void SaveLevel()
+	{
+		CreatorEditor.SaveLevel();
+	}
   [MenuItem("EdgeDrivers/Clear saves")]
   static void ClearSaves()
   {

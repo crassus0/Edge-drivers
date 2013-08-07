@@ -45,10 +45,14 @@ public class GraphNode : System.IComparable<GraphNode>
         //Debug.Log(DebugNodeGraph);
     }
   }
+	[System.NonSerialized]
   int DebugNodeGraph;
+	[System.NonSerialized]
   int basicNodeGraph=-1;
+	[System.NonSerialized]
   GraphNode[] adjacent = new GraphNode[3];
-  int triangleRow;
+  [System.NonSerialized]
+	int triangleRow;
   [System.NonSerialized]
   bool setGraph = false;
   public static void ClearAll()

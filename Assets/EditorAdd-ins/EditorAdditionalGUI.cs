@@ -19,6 +19,10 @@ public class EditorAdditionalGUI : MonoBehaviour
     {
       return m_objects;
     }
+		set
+		{
+			m_objects=value;
+		}
   }
   List<CustomObject> m_objects = new List<CustomObject>();
   public int ActiveLevel { get; set; }
@@ -30,14 +34,22 @@ public class EditorAdditionalGUI : MonoBehaviour
   {
     get
     {
-      if (m_editor == null)
-      {
-        GameObject x = GameObject.Find("EditorOptions");
-        if (x != null)
-          m_editor = x.GetComponent<EditorAdditionalGUI>();
-      }
+			if(m_editor==null)
+			{
+				try
+				{
+				  m_editor=GameObject.Find("EditorOptions").GetComponent<EditorAdditionalGUI>();
+				}
+				catch(System.NullReferenceException)
+				{
+				}
+			}
       return m_editor;
     }
+		set
+		{
+			m_editor=value;
+		}
   }
   static EditorAdditionalGUI m_editor;
   public CustomObject objectToMove;

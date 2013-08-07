@@ -24,6 +24,7 @@ public class RedFireflySpawner : CustomObject
 		return x;
 	}
 }
+[System.Serializable]
 public class RedFireflySpawnerInfo:CustomObjectInfo
 {
 	public override CustomObject Deserialize ()

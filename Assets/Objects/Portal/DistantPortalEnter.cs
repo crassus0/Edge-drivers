@@ -99,6 +99,7 @@ public class DistantPortalEnter : CustomObject
 		return x;
 	}
 }
+[System.Serializable]
 public class DistantPortalEnterInfo:CustomObjectInfo
 {
 	public string m_targetScene;

@@ -58,6 +58,8 @@ public class DistantPortalExit : CustomObject, IPortalExit
 		return x;
 	}
 }
+
+[System.Serializable]
 public class DistantPortalExitInfo:CustomObjectInfo
 {
 	public int Direction;

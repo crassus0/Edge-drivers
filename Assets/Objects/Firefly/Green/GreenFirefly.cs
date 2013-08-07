@@ -70,6 +70,7 @@ public class GreenFirefly : CustomObject, IAutoMove
 		return x;
 	}
 }
+[System.Serializable]
 public class GreenFireflyInfo: CustomObjectInfo
 {
 	public int direction;

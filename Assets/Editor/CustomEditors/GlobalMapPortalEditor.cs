@@ -15,11 +15,11 @@ public class GlobalMapPortalEditor : DistantPortalEditor
   {
     base.OnInspectorGUI();
     showArray = EditorGUILayout.Foldout(showArray, "Path formers");
-    TerraformingMine[] path = (target as GlobalMapPortal).m_path;
+    List<TerraformingMine> path = (target as GlobalMapPortal).m_path;
     if (showArray)
     {
-      int arraySize = EditorGUILayout.IntField("    Size", (target as GlobalMapPortal).m_path.Length);
-      if (arraySize != path.Length)
+      int arraySize = EditorGUILayout.IntField("    Size", (target as GlobalMapPortal).m_path.Count);
+      if (arraySize != path.Count)
         NewArraySize(arraySize);
       for (int i = 0; i < arraySize; i++)
       {
@@ -31,14 +31,14 @@ public class GlobalMapPortalEditor : DistantPortalEditor
   public void NewArraySize(int size)
   {
     TerraformingMine[] mines = new TerraformingMine[size];
-    if (size > (target as GlobalMapPortal).m_path.Length)
-      size = (target as GlobalMapPortal).m_path.Length;
-    Array.Copy((target as GlobalMapPortal).m_path, mines, size);
+    if (size > (target as GlobalMapPortal).m_path.Count)
+      size = (target as GlobalMapPortal).m_path.Count;
+    Array.Copy((target as GlobalMapPortal).m_path.ToArray(), mines, size);
     if (size > 0)
       for (int i = size; i < mines.Length; i++)
       {
         mines[i] = mines[size - 1];
       }
-    (target as GlobalMapPortal).m_path = mines;
+    (target as GlobalMapPortal).m_path = new List<TerraformingMine>(mines);
   }
 }

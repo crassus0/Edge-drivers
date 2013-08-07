@@ -178,22 +178,9 @@ public class Trigger : CustomObject, IActivatable
 		z.OnObjectStay=OnObjectStay;
 		z.ActivateOnStart=ActivateOnStart;
 		z.delay=delay;
-		z.toActivate=new List<int>();
-		foreach(CustomObject x in toActivate)
-		{
-			z.toActivate.Add(x.ObjectID);
-		}
-		z.toDestroy = new List<int>();
-		foreach(CustomObject x in toDestroy)
-		{
-			z.toDestroy.Add(x.ObjectID);
-		}
-		z.toDeactivate = new List<int>();
-		foreach(CustomObject x in toDestroy)
-		{
-			z.toDeactivate.Add(x.ObjectID);
-		}
-		z.texture=texture.name;
+		z.toActivate=toActivate.ConvertAll<int>(x=>x.ObjectID);
+		z.toDeactivate=toDeactivate.ConvertAll<int>(x=>x.ObjectID);
+		z.toDestroy=toDestroy.ConvertAll<int>(x=>x.ObjectID);
 		return z;
 	}
 }
@@ -226,22 +213,9 @@ public class TriggerInfo:CustomObjectInfo
 	}
 	public override void EstablishConnections ()
 	{
-	  
-		trigger.toActivate=new List<CustomObject>();
-		foreach(int x in toActivate)
-		{
-			trigger.toActivate.Add (GetObjectByID(x));
-		}
-		trigger.toDeactivate=new List<CustomObject>();
-		foreach(int x in toDeactivate)
-		{
-			trigger.toDeactivate.Add (GetObjectByID(x));
-		}
-		trigger.toDestroy=new List<CustomObject>();
-		foreach(int x in toDestroy)
-		{
-			trigger.toDestroy.Add (GetObjectByID(x));
-		}
+	  trigger.toActivate=toActivate.ConvertAll<CustomObject>(x=>GetObjectByID(x));
+		trigger.toDeactivate=toDeactivate.ConvertAll<CustomObject>(x=>GetObjectByID(x));
+		trigger.toDestroy= toDestroy.ConvertAll<CustomObject>(x=>GetObjectByID(x));
 	}
   public override string GetName ()
 	{

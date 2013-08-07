@@ -41,6 +41,7 @@ public class WarmingHole : CustomObject
 		return x;
 	}
 }
+[System.Serializable]
 public class WarmingHoleInfo:CustomObjectInfo
 {
   public int PairHole;

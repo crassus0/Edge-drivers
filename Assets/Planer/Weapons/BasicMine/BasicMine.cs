@@ -44,6 +44,7 @@ public class BasicMine : CustomObject, IFireflyDestroyable
 	  return x;
 	}
 }
+[System.Serializable]
 public class BasicMineInfo:CustomObjectInfo
 {
 	public override CustomObject Deserialize ()

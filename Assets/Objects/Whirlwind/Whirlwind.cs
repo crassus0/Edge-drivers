@@ -38,6 +38,7 @@ public class Whirlwind : CustomObject
 		return x;
 	}
 }
+[System.Serializable]
 public class WhirlwindInfo:CustomObjectInfo
 {
 	public int spin;

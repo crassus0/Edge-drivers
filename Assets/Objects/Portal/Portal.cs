@@ -67,6 +67,8 @@ public class Portal : CustomObject, IPortalExit
 		return x;
 	}
 }
+
+[System.Serializable]
 public class PortalInfo:CustomObjectInfo
 {
 	public int PairPortal;

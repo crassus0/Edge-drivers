@@ -73,6 +73,7 @@ public class ColoredNode : CustomObject
 		return x;
 	}
 }
+[System.Serializable]
 public class ColoredNodeInfo: CustomObjectInfo
 {
 	public int color;

@@ -1,10 +1,11 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public class GlobalMapPortal : DistantPortalEnter
 {
-  public GameObject[] m_visualisers;
-  public TerraformingMine[] m_path;
+  public List<TerraformingMine> m_path;
+	
   public override void OnStart()
   {
     base.OnStart();
@@ -16,7 +17,7 @@ public class GlobalMapPortal : DistantPortalEnter
     if (isActive == 1)
     {
       Interact = null;
-      Destroy(m_visualisers[0].gameObject);
+      
     }
     if (isActive >= 1)
     {
@@ -29,5 +30,36 @@ public class GlobalMapPortal : DistantPortalEnter
     }
 
   }
-
+	public override CustomObjectInfo SerializeObject ()
+	{
+	  GlobalMapPortalInfo x = new GlobalMapPortalInfo();
+		x.m_targetNode=m_targetNode;
+		x.m_targetPortalID=m_targetPortalID;
+		x.m_targetScene=m_targetScene;
+		x.direction=direction;
+		x.node=Node;
+		x.instanceID=ObjectID;
+		x.m_path=m_path.ConvertAll<int>(y=>y.ObjectID);
+		return x;
+	}
+	
+}
+[System.Serializable]
+public class GlobalMapPortalInfo:DistantPortalEnterInfo
+{
+	public List<int> m_path;
+	GlobalMapPortal portal;
+	public override CustomObject Deserialize ()
+	{
+		GlobalMapPortal portal  = base.Deserialize() as GlobalMapPortal;
+		return portal;
+	}
+	public override void EstablishConnections ()
+	{
+		portal.m_path=m_path.ConvertAll<TerraformingMine>(x=>GetObjectByID(x) as TerraformingMine);
+	}
+	public override string GetName ()
+	{
+		return "GlobalMapPortal";
+	}
 }

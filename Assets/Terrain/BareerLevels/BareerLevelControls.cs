@@ -264,3 +264,8 @@ public enum PhaseType
   OnTime,
   Mixed
 }
+[System.Serializable]
+public class LevelInfo
+{
+	
+}

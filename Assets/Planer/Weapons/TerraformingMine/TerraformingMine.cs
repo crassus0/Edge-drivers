@@ -124,6 +124,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
 		return x;
 	}
 }
+[System.Serializable]
 public class TerraformingMineInfo:CustomObjectInfo
 {
 	public int steps;

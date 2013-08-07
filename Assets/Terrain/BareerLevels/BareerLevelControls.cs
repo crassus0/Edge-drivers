@@ -257,7 +257,27 @@ public class BareerLevelControls : MonoBehaviour
     if (EditorAdditionalGUI.EditorOptions != null)
       EditorAdditionalGUI.EditorOptions.ActiveLevel = 0;
   }
+	public LevelInfo SerializeLevel()
+	{
+		LevelInfo x = new LevelInfo();
+		x.name=name;
+		x.m_bareers=m_bareers;
+		x.SelectionPhaseDuration=SelectionPhaseDuration;
+		x.SelectionPhaseType=SelectionPhaseType;
+		x.MovePhaseDuration=MovePhaseDuration;
+		x.NumAreas=NumAreas;
+	}
+	public void Deserialize(LevelInfo x)
+	{
+		name=x.name;
+		m_bareers=x.m_bareers;
+		SelectionPhaseDuration=x.SelectionPhaseDuration;
+		SelectionPhaseType=x.SelectionPhaseType;
+		MovePhaseDuration=x.MovePhaseDuration;
+		NumAreas=x.NumAreas;
+	}
 }
+[System.Serializable]
 public enum PhaseType
 {
   OnAction,
@@ -267,5 +287,11 @@ public enum PhaseType
 [System.Serializable]
 public class LevelInfo
 {
+	public string name;
+	public byte[] m_bareers;
+	public float SelectionPhaseDuration;
+	public PhaseType SelectionPhaseType;
+	public float MovePhaseDuration;
+	public int NumAreas;
 	
 }

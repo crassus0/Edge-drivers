@@ -9,7 +9,8 @@ public class EditorAdditionalGUI : MonoBehaviour
 {
   public Texture2D[] buttonTextures;
   public string[] objectNames;
-
+	public List<GameObject> prefabs;
+	public List<Texture2D> additionalTextures;
   public int selected { get; set; }
   public List<BareerLevelControls> levels { get; set; }
   public List<CustomObject> Objects
@@ -53,7 +54,8 @@ public class EditorAdditionalGUI : MonoBehaviour
       if (!x.name.Contains("Prefab"))
         Objects.Add((x as CustomObject));
     }
-
+		
+		
     levels = GameObject.Find("Creator").GetComponent<Creator>().levels;
     //GraphNode.creator=GameObject.Find("Creator").GetComponent<Creator>();
     SetFlags();
@@ -68,7 +70,19 @@ public class EditorAdditionalGUI : MonoBehaviour
   {
     //	  Debug.Log(ActiveLevel);
     SetFlags();
-
+		for(int i=0; i<m_objects.Count; i++)
+		{
+			if(m_objects[i]==null)
+			{
+				m_objects.RemoveAt(i);
+				i--;
+			}
+			else
+			{
+				m_objects[i].ObjectID=i;
+			}
+		}
+		
     if (Application.isPlaying)
     {
 
@@ -82,6 +96,10 @@ public class EditorAdditionalGUI : MonoBehaviour
   {
 
   }
+	public void SceneSave()
+	{
+		
+	}
   void SetFlags()
   {
     //	  Debug.Log(levels.Count);
@@ -92,8 +110,9 @@ public class EditorAdditionalGUI : MonoBehaviour
       levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
     }
     //levels[ActiveLevel].gameObject.hideFlags=0;
-    //	  Debug.Log(transform.hideFlags);
-    gameObject.transform.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+    gameObject.transform.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+		hideFlags=0;
+		gameObject.hideFlags=0;
     //	  Debug.Log(transform.hideFlags);
     //gameObject.hideFlags = HideFlags.HideInHierarchy ;
     //hideFlags=0;

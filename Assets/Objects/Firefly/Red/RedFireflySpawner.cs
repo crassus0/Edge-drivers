@@ -16,4 +16,25 @@ public class RedFireflySpawner : CustomObject
       x.Activate(obj as PlanerCore);
     }
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		RedFireflySpawnerInfo x = new RedFireflySpawnerInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+		return x;
+	}
+}
+public class RedFireflySpawnerInfo:CustomObjectInfo
+{
+	public override CustomObject Deserialize ()
+	{
+		return CreateInstance();
+	}
+	public override void EstablishConnections ()
+	{
+	}
+	public override string GetName ()
+	{
+		return "RedFireflySpawner";
+	}
 }

@@ -18,7 +18,7 @@ public class DistantPortalExit : CustomObject, IPortalExit
     DistantPortalSaveData x;
     x.name = name;
     x.node = Node;
-    x.portalID = this.GetInstanceID();
+    x.portalID = ObjectID;
     x.direction=Direction;
     return x;
   }
@@ -49,5 +49,30 @@ public class DistantPortalExit : CustomObject, IPortalExit
       Gizmos.DrawRay(transform.position, dest*20);
     }
   }
-
+	public override CustomObjectInfo SerializeObject ()
+	{
+		DistantPortalExitInfo x =  new DistantPortalExitInfo();
+		x.Direction=Direction;
+		x.instanceID=ObjectID;
+		x.node=Node;
+		return x;
+	}
+}
+public class DistantPortalExitInfo:CustomObjectInfo
+{
+	public int Direction;
+	public override CustomObject Deserialize ()
+	{
+		DistantPortalExit x = CreateInstance() as DistantPortalExit;
+		x.Direction=Direction;
+		return x;
+	}
+	public override void EstablishConnections ()
+	{
+		
+	}
+	public override string GetName ()
+	{
+		return "DistantPortalExit";
+	}
 }

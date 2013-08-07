@@ -9,7 +9,6 @@ using System;
 public class Creator : MonoBehaviour
 {
   public readonly string VERSION = "0.3.0";
-  public GameObject debugGraphNodes;
   int subStep = 0;
   public bool testBuild = false;
   public IPortalExit testEnter 
@@ -24,20 +23,16 @@ public class Creator : MonoBehaviour
   bool m_safeHouse = false;
   public string SceneName { get; set; }
   public GameObject testPortal;
-  public int size = 1;
-  public bool isSafeHouse=false;
-  public bool randomLevel = false;
   public List<BareerLevelControls> levels;
-  public string levelName;
-  public string m_nextLevel;
   public static string PreviousLevel { get; set; }
-  public Texture m_concentrationBackground;
-  public Texture m_concentrationProgress;
   public static bool IsLoading { get; set; }
   public GameObject playerPrefab;
+	public GameObject initializerPrefab;
   public DistantPortalExit defaultPortal;
   static GraphNode savedNode;
   static int savedDirection;
+	public static List<GameObject> prefabs;
+	public static List<Texture2D> textures;
   public float TurnDuration
   {
     get
@@ -56,7 +51,7 @@ public class Creator : MonoBehaviour
   static float m_ratio;
   static Creator m_creator;
   static int m_energy;
-  List<CustomObject> m_objects;
+  public List<CustomObject> m_objects{get; set;}
   HashSet<CustomObject> m_removeObjects;
   HashSet<CustomObject> m_addObjects;
   HashSet<CustomObject> m_startObjects;
@@ -72,16 +67,19 @@ public class Creator : MonoBehaviour
   PhaseType m_phaseType=PhaseType.OnAction;
   static bool firstLoad=true;
   bool isMainCreator=true;
-  public static string NextLevel { get { return creator.m_nextLevel; } set { creator.m_nextLevel = value; } }
   public static Vector3 ScreenSize { get { return m_screenSize; } }
   public static Creator creator { get { return m_creator; } }
   public static PlanerCore Player { get { return m_player; } }
   public static bool OnPause { get; set; }
   public static int Level { get { return Player.Level; } }
-  //public static int Size{get{return m_staticSize;}}
-  public static string DebugMessage { get; set; }
   public static bool Initialised { get { return m_creator.m_init; } }
-
+	
+	public void Awake()
+	{
+		Instantiate(initializerPrefab);
+		prefabs=new List<GameObject>(EditorAdditionalGUI.EditorOptions.prefabs);
+		textures=new List<Texture2D>(EditorAdditionalGUI.EditorOptions.additionalTextures);
+	}
   public void Start()
   {
     if (m_init) return;
@@ -103,7 +101,7 @@ public class Creator : MonoBehaviour
     {
       LoadGame();
       SceneName = Application.loadedLevelName;
-      isSafeHouse = false;
+//      isSafeHouse = false;
     }
     if (m_ratio > 1)
       m_screenSize.z = m_ratio;
@@ -117,21 +115,9 @@ public class Creator : MonoBehaviour
 
     m_objects = new List<CustomObject>();
     m_startObjects=new HashSet<CustomObject>();
-    UnityEngine.Object[] customObjects = Resources.FindObjectsOfTypeAll(typeof(CustomObject));
-    //levels[m_player.Level].Activate();
-    foreach (UnityEngine.Object x in customObjects)
-    {
-      //Debug.Log(x.name);
-      if (!x.name.Contains("Prefab")&&!(x as CustomObject).Hidden&&!(x as CustomObject).Destroyed)
-      {
-				
-        m_objects.Add((x as CustomObject));
-        (x as CustomObject).gameObject.SetActive(true);
-        (x as CustomObject).SetNode();
-        (x as CustomObject).gameObject.transform.parent=transform;
-        m_startObjects.Add(x as CustomObject);
-      }
-    }
+		
+
+		//prefabs=EditorAdditionalGUI.EditorOptions.
 		GraphNode.InteractAll();
     m_energy = -1;
     SwitchLevel();

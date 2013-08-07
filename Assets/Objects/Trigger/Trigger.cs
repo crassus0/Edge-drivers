@@ -19,7 +19,8 @@ public class Trigger : CustomObject, IActivatable
   public List<CustomObject> toActivate;
   public List<CustomObject> toDestroy;
   public List<CustomObject> toDeactivate;
-
+	public static GameObject triggerPrefab;
+	
   public override int GetStepCount ()
 	{
 		return 1;
@@ -166,5 +167,84 @@ public class Trigger : CustomObject, IActivatable
     }
 		if(!MultiUseTrigger)
 			DeactivateTrigger();
+	}
+	public override CustomObjectInfo SerializeObject ()
+	{
+		TriggerInfo z = new TriggerInfo();
+		z.node=Node;
+		z.instanceID=ObjectID;
+		z.TargetTriggerName=TargetTriggerName;
+		z.MultiUseTrigger=MultiUseTrigger;
+		z.OnObjectStay=OnObjectStay;
+		z.ActivateOnStart=ActivateOnStart;
+		z.delay=delay;
+		z.toActivate=new List<int>();
+		foreach(CustomObject x in toActivate)
+		{
+			z.toActivate.Add(x.ObjectID);
+		}
+		z.toDestroy = new List<int>();
+		foreach(CustomObject x in toDestroy)
+		{
+			z.toDestroy.Add(x.ObjectID);
+		}
+		z.toDeactivate = new List<int>();
+		foreach(CustomObject x in toDestroy)
+		{
+			z.toDeactivate.Add(x.ObjectID);
+		}
+		z.texture=texture.name;
+		return z;
+	}
+}
+[System.Serializable]
+public class TriggerInfo:CustomObjectInfo
+{
+	public string texture;
+	public string TargetTriggerName;
+	public bool MultiUseTrigger;
+	public bool OnObjectStay;
+	public bool ActivateOnStart;
+  public int delay;
+	public List<int> toActivate;
+  public List<int> toDestroy;
+  public List<int> toDeactivate;
+	[System.NonSerializedAttribute]
+	Trigger trigger;
+	public override CustomObject Deserialize()
+	{
+		
+		trigger = CreateInstance() as Trigger;
+		trigger.texture= Creator.textures.Find(x => x.name==texture);
+		trigger.TargetTriggerName=TargetTriggerName;
+		trigger.MultiUseTrigger=MultiUseTrigger;
+		trigger.OnObjectStay=OnObjectStay;
+			trigger.ActivateOnStart=ActivateOnStart;
+		trigger.delay=delay;
+		
+		return trigger;
+	}
+	public override void EstablishConnections ()
+	{
+	  
+		trigger.toActivate=new List<CustomObject>();
+		foreach(int x in toActivate)
+		{
+			trigger.toActivate.Add (GetObjectByID(x));
+		}
+		trigger.toDeactivate=new List<CustomObject>();
+		foreach(int x in toDeactivate)
+		{
+			trigger.toDeactivate.Add (GetObjectByID(x));
+		}
+		trigger.toDestroy=new List<CustomObject>();
+		foreach(int x in toDestroy)
+		{
+			trigger.toDestroy.Add (GetObjectByID(x));
+		}
+	}
+  public override string GetName ()
+	{
+		return "Trigger";
 	}
 }

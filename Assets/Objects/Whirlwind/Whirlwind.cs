@@ -27,6 +27,31 @@ public class Whirlwind : CustomObject
   protected new void OnDestroy()
   {
     base.OnDestroy();
-
+		Node.Tag =NodeTag.None;
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		WhirlwindInfo x = new WhirlwindInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+		x.spin=spin;
+		return x;
+	}
+}
+public class WhirlwindInfo:CustomObjectInfo
+{
+	public int spin;
+	public override CustomObject Deserialize ()
+	{
+		Whirlwind x = CreateInstance() as Whirlwind;
+		x.spin=spin;
+		return x;
+	}
+	public override void EstablishConnections ()
+	{
+	}
+	public override string GetName ()
+	{
+		return "Whirlwind";
+	}
 }

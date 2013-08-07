@@ -32,6 +32,7 @@ public class LeftTerraformingMine : ButtonObject
     x.states[1] = 3;
     x.states[2] = 6;
     x.steps = 5;
+		x.ActivateOnStart=true;
     x.gameObject.SetActive(true);
     cooldown = 1;
   }

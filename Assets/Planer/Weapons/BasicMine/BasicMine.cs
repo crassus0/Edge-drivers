@@ -36,4 +36,25 @@ public class BasicMine : CustomObject, IFireflyDestroyable
     Destroy(gameObject);
     Destroyed = true;
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		BasicMineInfo x = new BasicMineInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+	  return x;
+	}
+}
+public class BasicMineInfo:CustomObjectInfo
+{
+	public override CustomObject Deserialize ()
+	{
+		return CreateInstance();
+	}
+	public override void EstablishConnections ()
+	{
+	}
+	public override string GetName ()
+	{
+		return "Mine";
+	}
 }

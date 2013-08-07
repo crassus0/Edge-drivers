@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Xml;
 public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 {
   public static float BasicScale = 1.2f;
@@ -203,6 +203,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 
   public void Init()
   {
+
+		GetInstanceID();
     for (int i = 0; i < transform.GetChildCount(); i++)
       DontDestroyOnLoad(transform.GetChild(i).gameObject);
     PlayerSaveData.Clear();
@@ -403,6 +405,9 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
       Creator.creator.SetSpeed(1-0.3f*Agility);
     }
   }
+  public override CustomObjectInfo SerializeObject ()
+	{
+		throw new NotImplementedException ();
+	}
   //TODO
 }
-

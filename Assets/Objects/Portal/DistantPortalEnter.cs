@@ -87,4 +87,38 @@ public class DistantPortalEnter : CustomObject
     Application.LoadLevel(m_targetScene);
     Destroy(Creator.creator);
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		DistantPortalEnterInfo x=new DistantPortalEnterInfo();
+		x.m_targetNode=m_targetNode;
+		x.m_targetPortalID=m_targetPortalID;
+		x.m_targetScene=m_targetScene;
+		x.direction=direction;
+		x.node=Node;
+		x.instanceID=ObjectID;
+		return x;
+	}
+}
+public class DistantPortalEnterInfo:CustomObjectInfo
+{
+	public string m_targetScene;
+  public GraphNode m_targetNode;
+  public int direction;
+  public int m_targetPortalID;
+	public override CustomObject Deserialize ()
+	{
+		DistantPortalEnter x = CreateInstance() as DistantPortalEnter;
+		x.m_targetNode=m_targetNode;
+		x.m_targetPortalID=m_targetPortalID;
+		x.m_targetScene=m_targetScene;
+		x.direction=direction;
+		return x;
+	}
+	public override void EstablishConnections ()
+	{
+	}
+	public override string GetName ()
+	{
+		return "DistantPortalEnter";
+	}
 }

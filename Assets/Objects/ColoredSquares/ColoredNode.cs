@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class ColouredNode : CustomObject
+public class ColoredNode : CustomObject
 {
   public int color;
   public override void OnStart()
@@ -64,4 +64,30 @@ public class ColouredNode : CustomObject
     base.OnDrawGizmos();
     ChangeVisual();
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		ColoredNodeInfo x = new ColoredNodeInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+		x.color=color;
+		return x;
+	}
+}
+public class ColoredNodeInfo: CustomObjectInfo
+{
+	public int color;
+	public override string GetName ()
+	{
+		return "ColoredNode";
+	}
+	public override void EstablishConnections ()
+	{
+		
+	}
+	public override CustomObject Deserialize ()
+	{
+		ColoredNode x = CreateInstance() as ColoredNode;
+		x.color=color;
+		return x;
+ 	}
 }

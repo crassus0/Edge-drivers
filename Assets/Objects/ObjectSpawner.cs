@@ -66,4 +66,32 @@ public class ObjectSpawner : CustomObject, IActivatable
       Gizmos.DrawRay(transform.position, dest*20);
     }
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		ObjectSpawnerInfo x = new ObjectSpawnerInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+		x.prefabName=prefab.name.Remove(prefab.name.Length-6);
+	  x.cooldown=cooldown;	
+		return x;
+	}
+}
+public class ObjectSpawnerInfo:CustomObjectInfo
+{
+	public string prefabName;
+	public int cooldown;
+	public override CustomObject Deserialize ()
+	{
+		ObjectSpawner x = CreateInstance() as ObjectSpawner;
+		x.cooldown=cooldown;
+		x.prefab=GetPrefabByName(prefabName);
+		return x;
+	}
+	public override void EstablishConnections ()
+	{
+	}
+	public override string GetName ()
+	{
+		return "ObjectSpawner";
+	}
 }

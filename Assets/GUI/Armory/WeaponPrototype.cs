@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class WeaponPrototype : CustomObject, IActivatable
+public class WeaponPrototype : CustomObject, IDeactivatable
 {
   public string UpgradeName{get;set;}
   public int IsActive { get; set; }
@@ -39,4 +39,30 @@ public class WeaponPrototype : CustomObject, IActivatable
     IsActive = 0;
     transform.GetChild(0).renderer.material.color = Color.white;
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		WeaponPrototypeInfo x = new WeaponPrototypeInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+		x.upgradeName=UpgradeName;
+		return x;
+	}
+}
+public class WeaponPrototypeInfo:CustomObjectInfo
+{
+	public string upgradeName;
+	public override CustomObject Deserialize ()
+	{
+		WeaponPrototype x = CreateInstance() as WeaponPrototype;
+		x.UpgradeName=upgradeName;
+		return x;
+	}
+	public override void EstablishConnections ()
+	{
+		
+	}
+	public override string GetName ()
+	{
+		return "WeaponPrototype";
+	}
 }

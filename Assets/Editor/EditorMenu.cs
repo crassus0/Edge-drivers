@@ -12,7 +12,7 @@ public class EditorMenu : EditorWindow
       return EditorAdditionalGUI.EditorOptions;
     }
   }
-  GameObject m_editorPrefab = AssetDatabase.LoadAssetAtPath("Assets/EditorAdd-ins/EditorOptionsPrefab.prefab", typeof(GameObject)) as GameObject;
+  GameObject m_editorPrefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/EditorOptionsPrefab.prefab", typeof(GameObject)) as GameObject;
   public int m_selectedOption = 0;
   [MenuItem("EdgeDrivers/Editor Menu")]
   static void Init()

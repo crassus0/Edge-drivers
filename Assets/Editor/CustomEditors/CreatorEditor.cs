@@ -139,12 +139,14 @@ public class CreatorEditor : Editor
         BareerLevelControls x = targ.levels[(targ.ActiveLevel)];
         foreach(CustomObject z in targ.Objects)
         {
+          if(z==null)continue;
           if(z.Level>targ.ActiveLevel)
           {
             z.Level--;
           }
           else if(z.Level==targ.ActiveLevel)
           {
+						
             DestroyImmediate(z.gameObject);
           }
         }
@@ -157,7 +159,14 @@ public class CreatorEditor : Editor
 
     EditorUtility.SetDirty(targ.levels[(targ.ActiveLevel)]);
   }
-
+	void GetTextures()
+	{
+		Object[] tex=AssetDatabase.LoadAllAssetsAtPath("Assets/UncommonTextures");
+		for(int i=0; i<tex.Length; i++)
+		{
+			targ.additionalTextures[i]=tex[i] as Texture2D;
+		}
+	}
   //SCENE  GUI
   void OnSceneGUI()
   {
@@ -169,6 +178,7 @@ public class CreatorEditor : Editor
     OnObjectMove();
     CheckEvent();
   }
+	
   void CheckEvent()
   {
     Event currentEvent = Event.current;

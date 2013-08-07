@@ -112,4 +112,38 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
     Interact = null;
     Creator.DestroyObject(this);
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		TerraformingMineInfo x = new TerraformingMineInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+		x.steps=steps;
+		x.states=states;
+		x.visible=visible;
+		x.ActivateOnStart=ActivateOnStart;
+		return x;
+	}
+}
+public class TerraformingMineInfo:CustomObjectInfo
+{
+	public int steps;
+  public byte[] states;
+  public bool visible;
+	public bool ActivateOnStart;
+	public override CustomObject Deserialize ()
+	{
+		TerraformingMine x = CreateInstance() as TerraformingMine;
+		x.steps=steps;
+		x.states=states;
+		x.visible=visible;
+		x.ActivateOnStart=ActivateOnStart;
+		return x;
+	}
+	public override void EstablishConnections ()
+	{
+	}
+	public override string GetName ()
+	{
+		return "TerraformingMine";
+	}
 }

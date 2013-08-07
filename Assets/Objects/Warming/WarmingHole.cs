@@ -31,4 +31,33 @@ public class WarmingHole : CustomObject
       warm.OnUpdate();
     }
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		WarmingHoleInfo x = new WarmingHoleInfo();
+		x.PairHole=PairHole.ObjectID;
+		x.cooldown=cooldown;
+		x.node=Node;
+		x.instanceID=ObjectID;
+		return x;
+	}
+}
+public class WarmingHoleInfo:CustomObjectInfo
+{
+  public int PairHole;
+  public int cooldown;
+	WarmingHole hole;
+	public override CustomObject Deserialize ()
+	{
+		hole=CreateInstance() as WarmingHole;
+		hole.cooldown=cooldown;
+		return hole;
+	}
+	public override void EstablishConnections ()
+	{
+		hole.PairHole=GetObjectByID(PairHole) as WarmingHole;
+	}
+	public override string GetName ()
+	{
+		return "WarmingHole";
+	}
 }

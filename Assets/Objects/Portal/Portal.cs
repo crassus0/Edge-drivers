@@ -57,4 +57,33 @@ public class Portal : CustomObject, IPortalExit
       Gizmos.DrawRay(transform.position, dest*16);
     }
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		PortalInfo x = new PortalInfo();
+		x.PairPortal=PairPortal.ObjectID;
+		x.Direction=Direction;
+		x.node=Node;
+		x.instanceID=ObjectID;
+		return x;
+	}
+}
+public class PortalInfo:CustomObjectInfo
+{
+	public int PairPortal;
+  public int Direction;
+	Portal portal;
+	public override CustomObject Deserialize ()
+	{
+		portal= CreateInstance() as Portal;
+	  portal.Direction=Direction;
+		return portal;
+	}
+	public override void EstablishConnections ()
+	{
+		portal.PairPortal=GetObjectByID(PairPortal) as Portal;
+	}
+	public override string GetName ()
+	{
+		return "Portal";
+	}
 }

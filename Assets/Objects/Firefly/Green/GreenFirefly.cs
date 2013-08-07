@@ -61,4 +61,29 @@ public class GreenFirefly : CustomObject, IAutoMove
   {
     return true;
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		GreenFireflyInfo x = new GreenFireflyInfo();
+		x.node=Node;
+		x.instanceID=ObjectID;
+		x.direction=m_direction;
+		return x;
+	}
+}
+public class GreenFireflyInfo: CustomObjectInfo
+{
+	public int direction;
+	public override CustomObject Deserialize ()
+	{
+		GreenFirefly x = CreateInstance() as GreenFirefly;
+		x.Direction=direction;
+		return x;
+	}
+	public override string GetName ()
+	{
+		return "GreenFirefly";
+	}
+	public override void EstablishConnections ()
+	{
+	}
 }

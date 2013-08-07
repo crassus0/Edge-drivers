@@ -51,7 +51,7 @@ public class WebMine : CustomObject
       {
         planer.RemoveUpdateFunc(PlanerNewUpdater);
       }
-      Destroy(gameObject);
+      Creator.DestroyObject(this);
 
     }
   }
@@ -72,5 +72,9 @@ public class WebMine : CustomObject
   void PlanerNewUpdater(IPlanerLike planer)
   {
   }
+	public override CustomObjectInfo SerializeObject ()
+	{
+		throw new System.NotImplementedException ();
+	}
 }
 

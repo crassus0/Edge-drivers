@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
-[Serializable]
+
 [RequireComponent(typeof(CustomObjectEditorSupply))]
 public abstract class CustomObject : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public abstract class CustomObject : MonoBehaviour
   public bool Hidden { get; set; }
   public abstract void OnStart();
   public bool Destroyed { get; set; }
-
+	public int ObjectID { get; set; }
   public virtual int GetStepCount()
   {
     return 4;
@@ -103,13 +104,53 @@ public abstract class CustomObject : MonoBehaviour
   {
     Node = newNode;
   }
-
+  public abstract CustomObjectInfo SerializeObject();
   protected void OnDrawGizmos()
   {
     Gizmos.color = new Color(0, 0, 0, 0);
     Gizmos.DrawSphere(transform.position, 20);
   }
 
+}
+[System.Serializable]
+public abstract class CustomObjectInfo
+{
+	public GraphNode node;
+	public int instanceID;
+	public abstract CustomObject Deserialize();
+	public abstract void EstablishConnections();
+	public abstract string GetName();
+	protected CustomObject CreateInstance()
+	{
+		GameObject gameObject =  GetPrefabByName(GetName());
+		CustomObject customObject =gameObject.GetComponent<CustomObject>();
+		customObject.Node=node;
+		customObject.ObjectID=instanceID;
+		if(Application.isPlaying)
+		  Creator.AddObject(customObject);
+		else
+			EditorAdditionalGUI.EditorOptions.Objects.Add(customObject);
+		return customObject;
+		
+	}
+	public static GameObject GetPrefabByName(string name)
+	{
+		List<GameObject> prefabs;
+		if(Application.isPlaying)
+			prefabs=Creator.prefabs;
+		else
+			prefabs=EditorAdditionalGUI.EditorOptions.prefabs;
+		return GameObject.Instantiate(prefabs.Find(x=>x.name== name+"Prefab")) as GameObject;
+	}
+	public static CustomObject GetObjectByID(int id)
+	{
+		CustomObject[] objects;
+		if(Application.isPlaying)
+			objects=Creator.creator.m_objects.ToArray();
+		else
+			objects=EditorAdditionalGUI.EditorOptions.Objects.ToArray();
+		return objects[id];
+	}
 }
 public enum ObjectType
 {

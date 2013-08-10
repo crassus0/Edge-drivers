@@ -16,11 +16,17 @@ public class CreatorEditor : Editor
   //int selected=0;
   EditorAdditionalGUI targ;
   int m_activeLevelSize;
+	public Creator creator;
   //int count = 0;
   //int activeLevel=1;
 
   static GameObject m_editorPrefab;
-
+	void OnEnable()
+	{
+		targ = target as EditorAdditionalGUI;
+		creator=GameObject.Find("Creator").GetComponent<Creator>();
+		Creator.prefabs=targ.prefabs;
+	}
   public override void OnInspectorGUI()
   {
     //KeyCheck();
@@ -45,7 +51,7 @@ public class CreatorEditor : Editor
   }
   void ShowActiveLevel()
   {
-
+		creator.SceneName=EditorGUILayout.TextField("Scene name", creator.SceneName);
     int[] levelValues = new int[targ.levels.Count];
     string[] levelNames = new string[levelValues.Length];
     for (int i = 0; i < levelValues.Length; i++)
@@ -173,7 +179,9 @@ public class CreatorEditor : Editor
 		for(int i=0; i<tex.Length; i++)
 		{
 			targ.additionalTextures[i]=tex[i] as Texture2D;
+			
 		}
+		Creator.textures=new List<Texture2D>(targ.additionalTextures);
 	}
   //SCENE  GUI
   void OnSceneGUI()
@@ -314,15 +322,21 @@ public class CreatorEditor : Editor
 	public static void SaveLevel()
 	{
 		string m_path="Assets/Resources";
-		FileStream fout = File.OpenWrite(m_path+"/asd.xed");
+		string name= Creator.creator.SceneName+".xml";
+		FileStream fout = File.OpenWrite(m_path+"/"+name);
 		MemoryStream stream=new MemoryStream();
-		LevelObjects objects=new LevelObjects();
+		LevelObjectsInfo objects=new LevelObjectsInfo();
 		objects.objectsInfo=EditorAdditionalGUI.EditorOptions.Objects.ConvertAll<CustomObjectInfo>(x=>x.SerializeObject());
-		objects.info=EditorAdditionalGUI.EditorOptions.levels[EditorAdditionalGUI.EditorOptions.ActiveLevel].SerializeLevel();
-		BinaryFormatter formatter= new BinaryFormatter();
-		//XmlSerializer serializer=new XmlSerializer(typeof(LevelObjects));
+		objects.info=EditorAdditionalGUI.EditorOptions.levels.ConvertAll<LevelInfo>(x=>x.SerializeLevel());
+		System.Type[] types=new System.Type[EditorAdditionalGUI.EditorOptions.prefabs.Count+1];
+		for(int i=0; i<EditorAdditionalGUI.EditorOptions.prefabs.Count; i++)
+		{
+			types[i]=EditorAdditionalGUI.EditorOptions.prefabs[i].GetComponent<CustomObject>().SerializedType();
+		}
+		types[EditorAdditionalGUI.EditorOptions.prefabs.Count]=typeof(LevelInfo);
+		XmlSerializer serializer=new XmlSerializer(typeof(LevelObjectsInfo), types);
 		//XmlTextWriter writer=new XmlTextWriter(stream, Encoding.UTF8);
-		formatter.Serialize(stream, objects);
+		serializer.Serialize(stream, objects);
 		//Debug.Log(stream.Length);
 		string str = stream.ToString();
 		
@@ -336,10 +350,4 @@ public class CreatorEditor : Editor
 	{
 	}
 	
-}
-[System.Serializable]
-public class LevelObjects
-{
-  public List<CustomObjectInfo> objectsInfo;
-	public LevelInfo info;
 }

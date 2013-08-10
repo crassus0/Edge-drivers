@@ -171,8 +171,7 @@ public class Trigger : CustomObject, IActivatable
 	public override CustomObjectInfo SerializeObject ()
 	{
 		TriggerInfo z = new TriggerInfo();
-		z.node=Node;
-		z.instanceID=ObjectID;
+		z.BasicSerialization(this);
 		z.TargetTriggerName=TargetTriggerName;
 		z.MultiUseTrigger=MultiUseTrigger;
 		z.OnObjectStay=OnObjectStay;
@@ -182,6 +181,10 @@ public class Trigger : CustomObject, IActivatable
 		z.toDeactivate=toDeactivate.ConvertAll<int>(x=>x.ObjectID);
 		z.toDestroy=toDestroy.ConvertAll<int>(x=>x.ObjectID);
 		return z;
+	}
+	public override Type SerializedType ()
+	{
+		return typeof(TriggerInfo);
 	}
 }
 [System.Serializable]

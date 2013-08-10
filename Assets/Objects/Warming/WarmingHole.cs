@@ -36,9 +36,12 @@ public class WarmingHole : CustomObject
 		WarmingHoleInfo x = new WarmingHoleInfo();
 		x.PairHole=PairHole.ObjectID;
 		x.cooldown=cooldown;
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof (WarmingHoleInfo);
 	}
 }
 [System.Serializable]
@@ -46,6 +49,7 @@ public class WarmingHoleInfo:CustomObjectInfo
 {
   public int PairHole;
   public int cooldown;
+	[System.NonSerialized]
 	WarmingHole hole;
 	public override CustomObject Deserialize ()
 	{

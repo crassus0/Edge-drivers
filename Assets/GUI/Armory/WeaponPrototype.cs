@@ -42,10 +42,13 @@ public class WeaponPrototype : CustomObject, IDeactivatable
 	public override CustomObjectInfo SerializeObject ()
 	{
 		WeaponPrototypeInfo x = new WeaponPrototypeInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		x.upgradeName=UpgradeName;
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(WeaponPrototypeInfo);
 	}
 }
 public class WeaponPrototypeInfo:CustomObjectInfo

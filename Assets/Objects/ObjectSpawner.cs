@@ -69,11 +69,14 @@ public class ObjectSpawner : CustomObject, IActivatable
 	public override CustomObjectInfo SerializeObject ()
 	{
 		ObjectSpawnerInfo x = new ObjectSpawnerInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		x.prefabName=prefab.name.Remove(prefab.name.Length-6);
 	  x.cooldown=cooldown;	
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(ObjectSpawnerInfo);
 	}
 }
 public class ObjectSpawnerInfo:CustomObjectInfo

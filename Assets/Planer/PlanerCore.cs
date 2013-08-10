@@ -409,5 +409,9 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 	{
 		throw new NotImplementedException ();
 	}
+	public override Type SerializedType ()
+	{
+		throw new NotImplementedException ();
+	}
   //TODO
 }

@@ -39,9 +39,12 @@ public class BasicMine : CustomObject, IFireflyDestroyable
 	public override CustomObjectInfo SerializeObject ()
 	{
 		BasicMineInfo x = new BasicMineInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 	  return x;
+	}
+	public override Type SerializedType ()
+	{
+		return typeof(BasicMineInfo);
 	}
 }
 [System.Serializable]

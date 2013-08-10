@@ -64,10 +64,13 @@ public class GreenFirefly : CustomObject, IAutoMove
 	public override CustomObjectInfo SerializeObject ()
 	{
 		GreenFireflyInfo x = new GreenFireflyInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		x.direction=m_direction;
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(GreenFireflyInfo);
 	}
 }
 [System.Serializable]

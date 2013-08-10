@@ -33,21 +33,24 @@ public class GlobalMapPortal : DistantPortalEnter
 	public override CustomObjectInfo SerializeObject ()
 	{
 	  GlobalMapPortalInfo x = new GlobalMapPortalInfo();
-		x.m_targetNode=m_targetNode;
+		x.m_targetNode=new NodeInformation(m_targetNode);
 		x.m_targetPortalID=m_targetPortalID;
 		x.m_targetScene=m_targetScene;
 		x.direction=direction;
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		x.m_path=m_path.ConvertAll<int>(y=>y.ObjectID);
 		return x;
 	}
-	
+	public override System.Type SerializedType ()
+	{
+		return typeof(GlobalMapPortalInfo);
+	}
 }
 [System.Serializable]
 public class GlobalMapPortalInfo:DistantPortalEnterInfo
 {
 	public List<int> m_path;
+	[System.NonSerialized]
 	GlobalMapPortal portal;
 	public override CustomObject Deserialize ()
 	{

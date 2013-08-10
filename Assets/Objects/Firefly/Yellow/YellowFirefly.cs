@@ -65,6 +65,10 @@ public class YellowFirefly : CustomObject, IAutoMove
 	{
 		throw new System.NotImplementedException ();
 	}
+	public override System.Type SerializedType ()
+	{
+		throw new System.NotImplementedException ();
+	}
 }
 
 

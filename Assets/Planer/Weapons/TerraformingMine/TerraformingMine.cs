@@ -115,13 +115,16 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
 	public override CustomObjectInfo SerializeObject ()
 	{
 		TerraformingMineInfo x = new TerraformingMineInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
-		x.steps=steps;
+		x.BasicSerialization(this);
+  	x.steps=steps;
 		x.states=states;
 		x.visible=visible;
 		x.ActivateOnStart=ActivateOnStart;
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(TerraformingMineInfo);
 	}
 }
 [System.Serializable]

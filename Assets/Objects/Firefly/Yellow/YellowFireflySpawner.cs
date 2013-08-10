@@ -28,12 +28,15 @@ public class YellowFireflySpawner : ObjectSpawner
   public override CustomObjectInfo SerializeObject ()
 	{
 	  YellowFireflySpawnerInfo x = new YellowFireflySpawnerInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		x.prefabName=prefab.name.Remove(prefab.name.Length-6);
 	  x.cooldown=cooldown;	
 		x.spin=spin;
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(YellowFireflySpawnerInfo);
 	}
 }
 [System.Serializable]

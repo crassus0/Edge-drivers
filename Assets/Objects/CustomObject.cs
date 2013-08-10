@@ -110,13 +110,15 @@ public abstract class CustomObject : MonoBehaviour
     Gizmos.color = new Color(0, 0, 0, 0);
     Gizmos.DrawSphere(transform.position, 20);
   }
-
+	public abstract System.Type SerializedType();
+	
 }
 [System.Serializable]
 public abstract class CustomObjectInfo
 {
-	public GraphNode node;
+	public NodeInformation node;
 	public int instanceID;
+	public string instanceName;
 	public abstract CustomObject Deserialize();
 	public abstract void EstablishConnections();
 	public abstract string GetName();
@@ -124,8 +126,9 @@ public abstract class CustomObjectInfo
 	{
 		GameObject gameObject =  GetPrefabByName(GetName());
 		CustomObject customObject =gameObject.GetComponent<CustomObject>();
-		customObject.Node=node;
+		customObject.Node =GraphNode.GetNodeByParameters(node.i,node.j, node.index, node.level);
 		customObject.ObjectID=instanceID;
+		customObject.name=instanceName;
 		if(Application.isPlaying)
 		  Creator.AddObject(customObject);
 		else
@@ -141,6 +144,12 @@ public abstract class CustomObjectInfo
 		else
 			prefabs=EditorAdditionalGUI.EditorOptions.prefabs;
 		return GameObject.Instantiate(prefabs.Find(x=>x.name== name+"Prefab")) as GameObject;
+	}
+	public void BasicSerialization(CustomObject x)
+	{
+		instanceName=x.name;
+		instanceID=x.ObjectID;
+		node= new NodeInformation(x.Node);
 	}
 	public static CustomObject GetObjectByID(int id)
 	{

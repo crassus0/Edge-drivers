@@ -19,9 +19,12 @@ public class RedFireflySpawner : CustomObject
 	public override CustomObjectInfo SerializeObject ()
 	{
 		RedFireflySpawnerInfo x = new RedFireflySpawnerInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(RedFireflySpawnerInfo);
 	}
 }
 [System.Serializable]

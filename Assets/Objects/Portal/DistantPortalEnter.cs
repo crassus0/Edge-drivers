@@ -90,26 +90,29 @@ public class DistantPortalEnter : CustomObject
 	public override CustomObjectInfo SerializeObject ()
 	{
 		DistantPortalEnterInfo x=new DistantPortalEnterInfo();
-		x.m_targetNode=m_targetNode;
+		x.m_targetNode=new NodeInformation(m_targetNode);
 		x.m_targetPortalID=m_targetPortalID;
 		x.m_targetScene=m_targetScene;
 		x.direction=direction;
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(DistantPortalEnterInfo);
 	}
 }
 [System.Serializable]
 public class DistantPortalEnterInfo:CustomObjectInfo
 {
 	public string m_targetScene;
-  public GraphNode m_targetNode;
+  public NodeInformation m_targetNode;
   public int direction;
   public int m_targetPortalID;
 	public override CustomObject Deserialize ()
 	{
 		DistantPortalEnter x = CreateInstance() as DistantPortalEnter;
-		x.m_targetNode=m_targetNode;
+		x.m_targetNode = GraphNode.GetNodeByParameters(m_targetNode.i, m_targetNode.j, m_targetNode.index, m_targetNode.level);
 		x.m_targetPortalID=m_targetPortalID;
 		x.m_targetScene=m_targetScene;
 		x.direction=direction;

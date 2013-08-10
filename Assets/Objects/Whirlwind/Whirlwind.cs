@@ -32,10 +32,13 @@ public class Whirlwind : CustomObject
 	public override CustomObjectInfo SerializeObject ()
 	{
 		WhirlwindInfo x = new WhirlwindInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		x.spin=spin;
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(WhirlwindInfo);
 	}
 }
 [System.Serializable]

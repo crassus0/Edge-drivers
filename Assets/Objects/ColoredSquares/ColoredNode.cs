@@ -67,10 +67,13 @@ public class ColoredNode : CustomObject
 	public override CustomObjectInfo SerializeObject ()
 	{
 		ColoredNodeInfo x = new ColoredNodeInfo();
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		x.color=color;
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(ColoredNodeInfo);
 	}
 }
 [System.Serializable]

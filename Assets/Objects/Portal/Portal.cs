@@ -62,9 +62,12 @@ public class Portal : CustomObject, IPortalExit
 		PortalInfo x = new PortalInfo();
 		x.PairPortal=PairPortal.ObjectID;
 		x.Direction=Direction;
-		x.node=Node;
-		x.instanceID=ObjectID;
+		x.BasicSerialization(this);
 		return x;
+	}
+	public override Type SerializedType ()
+	{
+		return typeof(PortalInfo);
 	}
 }
 

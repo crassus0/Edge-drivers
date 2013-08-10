@@ -53,9 +53,12 @@ public class DistantPortalExit : CustomObject, IPortalExit
 	{
 		DistantPortalExitInfo x =  new DistantPortalExitInfo();
 		x.Direction=Direction;
-		x.instanceID=ObjectID;
-		x.node=Node;
+		x.BasicSerialization(this);
 		return x;
+	}
+	public override System.Type SerializedType ()
+	{
+		return typeof(DistantPortalExitInfo);
 	}
 }
 

@@ -157,4 +157,8 @@ public class WarmingControls : CustomObject, IPlanerLike
 	{
 		throw new NotImplementedException ();
 	}
+	public override Type SerializedType ()
+	{
+		throw new NotImplementedException ();
+	}
 }

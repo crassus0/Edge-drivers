@@ -485,11 +485,22 @@ public class GraphNode : System.IComparable<GraphNode>
     s_interact = new HashSet<CustomObject>();
   }
   public delegate float evaluator(CustomObject x);
-  public struct NodeInformation
+
+}
+public class NodeInformation
+{
+  public int i;
+  public int j;
+  public int index;
+  public int level;
+  public NodeInformation(GraphNode node)
   {
-    public int i;
-    public int j;
-    public int index;
-    public int level;
+	  i=node.X;
+	  j=node.Y;
+	  index=node.Index;
+	  level=node.Level;
   }
+	public NodeInformation()
+	{
+	}
 }

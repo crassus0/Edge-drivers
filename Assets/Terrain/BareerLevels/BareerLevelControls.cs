@@ -295,6 +295,7 @@ public class LevelInfo
 		x.SelectionPhaseType=SelectionPhaseType;
 		x.MovePhaseDuration=MovePhaseDuration;
 		x.NumAreas=NumAreas;
+		x.transform.parent=Creator.creator.transform;
 		return x;
 	}
 }

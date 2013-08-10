@@ -10,6 +10,7 @@ public class LevelObjectsInfo
 	public string name;
   public List<CustomObjectInfo> objectsInfo;
 	public List<LevelInfo> info;
+	public int defaultPortal;
 	public static LevelObjectsInfo LoadLevelInfo(string levelName)
 	{
 		System.Type[] types=new System.Type[EditorAdditionalGUI.EditorOptions.prefabs.Count+1];

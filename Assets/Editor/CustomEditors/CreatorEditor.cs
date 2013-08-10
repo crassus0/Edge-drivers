@@ -12,7 +12,7 @@ using System.Text;
 public class CreatorEditor : Editor
 {
 
-  //int selected=0;
+  static bool firstLoad=true;
   EditorAdditionalGUI targ;
   int m_activeLevelSize;
 	static bool loaded=true;
@@ -26,6 +26,7 @@ public class CreatorEditor : Editor
 		targ = target as EditorAdditionalGUI;
 		creator=GameObject.Find("Creator").GetComponent<Creator>();
 		Creator.prefabs=targ.prefabs;
+
 	}
   public override void OnInspectorGUI()
   {
@@ -328,12 +329,13 @@ public class CreatorEditor : Editor
 	{
 		string m_path="Assets/Resources";
 		string name= Creator.creator.SceneName+".xml";
-		FileStream fout = File.OpenWrite(m_path+"/"+name);
+		FileStream fout = File.Open(m_path+"/"+name, FileMode.Create);
 		MemoryStream stream=new MemoryStream();
 		LevelObjectsInfo objects=new LevelObjectsInfo();
 		objects.objectsInfo=EditorAdditionalGUI.EditorOptions.Objects.ConvertAll<CustomObjectInfo>(x=>x.SerializeObject());
 		objects.info=EditorAdditionalGUI.EditorOptions.levels.ConvertAll<LevelInfo>(x=>x.SerializeLevel());
 		objects.name=Creator.creator.SceneName;
+		objects.defaultPortal=Creator.creator.defaultPortal.ObjectID;
 		System.Type[] types=new System.Type[EditorAdditionalGUI.EditorOptions.prefabs.Count+1];
 		for(int i=0; i<EditorAdditionalGUI.EditorOptions.prefabs.Count; i++)
 		{
@@ -360,9 +362,11 @@ public class CreatorEditor : Editor
 		targ.levels=x.info.ConvertAll<BareerLevelControls>(y=>y.Deserialize());
 		Creator.creator.levels=targ.levels;
 		targ.Objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());
+		Creator.creator.defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
 		x.objectsInfo.ForEach(y=>y.EstablishConnections());
 		Creator.creator.SceneName=x.name;
 		loaded=true;
+		Selection.activeObject=null;
 		Selection.activeObject=targ;
 	}
 

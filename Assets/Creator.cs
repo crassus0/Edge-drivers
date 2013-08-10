@@ -21,7 +21,7 @@ public class Creator : MonoBehaviour
     }
   }
   bool m_safeHouse = false;
-  public string SceneName { get; set; }
+  public string SceneName;
   public GameObject testPortal;
   public List<BareerLevelControls> levels;
   public static string PreviousLevel { get; set; }
@@ -91,6 +91,13 @@ public class Creator : MonoBehaviour
   public void Start()
   {
     if (m_init) return;
+		foreach(UnityEngine.Object x in Resources.FindObjectsOfTypeAll(typeof(CustomObject)))
+		{
+			if(!(x).name.Contains("Prefab"))
+			{
+				Destroy((x as CustomObject).gameObject);
+			}
+		}
     if(m_player==null)
     {
       m_player=(Instantiate(playerPrefab) as GameObject).GetComponent<PlanerCore>();
@@ -251,13 +258,7 @@ public class Creator : MonoBehaviour
   }
 	public void ClearScene()
 	{
-		if(m_objects==null)return;
-		foreach(CustomObject x in m_objects)
-		{
-			if(!ReferenceEquals(x, m_player))
-			  Destroy(x.gameObject);
-		}
-		m_objects.Clear();
+		
 		BareerLevelControls.loadingLevel=true;
 		foreach(BareerLevelControls x in levels)
 		{
@@ -265,6 +266,14 @@ public class Creator : MonoBehaviour
 		}
 		levels.Clear();
 		BareerLevelControls.loadingLevel=false;
+		if(m_objects==null)return;
+		foreach(CustomObject x in m_objects)
+		{
+			if(!ReferenceEquals(x, m_player))
+			  Destroy(x.gameObject);
+		}
+		m_objects.Clear();
+		
 	}
 	public void LoadLevel(string levelName)
 	{
@@ -274,6 +283,7 @@ public class Creator : MonoBehaviour
 		levels=x.info.ConvertAll<BareerLevelControls>(y=>y.Deserialize());
 		m_objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());
 		x.objectsInfo.ForEach(y=>y.EstablishConnections());
+		defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
 		SceneName=x.name;
 		AddObject(m_player);
 		m_energy=-1;

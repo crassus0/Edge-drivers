@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatable
+public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatable, IActivatable
 {
   public int steps = -1;
   public byte[] states= new byte[3];
@@ -9,6 +9,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   byte[] m_prevState;
   public bool visible = true;
   bool m_initialized = false;
+  bool active=false;
   public bool ActivateOnStart
   { 
     get { return m_activateOnStart;}
@@ -33,15 +34,14 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
 	}
   public void Activate()
   {
-
+    active=true;
     if (Destroyed) return;
     m_prevState = Node.GetNodeGraph();
-
     Node.ChangeState(states, Creator.creator.levels);
   }
   public void Deactivate()
   {
-		
+		active=false;
     if (ActivateOnStart && !Destroyed) return;
     if (m_prevState != null)
     {
@@ -56,6 +56,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   }
   void OnUpdated()
   {
+    if(!active)return;
     if (steps < 0) 
       OnUpdate = null;
     if (steps-- == 0)

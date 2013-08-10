@@ -16,6 +16,7 @@ public class TerraformingMineEditor:Editor
   public override void OnInspectorGUI()
   {
     TerraformingMine targ = target as TerraformingMine;
+    targ.ActivateOnStart=EditorGUILayout.Toggle("Activate on start", targ.ActivateOnStart);
     showArray = EditorGUILayout.Foldout(showArray, "Strings");
     string zeroName = targ.Node.Index == 0 ? "  Top" : "  Bottom";
     if (showArray)

@@ -13,7 +13,13 @@ public class Trigger : CustomObject, IActivatable
 	public bool OnObjectStay;
   System.Type TargetTrigger;
   bool activeTrigger =false;
-  public bool ActivateOnStart { get;set;}
+  public bool ActivateOnStart 
+  {
+    get{return activateOnStart;}
+    set{activateOnStart=value;}
+  }
+  [SerializeField]
+  bool activateOnStart;
   public int delay=0;
 	int stepCount=-1;
   public List<CustomObject> toActivate;
@@ -52,7 +58,6 @@ public class Trigger : CustomObject, IActivatable
 	}
 	void DeactivateTrigger()
 	{
-		activeTrigger = false;
     Interact = null;
 		OnUpdate=null;
 	}
@@ -125,7 +130,6 @@ public class Trigger : CustomObject, IActivatable
     if (type == InteractType.Enter) return;
     if (TargetTrigger.IsAssignableFrom(obj.GetType()))
 		{ 
-
 				Activate();
 		}
   }
@@ -151,7 +155,9 @@ public class Trigger : CustomObject, IActivatable
 	  foreach (CustomObject x in toActivate)
     {
       if (x as IActivatable != null)
+      {
         (x as IActivatable).Activate();
+      }
     }
     foreach (CustomObject x in toDeactivate)
     {

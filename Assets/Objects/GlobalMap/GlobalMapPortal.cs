@@ -11,7 +11,7 @@ public class GlobalMapPortal : DistantPortalEnter
     int isActive = PlayerSaveData.GetSceneStatus(m_targetScene);
     if (isActive == 0)
     {
-      Destroy(gameObject);
+      Creator.DestroyObject(this);
     }
     if (isActive == 1)
     {

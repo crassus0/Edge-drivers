@@ -7,7 +7,7 @@ public class BareerLevelControls : MonoBehaviour
 
   public Mesh areaMesh;
 
-
+	public static bool loadingLevel=false;
   public GameObject areaPrefab;
 
 
@@ -252,7 +252,7 @@ public class BareerLevelControls : MonoBehaviour
   }
   void OnDestroy()
   {
-    if (Application.isPlaying) return;
+    if (loadingLevel||Application.isPlaying) return;
     transform.parent.GetComponent<Creator>().levels.Remove(this);
     if (EditorAdditionalGUI.EditorOptions != null)
       EditorAdditionalGUI.EditorOptions.ActiveLevel = 0;
@@ -268,15 +268,7 @@ public class BareerLevelControls : MonoBehaviour
 		x.NumAreas=NumAreas;
 		return x;
 	}
-	public void Deserialize(LevelInfo x)
-	{
-		name=x.name;
-		m_bareers=x.m_bareers;
-		SelectionPhaseDuration=x.SelectionPhaseDuration;
-		SelectionPhaseType=x.SelectionPhaseType;
-		MovePhaseDuration=x.MovePhaseDuration;
-		NumAreas=x.NumAreas;
-	}
+
 }
 [System.Serializable]
 public enum PhaseType
@@ -294,5 +286,15 @@ public class LevelInfo
 	public PhaseType SelectionPhaseType;
 	public float MovePhaseDuration;
 	public int NumAreas;
-	
+	public BareerLevelControls Deserialize()
+	{
+		BareerLevelControls x = (Object.Instantiate(Creator.creator.levelPrefab) as GameObject).GetComponent<BareerLevelControls>();
+		x.name=name;
+		x.m_bareers=m_bareers;
+		x.SelectionPhaseDuration=SelectionPhaseDuration;
+		x.SelectionPhaseType=SelectionPhaseType;
+		x.MovePhaseDuration=MovePhaseDuration;
+		x.NumAreas=NumAreas;
+		return x;
+	}
 }

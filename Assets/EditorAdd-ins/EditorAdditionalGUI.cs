@@ -54,7 +54,21 @@ public class EditorAdditionalGUI : MonoBehaviour
   }
   static EditorAdditionalGUI m_editor;
   public CustomObject objectToMove;
-
+	public void ClearScene()
+	{
+		foreach(CustomObject x in m_objects)
+		{
+			if(x!=null)
+			  DestroyImmediate(x.gameObject);
+		}
+		BareerLevelControls.loadingLevel=true;
+		foreach(BareerLevelControls x in levels)
+		{
+			if(x!=null)
+			 DestroyImmediate(x.gameObject);
+		}
+		BareerLevelControls.loadingLevel=false;
+	}
 
   void Start()
   {
@@ -115,19 +129,6 @@ public class EditorAdditionalGUI : MonoBehaviour
 	}
   void SetFlags()
   {
-    //	  Debug.Log(levels.Count);
 
-    for (int i = 0; i < levels.Count; i++)
-    {
-      //		Debug.Log(i);
-      levels[i].gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
-    }
-    //levels[ActiveLevel].gameObject.hideFlags=0;
-    gameObject.transform.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
-		hideFlags=0;
-		gameObject.hideFlags=0;
-    //	  Debug.Log(transform.hideFlags);
-    //gameObject.hideFlags = HideFlags.HideInHierarchy ;
-    //hideFlags=0;
   }
 }

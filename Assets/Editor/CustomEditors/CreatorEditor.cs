@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml; 
 using System.Xml.Serialization; 
 using System.IO; 
@@ -16,6 +15,7 @@ public class CreatorEditor : Editor
   //int selected=0;
   EditorAdditionalGUI targ;
   int m_activeLevelSize;
+	static bool loaded=true;
 	public Creator creator;
   //int count = 0;
   //int activeLevel=1;
@@ -68,9 +68,9 @@ public class CreatorEditor : Editor
 
     targ.ActiveLevel = activeLevel;
     //Debug.Log(targ.ActiveLevel);
-    if (GUI.changed)
+    if (GUI.changed||loaded)
     {
-
+			loaded=false;
       OnChangedActiveLevel();
     }
   }
@@ -192,7 +192,12 @@ public class CreatorEditor : Editor
 
     OnBareerEditCheck();
     OnObjectMove();
-    CheckEvent();
+    CheckEvent();		
+		if (loaded)
+    {
+			loaded=false;
+      OnChangedActiveLevel();
+    }
   }
 	
   void CheckEvent()
@@ -328,6 +333,7 @@ public class CreatorEditor : Editor
 		LevelObjectsInfo objects=new LevelObjectsInfo();
 		objects.objectsInfo=EditorAdditionalGUI.EditorOptions.Objects.ConvertAll<CustomObjectInfo>(x=>x.SerializeObject());
 		objects.info=EditorAdditionalGUI.EditorOptions.levels.ConvertAll<LevelInfo>(x=>x.SerializeLevel());
+		objects.name=Creator.creator.SceneName;
 		System.Type[] types=new System.Type[EditorAdditionalGUI.EditorOptions.prefabs.Count+1];
 		for(int i=0; i<EditorAdditionalGUI.EditorOptions.prefabs.Count; i++)
 		{
@@ -346,8 +352,18 @@ public class CreatorEditor : Editor
 		
 		//EditorUtility.SetDirty();
 	}
-	public static void LoadLevel()
+	public static void LoadLevel(string levelName)
 	{
+		LevelObjectsInfo x = LevelObjectsInfo.LoadLevelInfo(levelName);
+		EditorAdditionalGUI targ = EditorAdditionalGUI.EditorOptions;
+		targ.ClearScene();
+		targ.levels=x.info.ConvertAll<BareerLevelControls>(y=>y.Deserialize());
+		Creator.creator.levels=targ.levels;
+		targ.Objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());
+		x.objectsInfo.ForEach(y=>y.EstablishConnections());
+		Creator.creator.SceneName=x.name;
+		loaded=true;
+		Selection.activeObject=targ;
 	}
-	
+
 }

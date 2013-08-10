@@ -143,7 +143,15 @@ public abstract class CustomObjectInfo
 			prefabs=Creator.prefabs;
 		else
 			prefabs=EditorAdditionalGUI.EditorOptions.prefabs;
-		return GameObject.Instantiate(prefabs.Find(x=>x.name== name+"Prefab")) as GameObject;
+		try
+		{
+			return GameObject.Instantiate(prefabs.Find(x=>x.name== name+"Prefab")) as GameObject;
+		}
+		catch(System.Exception x)
+		{
+			Debug.Log(name);
+			throw(x);
+		}
 	}
 	public void BasicSerialization(CustomObject x)
 	{

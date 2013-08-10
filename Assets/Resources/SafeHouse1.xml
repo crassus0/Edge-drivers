@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <name>SafeHouse</name>
+  <name>SafeHouse1</name>
   <objectsInfo>
-    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
+    <CustomObjectInfo xsi:type="DistantPortalExitInfo">
       <node>
-        <i>4</i>
-        <j>4</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>0</instanceID>
-      <instanceName>DistantPortal2</instanceName>
-      <m_targetScene>IntTries</m_targetScene>
-      <m_targetNode>
         <i>3</i>
         <j>3</j>
         <index>0</index>
         <level>0</level>
-      </m_targetNode>
-      <direction>0</direction>
-      <m_targetPortalID>19530</m_targetPortalID>
+      </node>
+      <instanceID>0</instanceID>
+      <instanceName>DefaultEnter</instanceName>
+      <Direction>1</Direction>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
       <node>
@@ -40,16 +32,24 @@
       <direction>0</direction>
       <m_targetPortalID>63800</m_targetPortalID>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="DistantPortalExitInfo">
+    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
       <node>
-        <i>3</i>
-        <j>3</j>
+        <i>0</i>
+        <j>4</j>
         <index>0</index>
         <level>0</level>
       </node>
       <instanceID>2</instanceID>
-      <instanceName>DefaultEnter</instanceName>
-      <Direction>1</Direction>
+      <instanceName>DistantPortal2</instanceName>
+      <m_targetScene>IntTries</m_targetScene>
+      <m_targetNode>
+        <i>3</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </m_targetNode>
+      <direction>0</direction>
+      <m_targetPortalID>19530</m_targetPortalID>
     </CustomObjectInfo>
   </objectsInfo>
   <info>

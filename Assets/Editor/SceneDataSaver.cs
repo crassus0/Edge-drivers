@@ -42,13 +42,14 @@ public static class SceneDataSaver
   public static string[] ReadSceneNames()
   {
     List<string> temp = new List<string>();
-    foreach (UnityEditor.EditorBuildSettingsScene S in UnityEditor.EditorBuildSettings.scenes)
+    foreach (string x in Directory.GetFiles("Assets/Resources"))
     {
-      string name = S.path.Substring(S.path.LastIndexOf('/') + 1);
-      name = name.Substring(0, name.Length - 6);
-      if (!name.Equals("BasicScene"))
+      string name = x.Substring(x.LastIndexOf('\\') + 1);
+      if (name.EndsWith("xml"))
       {
-        temp.Add(name);
+				
+        name = name.Substring(0, name.Length - 4);
+				temp.Add(name);
 
       }
     }

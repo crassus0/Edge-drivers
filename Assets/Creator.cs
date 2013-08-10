@@ -26,6 +26,7 @@ public class Creator : MonoBehaviour
   public List<BareerLevelControls> levels;
   public static string PreviousLevel { get; set; }
   public static bool IsLoading { get; set; }
+	public GameObject levelPrefab;
   public GameObject playerPrefab;
 	public GameObject initializerPrefab;
   public DistantPortalExit defaultPortal;
@@ -59,7 +60,6 @@ public class Creator : MonoBehaviour
   int numObjects;
   bool m_init = false;
   static uint m_curentID = 1;
-  static Creator prevCreator;
   public static PlanerCore m_player;
   int m_direction;
   float m_turnTime = 0.1f;
@@ -68,7 +68,15 @@ public class Creator : MonoBehaviour
   static bool firstLoad=true;
   bool isMainCreator=true;
   public static Vector3 ScreenSize { get { return m_screenSize; } }
-  public static Creator creator { get { return m_creator; } }
+  public static Creator creator
+	{
+		get 
+		{
+			if(m_creator==null)
+				m_creator=GameObject.Find("Creator").GetComponent<Creator>();
+			return m_creator; 
+		} 
+	}
   public static PlanerCore Player { get { return m_player; } }
   public static bool OnPause { get; set; }
   public static int Level { get { return Player.Level; } }
@@ -83,44 +91,22 @@ public class Creator : MonoBehaviour
   public void Start()
   {
     if (m_init) return;
-    IsLoading = false;
-    OnPause = false;
-    m_creator = this;
-    m_ratio = (float)Screen.width / Screen.height;
-    m_screenSize.y = ((Camera.mainCamera.orthographicSize));
-    m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
     if(m_player==null)
     {
       m_player=(Instantiate(playerPrefab) as GameObject).GetComponent<PlanerCore>();
-      DontDestroyOnLoad(m_player.gameObject);
       m_player.Init();
       m_player.name="Player";
     }
     m_player.Hidden=false;
-    if (!m_safeHouse)
-    {
-      LoadGame();
-      SceneName = Application.loadedLevelName;
-//      isSafeHouse = false;
-    }
-    if (m_ratio > 1)
-      m_screenSize.z = m_ratio;
-    else
-      m_screenSize.z = 1;
     Camera.main.GetComponent<CameraControls>().Init();
-    for (int i = 0; i < levels.Count; i++)
-      levels[i].Level = i;
-    //Camera.main.GetComponent<CameraControls>().ForceSetPosition(m_player.transform.position);
+		LoadLevel("SafeHouse");
+		LoadGame();
     m_init = true;
-
-    m_objects = new List<CustomObject>();
-    m_startObjects=new HashSet<CustomObject>();
+		AddObject(m_player);
 		
 
 		//prefabs=EditorAdditionalGUI.EditorOptions.
 		GraphNode.InteractAll();
-    m_energy = -1;
-    SwitchLevel();
     m_turnTime = levels[m_energy].SelectionPhaseDuration;
   }
   void SwitchLevel()
@@ -263,62 +249,43 @@ public class Creator : MonoBehaviour
       creator.m_removeObjects = new HashSet<CustomObject>();
     creator.m_removeObjects.Add(obj);
   }
-
+	public void ClearScene()
+	{
+		if(m_objects==null)return;
+		foreach(CustomObject x in m_objects)
+		{
+			if(!ReferenceEquals(x, m_player))
+			  Destroy(x.gameObject);
+		}
+		m_objects.Clear();
+		BareerLevelControls.loadingLevel=true;
+		foreach(BareerLevelControls x in levels)
+		{
+			Destroy(x.gameObject);
+		}
+		levels.Clear();
+		BareerLevelControls.loadingLevel=false;
+	}
+	public void LoadLevel(string levelName)
+	{
+		LevelObjectsInfo x = LevelObjectsInfo.LoadLevelInfo(levelName);
+		GraphNode.ClearAll();
+		ClearScene();
+		levels=x.info.ConvertAll<BareerLevelControls>(y=>y.Deserialize());
+		m_objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());
+		x.objectsInfo.ForEach(y=>y.EstablishConnections());
+		SceneName=x.name;
+		AddObject(m_player);
+		m_energy=-1;
+		SwitchLevel();
+	}
   public void LoadHome()
   {
-    DontDestroyOnLoad(gameObject);
-    isMainCreator=false;
-    m_init = false;
-    m_player.MineController = null;
-    if(prevCreator!=null)
-      Destroy(prevCreator);
-    prevCreator=this;
-    m_safeHouse = true;
-    gameObject.SetActive(false);
     
-    savedNode=m_player.Node;
-    savedDirection=m_player.Direction;
-    GraphNode.ClearAll();
-    foreach(CustomObject x in m_objects)
-      x.Hidden=true;
-    Application.LoadLevel("SafeHouse");
   }
   public void LoadPrev()
   {
-    if(prevCreator==null)return;
-    prevCreator.isMainCreator=true;
-    m_creator=prevCreator;
-    prevCreator.gameObject.SetActive(true);
-    isMainCreator = false;
-    m_player.Node=savedNode;
-    m_player.SetNewDirection(savedDirection, true);
-    m_player.transform.parent=prevCreator.transform;
-    foreach(CustomObject x in m_objects)
-    {
-      if(!ReferenceEquals( m_player, x))
-      {
-        Destroy(x.gameObject);
-        x.Destroyed=true; 
-      }
-    }
-    foreach(BareerLevelControls x in levels)
-    {
-      Destroy(x.gameObject);
-    }
-    foreach(CustomObject x in prevCreator.m_objects)
-    {
-      x.Hidden=false;
-      IActivatable y = x as IActivatable;
-      if (y != null && y.ActivateOnStart)
-        y.Activate();
-    }
-    foreach (CustomObject x in prevCreator.m_objects)
-      x.Hidden = false;
-    GraphNode.ClearAll();
-    prevCreator.SendMessage("Start");
-    prevCreator = null;
-
-    Destroy(gameObject);
+    
   }
   void SaveGame()
   {
@@ -347,8 +314,7 @@ public class Creator : MonoBehaviour
     PreviousLevel = Application.loadedLevelName;
     if(isMainCreator)
       GraphNode.ClearAll();
-    if(prevCreator!=null&&!prevCreator.isMainCreator)
-      Destroy( prevCreator.gameObject);
+
     try
     {
       m_addObjects.Clear();
@@ -369,9 +335,8 @@ public class Creator : MonoBehaviour
     GraphNode t;
   }
 
-  public Creator()
-  {
-    m_creator=this;
-  }
-  
+	public Creator()
+	{
+		m_creator=this;
+	}
 }

@@ -25,7 +25,9 @@ public class PlanerMoveControls : ScriptableObject
     get { return m_direction; }
     set
     {
-      m_direction = value;
+      m_direction = value%6;
+			while(m_direction<0)
+				m_direction+=6;
       m_planer.transform.rotation = Quaternion.identity;
       m_planer.transform.Rotate(new Vector3(0, -60 * m_direction, 0));
     }
@@ -56,6 +58,7 @@ public class PlanerMoveControls : ScriptableObject
     m_planer.prevNode = m_planer.GetNode();
     m_direction %= 6;
     int rotatedAngle = m_rotationAngle;
+
     ApplyRotation();
     WayStatus[] directions = GraphTagMachine.GetDirections(m_planer.GetNode());
     if(m_agility==0&&m_stay)
@@ -81,6 +84,10 @@ public class PlanerMoveControls : ScriptableObject
       m_planer.transform.Rotate(new Vector3(0, -60 * m_direction, 0));
       m_planer.Visualiser.Hit(rotatedAngle);
     }
+		if(m_planer.Node.Tag==NodeTag.Whirlwind)
+		{
+			Direction+=m_planer.Node.TagModifier;
+		}
 		m_stay=false;
 		
   }
@@ -114,7 +121,7 @@ public class PlanerMoveControls : ScriptableObject
   }
   public void Rotate(int angle)
   {
-    if (!m_planer.CanRotateWithTag(m_planer.Node.Tag)) return;
+    if (m_planer.CanRotateWithTag(m_planer.Node, m_direction).Count==1) return;
     m_rotationAngle += angle;
     if (Mathf.Abs(m_rotationAngle) > 3)
       m_rotationAngle -= 6 * (int)Mathf.Sign(m_rotationAngle);

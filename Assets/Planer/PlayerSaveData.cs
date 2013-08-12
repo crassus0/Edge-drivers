@@ -125,38 +125,16 @@ public static class PlayerSaveData
 
     planer.OnEnterPortal(enter.GetNode(), enter.Direction);
   }
-  public static bool GetColourStatus(NodeTag color)
+  public static bool GetColorStatus(string color)
   {
-    string colorString;
-    switch (color)
-    {
-      case NodeTag.BlueColoured:
-      {
-        colorString="BlueColor";
-        break;
-      }
-      case NodeTag.RedColoured:
-      {
-        colorString="RedColor";
-        break;
-      }
-      case NodeTag.GreenColoured:
-      {
-        colorString="GreenColor";
-        break;
-      }
-      default:
-      {
-        return true;
-      }
-    }
+
     try
     {
-      return PlayerPrefs.GetInt(colorString)==1;
+      return PlayerPrefs.GetInt(color)==1;
     }
     catch
     {
-      PlayerPrefs.SetInt(colorString, 0);
+      PlayerPrefs.SetInt(color, 0);
       return false;
     }
   }

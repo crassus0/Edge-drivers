@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 public class YellowFirefly : CustomObject, IAutoMove
 {
   
@@ -57,9 +58,11 @@ public class YellowFirefly : CustomObject, IAutoMove
     if (Camera.main.WorldToViewportPoint(transform.position).magnitude > 4 && !Node.IsOnField())
       Creator.DestroyObject(this);
   }
-  public bool CanRotateWithTag(NodeTag tag)
+  public List<int> CanRotateWithTag(GraphNode node, int direction)
   {
-    return true;
+		List<int>x = new List<int>();
+		x.Add(direction);
+    return x;
   }
 	public override CustomObjectInfo SerializeObject ()
 	{

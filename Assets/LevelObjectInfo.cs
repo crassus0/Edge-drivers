@@ -13,12 +13,12 @@ public class LevelObjectsInfo
 	public int defaultPortal;
 	public static LevelObjectsInfo LoadLevelInfo(string levelName)
 	{
-		System.Type[] types=new System.Type[EditorAdditionalGUI.EditorOptions.prefabs.Count+1];
-		for(int i=0; i<EditorAdditionalGUI.EditorOptions.prefabs.Count; i++)
+		System.Type[] types=new System.Type[Creator.prefabs.Count+1];
+		for(int i=0; i<Creator.prefabs.Count; i++)
 		{
 			types[i]=Creator.prefabs[i].GetComponent<CustomObject>().SerializedType();
 		}
-		types[EditorAdditionalGUI.EditorOptions.prefabs.Count]=typeof(LevelInfo);
+		types[Creator.prefabs.Count]=typeof(LevelInfo);
 		XmlSerializer serializer=new XmlSerializer(typeof(LevelObjectsInfo), types);
 		TextAsset info= Resources.Load(levelName) as TextAsset;
 		

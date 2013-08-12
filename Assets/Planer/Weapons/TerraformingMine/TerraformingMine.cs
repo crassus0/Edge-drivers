@@ -9,7 +9,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   byte[] m_prevState;
   public bool visible = true;
   bool m_initialized = false;
-  bool active=false;
+  bool m_active=false;
   public bool ActivateOnStart
   { 
     get { return m_activateOnStart;}
@@ -34,14 +34,14 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
 	}
   public void Activate()
   {
-    active=true;
+    m_active=true;
     if (Destroyed) return;
     m_prevState = Node.GetNodeGraph();
     Node.ChangeState(states, Creator.creator.levels);
   }
   public void Deactivate()
   {
-		active=false;
+		m_active=false;
     if (ActivateOnStart && !Destroyed) return;
     if (m_prevState != null)
     {
@@ -56,7 +56,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   }
   void OnUpdated()
   {
-    if(!active)return;
+    if(!m_active)return;
     if (steps < 0) 
       OnUpdate = null;
     if (steps-- == 0)

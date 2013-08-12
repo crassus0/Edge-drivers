@@ -15,31 +15,12 @@
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
       <node>
-        <i>2</i>
-        <j>6</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>1</instanceID>
-      <instanceName>GlobalMapPortal</instanceName>
-      <m_targetScene>GlobalMap</m_targetScene>
-      <m_targetNode>
-        <i>1</i>
-        <j>0</j>
-        <index>1</index>
-        <level>0</level>
-      </m_targetNode>
-      <direction>0</direction>
-      <m_targetPortalID>63800</m_targetPortalID>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
-      <node>
         <i>4</i>
         <j>4</j>
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>2</instanceID>
+      <instanceID>1</instanceID>
       <instanceName>DistantPortal2</instanceName>
       <m_targetScene>IntTries</m_targetScene>
       <m_targetNode>
@@ -50,6 +31,27 @@
       </m_targetNode>
       <direction>0</direction>
       <m_targetPortalID>19530</m_targetPortalID>
+      <m_sceneStatus>-1</m_sceneStatus>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
+      <node>
+        <i>2</i>
+        <j>6</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>2</instanceID>
+      <instanceName>GlobalMapPortal</instanceName>
+      <m_targetScene>NewScene</m_targetScene>
+      <m_targetNode>
+        <i>3</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </m_targetNode>
+      <direction>0</direction>
+      <m_targetPortalID>0</m_targetPortalID>
+      <m_sceneStatus>3</m_sceneStatus>
     </CustomObjectInfo>
   </objectsInfo>
   <info>

@@ -137,7 +137,15 @@ public class BasicPlanerAI : ScriptableObject
         int index = adjaccentNodes.BinarySearch(toAddNode);
         adjaccentNodes.RemoveAt(index);
         index = checkedNodes.BinarySearch(toAddNode);
-        checkedNodes.Insert(~index, toAddNode);
+        try
+				{
+					checkedNodes.Insert(~index, toAddNode);
+				}
+				catch
+				{
+					Debug.Log(index);
+					throw;
+				}
         bool isTarget = toAddNode.EqualWithRandomRotation(m_target);
         if (isTarget)
         {
@@ -185,23 +193,19 @@ public class BasicPlanerAI : ScriptableObject
   }
   void UpdateAdjacent(AStarNode node, ref List<AStarNode> adj, ref List<AStarNode> check)
   {
-    int maxRotateAngle = m_planer.MaxRotateAngle;
-    if (!m_planer.CanRotateWithTag(node.node.Tag))
-      maxRotateAngle = 0;
-    int minDirection = (node.direction + 6 - maxRotateAngle);
-    int maxDirection = (node.direction + 6 + maxRotateAngle);
-    //Debug.Log(minDirection%6);
-    //Debug.Log(maxDirection%6);
-    //Debug.Log(m_target);
-    for (int i = minDirection; i <= maxDirection; i++)
-    {
-      int index = i % 6;
-      UpdateDirection(node, ref adj, ref check, index);
+
+    foreach(int dir in m_planer.CanRotateWithTag(node.node, node.direction))
+		{
+      UpdateDirection(node, ref adj, ref check, dir);
     }
   }
   void UpdateDirection(AStarNode node, ref List<AStarNode> adj, ref List<AStarNode> check, int index)
   {
     AStarNode newNode;
+		if(node.node.Tag==NodeTag.Whirlwind)
+		{
+			index=(index+node.node.TagModifier+6)%6;
+		}
     WayStatus[] directions = GraphTagMachine.GetDirections(node.node);
     if (directions[index]==WayStatus.Free)
     {
@@ -218,9 +222,8 @@ public class BasicPlanerAI : ScriptableObject
     {
       return;
     }
+		
     int foundIndex = check.BinarySearch(newNode);
-    if(newNode.node.Tag==NodeTag.Whirlwind)
-      newNode.direction+=newNode.node.TagModifier;
     bool found = false;
     AStarNode existNode;
     if (foundIndex >= 0)

@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public interface IAutoMove 
 {
   GraphNode GetNode();
   int Direction { get; set; }
-  bool CanRotateWithTag(NodeTag tag);
+  List<int> CanRotateWithTag(GraphNode node, int direction);
 }

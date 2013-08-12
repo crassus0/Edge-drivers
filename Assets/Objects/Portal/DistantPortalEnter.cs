@@ -84,8 +84,7 @@ public class DistantPortalEnter : CustomObject
     x.RemoveUpdateFunc(OnPlanerEnter);
     x.EnteredPortal = true;
     PlayerSaveData.Save(x, m_targetNode, direction, true);
-    Application.LoadLevel(m_targetScene);
-    Destroy(Creator.creator);
+    Creator.creator.LoadLevel(m_targetScene);
   }
 	public override CustomObjectInfo SerializeObject ()
 	{
@@ -94,6 +93,7 @@ public class DistantPortalEnter : CustomObject
 		x.m_targetPortalID=m_targetPortalID;
 		x.m_targetScene=m_targetScene;
 		x.direction=direction;
+		x.m_sceneStatus=defaultStatus;
 		x.BasicSerialization(this);
 		return x;
 	}
@@ -109,6 +109,8 @@ public class DistantPortalEnterInfo:CustomObjectInfo
   public NodeInformation m_targetNode;
   public int direction;
   public int m_targetPortalID;
+	[System.Runtime.Serialization.OptionalField]
+	public int m_sceneStatus;
 	public override CustomObject Deserialize ()
 	{
 		DistantPortalEnter x = CreateInstance() as DistantPortalEnter;
@@ -116,6 +118,7 @@ public class DistantPortalEnterInfo:CustomObjectInfo
 		x.m_targetPortalID=m_targetPortalID;
 		x.m_targetScene=m_targetScene;
 		x.direction=direction;
+		x.defaultStatus=m_sceneStatus;
 		return x;
 	}
 	public override void EstablishConnections ()

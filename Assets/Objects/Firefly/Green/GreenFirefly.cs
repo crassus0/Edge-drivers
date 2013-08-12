@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GreenFirefly : CustomObject, IAutoMove
 {
@@ -57,9 +58,11 @@ public class GreenFirefly : CustomObject, IAutoMove
       (m_visualiser.GetComponent<FireflyVisualiser>()).Hit((Node.Index + Direction % 2) % 2);
     }
   }
-  public bool CanRotateWithTag(NodeTag tag)
+  public List<int> CanRotateWithTag(GraphNode node, int direction)
   {
-    return true;
+		List<int>x = new List<int>();
+		x.Add(direction);
+    return x;
   }
 	public override CustomObjectInfo SerializeObject ()
 	{

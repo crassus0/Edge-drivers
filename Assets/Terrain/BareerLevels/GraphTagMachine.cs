@@ -13,7 +13,7 @@ public static class GraphTagMachine
     byte[] bareers = node.GetNodeGraph(true);
     //Debug.Log(nodeGraph);
 
-   WayStatus[] directions = new WayStatus[6];
+    WayStatus[] directions = new WayStatus[6];
     for (int i = 0; i < 6; i++)
       directions[i] = WayStatus.Blocked;
     if (node.Index == 0)
@@ -56,6 +56,39 @@ public static class GraphTagMachine
       }
     }
     return directions;
+  }
+	public static bool GetTagStatus(NodeTag tag)
+  {
+    string colorString;
+    switch (tag)
+    {
+      case NodeTag.BlueColoured:
+      {
+        colorString="BlueColor";
+        break;
+      }
+      case NodeTag.RedColoured:
+      {
+        colorString="RedColor";
+        break;
+      }
+      case NodeTag.GreenColoured:
+      {
+        colorString="GreenColor";
+        break;
+      }
+		  case NodeTag.Whirlwind:
+			{
+				return false;
+			}
+      default:
+      {
+        return true;
+      }
+    }
+    
+    return PlayerSaveData.GetColorStatus(colorString);
+   
   }
 }
 public enum NodeTag

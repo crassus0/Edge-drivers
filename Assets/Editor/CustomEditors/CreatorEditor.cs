@@ -350,6 +350,7 @@ public class CreatorEditor : Editor
 	}
 	public static void LoadLevel(string levelName)
 	{
+		Creator.prefabs=EditorAdditionalGUI.EditorOptions.prefabs;
 		LevelObjectsInfo x = LevelObjectsInfo.LoadLevelInfo(levelName);
 		EditorAdditionalGUI targ = EditorAdditionalGUI.EditorOptions;
 		targ.ClearScene();
@@ -362,6 +363,7 @@ public class CreatorEditor : Editor
 		loaded=true;
 		Selection.activeObject=null;
 		Selection.activeObject=targ;
+		AssetDatabase.Refresh();
 	}
 
 }

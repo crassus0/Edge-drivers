@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WarmingControls : CustomObject, IPlanerLike
 {
@@ -40,7 +41,11 @@ public class WarmingControls : CustomObject, IPlanerLike
     //Debug.Log("adafdsfasd");
     int oldDirection=Direction;
 
-    m_direction = dir;
+    m_direction = (dir)%6;
+		while(m_direction<0)
+		{
+			m_direction+=6;
+		}
     float rotateAng = (oldDirection - dir)*60;
     transform.Rotate(new Vector3(0, rotateAng, 0));
     m_visualiser.transform.Rotate(new Vector3(0, -rotateAng, 0));
@@ -77,6 +82,10 @@ public class WarmingControls : CustomObject, IPlanerLike
     //Debug.Log("move");
     if (isEaten)
       Creator.DestroyObject(this);
+		if(Node.Tag==NodeTag.Whirlwind)
+		{
+			Direction+=Node.TagModifier;
+		}
     m_ai.OnUpdate();
     int index = (Node.Index + Direction % 2) % 2;
     while (GraphTagMachine.GetDirections(Node)[m_direction]==WayStatus.Blocked)
@@ -149,9 +158,17 @@ public class WarmingControls : CustomObject, IPlanerLike
       //return BasicPlanerAI.MaxWeight;
     return 0;
   }
-  public bool CanRotateWithTag(NodeTag tag)
+  public List<int> CanRotateWithTag(GraphNode node, int direction)
   {
-    return true;
+
+		List<int>x = new List<int>();
+		x.Add(direction);
+		for(int i=1; i<MaxRotateAngle; i++)
+		{
+			x.Add((i+direction+6)%6);
+			x.Add((-i+direction+6)%6);
+		}
+		return x;
   }
 	public override CustomObjectInfo SerializeObject ()
 	{

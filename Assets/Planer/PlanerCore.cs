@@ -384,9 +384,18 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     if (entity.GetType() == typeof(RedFireflySpawner)) return BasicPlanerAI.MaxWeight;
     return 0;
   }
-  public bool CanRotateWithTag(NodeTag tag)
+  public List<int> CanRotateWithTag(GraphNode node, int direction)
   {
-    return PlayerSaveData.GetColourStatus(tag);
+		
+		List<int>x = new List<int>();
+		x.Add(direction);
+		if(GraphTagMachine.GetTagStatus(node.Tag))
+		  for(int i=1; i<MaxRotateAngle; i++)
+		  {
+			  x.Add((i+direction+6)%6);
+			  x.Add((-i+direction+6)%6);
+		  }
+		return x;
   }
   public void FireflyDestroy(YellowFirefly firefly)
   {

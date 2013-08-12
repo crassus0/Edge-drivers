@@ -11,6 +11,7 @@ public class Creator : MonoBehaviour
   public readonly string VERSION = "0.3.0";
   int subStep = 0;
   public bool testBuild = false;
+	bool m_loading=false;
   public IPortalExit testEnter 
   {
     get 
@@ -91,12 +92,12 @@ public class Creator : MonoBehaviour
   {
     if (m_init) return;
 		foreach(UnityEngine.Object x in Resources.FindObjectsOfTypeAll(typeof(CustomObject)))
-		{
-			if(!(x).name.Contains("Prefab"))
-			{
-				Destroy((x as CustomObject).gameObject);
-			}
-		}
+		  {
+			  if(!(x).name.Contains("Prefab"))
+			  {
+				  Destroy((x as CustomObject).gameObject);
+			  }
+		  }
     if(m_player==null)
     {
       m_player=(Instantiate(playerPrefab) as GameObject).GetComponent<PlanerCore>();
@@ -105,7 +106,10 @@ public class Creator : MonoBehaviour
     }
     m_player.Hidden=false;
     Camera.main.GetComponent<CameraControls>().Init();
-		LoadLevel("SafeHouse");
+		string levelName="SafeHouse";
+		if(testBuild&&Application.isEditor)
+		  levelName=SceneName;
+		LoadLevel(levelName);
 		LoadGame();
     m_init = true;
 		AddObject(m_player);
@@ -217,6 +221,11 @@ public class Creator : MonoBehaviour
       if (x != null&&x.OnUpdate!=null&&(subStep%x.GetStepCount()==0))
       {
         x.OnUpdate();
+		    if(m_loading)
+			  {
+				  m_loading=false;
+				  break;
+			  }
       }
 
     GraphNode.InteractAll();
@@ -305,7 +314,9 @@ public class Creator : MonoBehaviour
 		defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
 		SceneName=x.name;
 		AddObject(m_player);
+    PlayerSaveData.SetPlanerData(m_player, false);
 		m_energy=-1;
+		m_loading=true;
 		SwitchLevel();
 	}
   public void LoadHome()
@@ -341,6 +352,7 @@ public class Creator : MonoBehaviour
 
     firstLoad=!t;
     SaveGame();
+		Camera.main.GetComponent<CameraControls>().ForceSetPosition(m_player.transform.position);
     return t;
     
   }
@@ -348,25 +360,6 @@ public class Creator : MonoBehaviour
   {
     Time.timeScale = modifier/ TurnDuration;
     Time.fixedDeltaTime *= 1 / TurnDuration;
-  }
-  void OnDestroy()
-  {
-    
-    if(m_player!=null)
-      m_player.transform.parent=null;
-    PreviousLevel = Application.loadedLevelName;
-    if(isMainCreator)
-      GraphNode.ClearAll();
-
-    try
-    {
-      m_addObjects.Clear();
-      m_objects.Clear();
-      m_removeObjects.Clear();
-    }
-    catch (System.NullReferenceException)
-    {
-    }
   }
   void OnApplicationQuit()
   {

@@ -20,7 +20,6 @@ public class Creator : MonoBehaviour
       return null;
     }
   }
-  bool m_safeHouse = false;
   public string SceneName;
   public GameObject testPortal;
   public List<BareerLevelControls> levels;
@@ -30,8 +29,7 @@ public class Creator : MonoBehaviour
   public GameObject playerPrefab;
 	public GameObject initializerPrefab;
   public DistantPortalExit defaultPortal;
-  static GraphNode savedNode;
-  static int savedDirection;
+	//public 
 	public static List<GameObject> prefabs;
 	public static List<Texture2D> textures;
   public float TurnDuration
@@ -48,14 +46,16 @@ public class Creator : MonoBehaviour
   }
   [SerializeField]
   float m_turnDuration = 1f;
-  static Vector3 m_screenSize;
-  static float m_ratio;
   static Creator m_creator;
   static int m_energy;
   public List<CustomObject> m_objects{get; set;}
   HashSet<CustomObject> m_removeObjects;
   HashSet<CustomObject> m_addObjects;
   HashSet<CustomObject> m_startObjects;
+	static GraphNode s_savedNode;
+  static int s_savedDirection;
+	static List<CustomObject> s_objects;
+	static string s_prevName;
   //    static int m_step=0;
   int numObjects;
   bool m_init = false;
@@ -67,7 +67,6 @@ public class Creator : MonoBehaviour
   PhaseType m_phaseType=PhaseType.OnAction;
   static bool firstLoad=true;
   bool isMainCreator=true;
-  public static Vector3 ScreenSize { get { return m_screenSize; } }
   public static Creator creator
 	{
 		get 
@@ -213,8 +212,6 @@ public class Creator : MonoBehaviour
       return;
     SaveGame();//TODO
     RenewTurnTime();
-    m_screenSize.y = ((Camera.mainCamera.orthographicSize));
-    m_screenSize.x = (m_ratio) * Camera.mainCamera.orthographicSize * 2;
     subStep++;
     foreach (CustomObject x in m_objects)
       if (x != null&&x.OnUpdate!=null&&(subStep%x.GetStepCount()==0))
@@ -256,7 +253,7 @@ public class Creator : MonoBehaviour
       creator.m_removeObjects = new HashSet<CustomObject>();
     creator.m_removeObjects.Add(obj);
   }
-	public void ClearScene()
+	void ClearScene()
 	{
 		
 		BareerLevelControls.loadingLevel=true;
@@ -266,14 +263,36 @@ public class Creator : MonoBehaviour
 		}
 		levels.Clear();
 		BareerLevelControls.loadingLevel=false;
-		if(m_objects==null)return;
+		ClearObjects();
+		
+	}
+	void ClearObjects()
+	{
+	  if(m_objects==null)return;
 		foreach(CustomObject x in m_objects)
 		{
 			if(!ReferenceEquals(x, m_player))
 			  Destroy(x.gameObject);
 		}
-		m_objects.Clear();
 		
+		m_objects.Clear();
+		foreach(CustomObject x in m_addObjects)
+		{
+			  Destroy(x.gameObject);
+		}
+		
+		m_addObjects.Clear();
+		foreach(CustomObject x in m_removeObjects)
+		{
+			  Destroy(x.gameObject);
+		}
+		m_removeObjects.Clear();
+		foreach(CustomObject x in m_startObjects)
+		{
+			  Destroy(x.gameObject);
+		}
+		
+		m_startObjects.Clear();
 	}
 	public void LoadLevel(string levelName)
 	{
@@ -291,11 +310,25 @@ public class Creator : MonoBehaviour
 	}
   public void LoadHome()
   {
-    
+    s_objects=m_objects;
+		m_objects=null;
+		s_savedNode=m_player.Node;
+		s_savedDirection=m_player.Direction;
+		s_prevName=SceneName;
+		foreach(CustomObject x in s_objects)
+		{
+			x.gameObject.SetActive(false);
+		}
+		LoadLevel("SafeHouse");
   }
   public void LoadPrev()
   {
-    
+    LoadLevel(s_prevName);
+		ClearObjects();
+		foreach(CustomObject x in s_objects)
+			AddObject(x);
+		m_player.Node=s_savedNode;
+		m_player.SetNewDirection(s_savedDirection, true);
   }
   void SaveGame()
   {

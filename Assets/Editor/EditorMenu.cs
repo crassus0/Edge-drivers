@@ -89,7 +89,6 @@ public class EditorMenu : EditorWindow
     planer.name = type + EditorAdditionalGUI.EditorOptions.Objects.Count;
     planer.SetActive(true);
     EditorAdditionalGUI.EditorOptions.Objects.Add(planer.GetComponent<CustomObject>());
-    SceneDataSaver.SaveSceneData();
     editor.objectToMove = planer.GetComponent<CustomObject>();
     editor.objectToMove.GetComponent<CustomObject>().Level = editor.ActiveLevel;
   }

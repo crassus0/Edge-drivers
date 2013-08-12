@@ -30,6 +30,7 @@ public class SelectSceneDialog : ScriptableWizard
 			  CreatorEditor.SaveLevel();
 			if(status<2)
 				CreatorEditor.LoadLevel(names[m_index]);
+			Close();
 		}
   }
 

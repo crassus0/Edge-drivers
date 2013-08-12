@@ -13,23 +13,8 @@ public class DistantPortalExit : CustomObject, IPortalExit
   public override void OnStart ()
   {
   }
-  public DistantPortalSaveData GetData()
-  {
-    DistantPortalSaveData x;
-    x.name = name;
-    x.node = Node;
-    x.portalID = ObjectID;
-    x.direction=Direction;
-    return x;
-  }
-  [System.Serializable]
-  public struct DistantPortalSaveData
-  {
-    public int direction;
-    public GraphNode node;
-    public int portalID;
-    public string name;
-  }
+
+
   protected new void OnDrawGizmos()
   {
     base.OnDrawGizmos();

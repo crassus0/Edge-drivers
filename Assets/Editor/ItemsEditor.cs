@@ -37,6 +37,11 @@ public static class ItemsEditor
   {
     ScriptableWizard.DisplayWizard<AddSceneDialog>("Add Scene");
   }
+	[MenuItem("EdgeDrivers/Scene/Save Scene")]
+	static void SaveLevel()
+	{
+		CreatorEditor.SaveLevel();
+	}
   [MenuItem("EdgeDrivers/Scene/Select Scene")]
   static void SelectScene()
   {
@@ -47,21 +52,7 @@ public static class ItemsEditor
   {
     DeleteSceneDialog.Enable();
   }
-  [MenuItem("EdgeDrivers/Scene/Export Scene")]
-  static void ExportScene()
-  {
-    ExportSceneDialog.Export();
-  }
-  [MenuItem("EdgeDrivers/Scene/Import Scene")]
-  static void ImportScene()
-  {
-    ImportSceneDialog.Import();
-  }
-	[MenuItem("EdgeDrivers/SaveLevel")]
-	static void SaveLevel()
-	{
-		CreatorEditor.SaveLevel();
-	}
+	
   [MenuItem("EdgeDrivers/Clear saves")]
   static void ClearSaves()
   {

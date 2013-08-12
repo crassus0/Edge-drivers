@@ -9,8 +9,8 @@ public static  class DeleteSceneDialog
   static string m_sceneName;
   public static void Enable()
   {
-    m_sceneName = GetSceneNameFromPath(EditorApplication.currentScene);
-    if (m_sceneName == "BasicScene" || m_sceneName == "GlobalMap" || EditorBuildSettings.scenes.Length <= 1)
+    m_sceneName = Creator.creator.SceneName;
+    if (m_sceneName == "SafeHouse" || m_sceneName == "GlobalMap" || EditorBuildSettings.scenes.Length <= 1)
     {
       EditorUtility.DisplayDialog("Delete scene", "Unable delete scene", "OK");
       return;
@@ -24,26 +24,11 @@ public static  class DeleteSceneDialog
   }
   static void DeleteCurentScene()
   {
-    foreach (string x in Directory.GetFiles("Assets/Levels/" + m_sceneName))
-    {
-      File.Delete(x);
-    }
-    Directory.Delete("Assets/Levels/" + m_sceneName);
-    
-    string path="Assets/Levels/" + m_sceneName + "/" + m_sceneName + ".unity";
-    List<EditorBuildSettingsScene> scenes= new List<EditorBuildSettingsScene>();
-
-    for (int i = 0; i < EditorBuildSettings.scenes.Length; i++ )
-    {
-      if (!EditorBuildSettings.scenes[i].path.Equals(path))
-      {
-        scenes.Add(EditorBuildSettings.scenes[i]);
-      }
-    }
-    EditorBuildSettings.scenes = scenes.ToArray();
-    EditorApplication.OpenScene(EditorBuildSettings.scenes[0].path);
-  }
-  public static string GetSceneNameFromPath(string path)
+		File.Delete("Assets/Resources/"+m_sceneName+".xml");
+		File.Delete("Assets/Resources/"+m_sceneName+".xml.meta");
+	  CreatorEditor.LoadLevel("SafeHouse");
+	}
+  static string GetSceneNameFromPath(string path)
   {
     string name = path.Remove(path.Length - 6);
     int i = name.LastIndexOf("/");

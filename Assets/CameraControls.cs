@@ -43,27 +43,20 @@ public class CameraControls:MonoBehaviour
 		m_curentScale=(9*m_curentScale+m_targetScale)/10;
       
 	 
-	  Vector3 newScale = transform.localScale;
-//	  newScale.z=
 	  if(m_moveTime<m_maxMoveTime)
 	  {
-		m_moveTime+=Time.deltaTime/5;
-		float alpha=1-(m_moveTime/m_maxMoveTime);
-		transform.position=Vector3.Lerp(m_basicPosition, m_targetPosition, 1-alpha*alpha);
-	    m_curentScale=(1-alpha*alpha)*m_targetScale+(alpha*alpha)*m_previousScale;
+			m_moveTime+=Time.deltaTime/5;
+			float alpha=1-(m_moveTime/m_maxMoveTime);
+			transform.position=Vector3.Lerp(m_basicPosition, m_targetPosition, 1-alpha*alpha);
+	    	m_curentScale=(1-alpha*alpha)*m_targetScale+(alpha*alpha)*m_previousScale;
 	  }
 	  Camera cam=Camera.main;
 	  cam.orthographicSize=CameraSize*BasicScale;
 	  cam.transform.localScale=Vector3.one;
 	  if(Camera.main.orthographicSize>maxCameraSize)
-		Camera.main.orthographicSize=maxCameraSize;
-	  newScale.z=Creator.ScreenSize.y/10;
-	  newScale.x=Creator.ScreenSize.x/10;
-	  //lens.transform.localScale=newScale;
+			Camera.main.orthographicSize=maxCameraSize;
 	  m_timeToArtifact-=Time.deltaTime;
 
-	  //if(changeTimeColor<1)
-		//ChangeColor();
 
 	}
 	

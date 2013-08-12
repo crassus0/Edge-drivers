@@ -12,25 +12,19 @@ public class AddSceneDialog : ScriptableWizard
     sceneName=EditorGUILayout.TextArea(sceneName);
     EditorGUILayout.EndHorizontal();
     if (GUILayout.Button("Create"))
-      AddScene(); 
+		{
+			int status=EditorUtility.DisplayDialogComplex("Save scene", "Do you wish to save current scene", "Yes", "No", "Cancel");
+			if(status==0)
+			  CreatorEditor.SaveLevel();
+			if(status<2)
+			  AddScene(); 
+		}
   }
   void AddScene()
   {
-    EditorApplication.OpenScene("Assets/Levels/BasicScene.unity");
-    Directory.CreateDirectory("Assets/Levels/" + sceneName);
-    EditorApplication.SaveScene("Assets/Levels/" + sceneName + "/" + sceneName + ".unity");
-    var original = EditorBuildSettings.scenes;
-
-    var newSettings = new EditorBuildSettingsScene[original.Length + 1];
-
-    System.Array.Copy(original, newSettings, original.Length);
-
-    var sceneToAdd = new EditorBuildSettingsScene("Assets/Levels/" + sceneName + "/" + sceneName + ".unity", true);
-
-    newSettings[newSettings.Length - 1] = sceneToAdd;
-
-    EditorBuildSettings.scenes = newSettings;
-    SceneDataSaver.SaveSceneData();
-    this.Close();
+		CreatorEditor.LoadLevel("SafeHouse");
+		Creator.creator.SceneName=sceneName;
+		CreatorEditor.SaveLevel();
+		Close();
   }
 }

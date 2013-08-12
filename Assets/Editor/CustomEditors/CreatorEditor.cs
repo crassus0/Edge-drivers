@@ -12,7 +12,6 @@ using System.Text;
 public class CreatorEditor : Editor
 {
 
-  static bool firstLoad=true;
   EditorAdditionalGUI targ;
   int m_activeLevelSize;
 	static bool loaded=true;
@@ -26,7 +25,6 @@ public class CreatorEditor : Editor
 		targ = target as EditorAdditionalGUI;
 		creator=GameObject.Find("Creator").GetComponent<Creator>();
 		Creator.prefabs=targ.prefabs;
-
 	}
   public override void OnInspectorGUI()
   {
@@ -321,10 +319,7 @@ public class CreatorEditor : Editor
       }
     }
   }
-  void OnDestroy()
-  {
-    SceneDataSaver.SaveSceneData();
-  }
+
 	public static void SaveLevel()
 	{
 		string m_path="Assets/Resources";
@@ -346,7 +341,6 @@ public class CreatorEditor : Editor
 		//XmlTextWriter writer=new XmlTextWriter(stream, Encoding.UTF8);
 		serializer.Serialize(stream, objects);
 		//Debug.Log(stream.Length);
-		string str = stream.ToString();
 		
 	  fout.Write(stream.ToArray(), 0, stream.ToArray().Length);
 		Debug.Log(fout.Name);

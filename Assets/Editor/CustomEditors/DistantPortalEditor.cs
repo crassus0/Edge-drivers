@@ -6,18 +6,17 @@ using UnityEditor;
 [CustomEditor(typeof(DistantPortalEnter))]
 public class DistantPortalEditor : Editor
 {
-  string[] m_portalNames;
+  List<string> m_portalNames;
   int m_portalIndex=-1;
-  int[] m_indexes;
+  List<int> m_indexes;
   int m_index=-1;
   DistantPortalEnter targ;
-  List<DistantPortalExit.DistantPortalSaveData> m_portalList;
+  List<DistantPortalExitInfo> m_portalList;
   List<string> m_levelNames;
   int[] m_sceneIndexes;
   void OnEnable()
   {
     targ = target as DistantPortalEnter;
-    SceneDataSaver.SaveSceneData();
     UpdateSceneList();
     if (m_index >= 0)
     {
@@ -38,11 +37,12 @@ public class DistantPortalEditor : Editor
     if (m_index > -1)
     {
 
-      m_portalIndex = EditorGUILayout.IntPopup("Portal", m_portalIndex, m_portalNames, m_indexes);
+      m_portalIndex = EditorGUILayout.IntPopup("Portal", m_portalIndex, m_portalNames.ToArray(), m_indexes.ToArray());
       if (m_portalIndex >= 0)
       {
-        targ.m_targetPortalID = m_portalList[m_portalIndex].portalID;
-        targ.m_targetNode = m_portalList[m_portalIndex].node;
+        targ.m_targetPortalID = m_portalList[m_portalIndex].instanceID;
+				NodeInformation node=m_portalList[m_portalIndex].node;
+        targ.m_targetNode = GraphNode.GetNodeByParameters(node.i,node.j,node.index, node.level);
       }
     }
     int[] status={-1,0,1,2,3};
@@ -51,19 +51,21 @@ public class DistantPortalEditor : Editor
   }
   void UpdatePortalList()
   {
-    
-    m_portalList = SceneDataSaver.LoadSceneData(m_levelNames[m_index]);
-    m_portalNames = new string[m_portalList.Count];
-    m_indexes = new int[m_portalList.Count];
-    for (int i = 0; i < m_portalList.Count; i++)
-    {
-      m_portalNames[i] = m_portalList[i].name;
-      m_indexes[i] = i;
-      if (targ.m_targetPortalID == m_portalList[i].portalID)
-      {
-        m_portalIndex = i;
-      }
-    }
+    LevelObjectsInfo info=LevelObjectsInfo.LoadLevelInfo(m_levelNames[m_index]);
+		m_portalList=new List<DistantPortalExitInfo>();
+		m_portalNames=new List<string>();
+	  m_indexes=new List<int>();
+		int i=0;
+    foreach(CustomObjectInfo x in info.objectsInfo)
+		{
+			DistantPortalExitInfo portal=x as DistantPortalExitInfo;
+			if(portal!=null)
+			{
+				m_portalList.Add(portal);
+				m_portalNames.Add(portal.instanceName);
+				m_indexes.Add(i++);
+			}
+		}
   }
   void UpdateSceneList()
   {

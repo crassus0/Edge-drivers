@@ -29,4 +29,9 @@ public class CustomObjectEditorSupply : MonoBehaviour
 	  for(int i=0; i<children; i++)
       transform.GetChild(i).gameObject.hideFlags = 0;// HideFlags.HideInInspector | HideFlags.HideInHierarchy;
 	}
+	protected void OnDrawGizmos()
+  {
+    Gizmos.color = new Color(0, 0, 0, 0);
+    Gizmos.DrawSphere(transform.position, 20);
+  }
 }

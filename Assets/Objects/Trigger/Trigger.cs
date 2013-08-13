@@ -62,10 +62,9 @@ public class Trigger : CustomObject, IActivatable
     Interact = null;
 		OnUpdate=null;
 	}
-  public new void OnDrawGizmos()
+  public void OnDrawGizmos()
   {
 
-    base.OnDrawGizmos();
     if (!ActivateOnStart)
     {
       

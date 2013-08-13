@@ -79,7 +79,14 @@ public class Creator : MonoBehaviour
 	}
   public static PlanerCore Player { get { return m_player; } }
   public static bool OnPause { get; set; }
-  public static int Level { get { return Player.Level; } }
+  public static int Level 
+	{
+		get
+		{
+			try	{	return Player.Level;}
+			catch	{	return 0;	}
+		} 
+	}
   public static bool Initialised { get { return m_creator.m_init; } }
 	
 	public void Awake()
@@ -93,7 +100,7 @@ public class Creator : MonoBehaviour
     if (m_init) return;
 		foreach(UnityEngine.Object x in Resources.FindObjectsOfTypeAll(typeof(CustomObject)))
 		  {
-			  if(!(x).name.Contains("Prefab"))
+			  if(!(x).name.Contains("Prefab")&&!(x as EmptyObject==null))
 			  {
 				  Destroy((x as CustomObject).gameObject);
 			  }

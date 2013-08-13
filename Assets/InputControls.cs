@@ -54,7 +54,7 @@ public class InputControls : MonoBehaviour
     if (Input.GetMouseButtonDown(0) && CheckClick(false))
     {
       if (Creator.Player.State == 1) return;
-      m_targetPosition = Camera.mainCamera.ScreenToWorldPoint(Input.mousePosition);
+      m_targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
       m_targetPosition.y = 0;
       GraphNode targetNode = GraphNode.GetNodeByCoords(m_targetPosition, Creator.Level);
       m_gameArrows.transform.position = targetNode.NodeCoords();

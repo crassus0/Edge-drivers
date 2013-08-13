@@ -205,7 +205,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
 
 		GetInstanceID();
-    for (int i = 0; i < transform.GetChildCount(); i++)
+    for (int i = 0; i < transform.childCount; i++)
       DontDestroyOnLoad(transform.GetChild(i).gameObject);
     PlayerSaveData.Clear();
     OnUpdate = OnUpdated;
@@ -316,9 +316,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     SetNewDirection(newDirection, false);
   }
-  protected new void OnDrawGizmos()
+  protected void OnDrawGizmos()
   {
-    base.OnDrawGizmos();
     if (!Application.isPlaying) return;
     Vector3 dir;
     //	  Debug.Log(Energy);

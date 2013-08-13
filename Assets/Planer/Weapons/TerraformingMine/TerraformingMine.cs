@@ -75,9 +75,8 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
     Deactivate();
 
   }
-  protected new void OnDrawGizmos()
+  protected void OnDrawGizmos()
   {
-    base.OnDrawGizmos();
     Vector3[] coords = new Vector3[3];
     int yMultiplier=Node.Index==0?1:-1;
     coords[0] = new Vector3(-2, 0, yMultiplier * 1.154700f);

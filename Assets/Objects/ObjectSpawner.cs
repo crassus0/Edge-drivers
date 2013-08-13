@@ -52,9 +52,8 @@ public class ObjectSpawner : CustomObject, IActivatable
         (y as IAutoMove).Direction = Direction;
     }
   }
-  protected new void OnDrawGizmos()
+  protected void OnDrawGizmos()
   {
-    base.OnDrawGizmos();
     Gizmos.DrawIcon(transform.position, "Spawner.png");
     if (prefab != null&& (prefab.GetComponent<CustomObject>() as IAutoMove)!=null)
     {

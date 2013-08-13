@@ -190,7 +190,7 @@ public class CreatorEditor : Editor
     //OnButtons();
 
     OnBareerEditCheck();
-    OnObjectMove();
+    OnObjectCreateCheck();
     CheckEvent();		
 		if (loaded)
     {
@@ -210,15 +210,27 @@ public class CreatorEditor : Editor
   }
   void OnInstrument()
   {
+		Vector3 mouseCoords = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
+      mouseCoords.y = 0;
     if ((targ.selected > 0) && (targ.selected < 5))
     {
-      Vector3 mouseCoords = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
-      mouseCoords.y = 0;
+      
       Color instrumentColor = Color.red;
       instrumentColor.a = 0.2f;
       Handles.color = instrumentColor;
       Handles.DrawSolidDisc(mouseCoords, Vector3.up, targ.InstrumentRadius);
+			
     }
+		if(targ.selected>=5)
+		{	
+			targ.showObject.Init(targ.objectNames[targ.selected-5]);
+			targ.showObject.transform.position=GraphNode.GetNodeByCoords(mouseCoords, targ.ActiveLevel).NodeCoords();
+		}
+		else
+		{
+			targ.showObject.transform.position=new Vector3(-1000, 1000, -1000);
+			targ.showObject.Init ("");
+		}
   }
 
   void OnBareerEditCheck()
@@ -291,34 +303,15 @@ public class CreatorEditor : Editor
       center.z -= triangleHeight;
     }
   }
-  void OnObjectMove()
-  {
-    if (targ.selected < 5) return;
-    EditorMenu curentWindow = EditorWindow.GetWindow<EditorMenu>();
-    //	  if(targ.selected<4)return;
-    //	  Debug.Log(targ.selected);
-    Vector3 mouseCoords = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
-    mouseCoords.y = 0;
-    if (targ.objectToMove != null)
-    {
-      targ.objectToMove.transform.position = GraphNode.GetNodeByCoords(mouseCoords, targ.ActiveLevel).NodeCoords();
-      targ.objectToMove.Node = GraphNode.GetNodeByCoords(targ.objectToMove.transform.position, targ.ActiveLevel);
-    }
-    if (Event.current.button == 1 && Event.current.type == EventType.MouseUp)
-    {
 
-      if (targ.RepeatButton)
-      {
-        curentWindow.Repeat();
-      }
-      else
-      {
-        EditorWindow.GetWindow<EditorMenu>().m_selectedOption = 0;
-        
-        targ.objectToMove = null;
-      }
-    }
-  }
+	void OnObjectCreateCheck()
+	{
+		if (targ.selected <= 4) return;
+		if (Event.current.type != EventType.MouseDown || Event.current.button != 1) return;
+		Vector3 mouseCoords = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
+    mouseCoords.y = 0;
+		EditorMenu.CreateObject(GraphNode.GetNodeByCoords(mouseCoords, targ.ActiveLevel).NodeCoords());
+	}
 
 	public static void SaveLevel()
 	{

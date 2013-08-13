@@ -15,9 +15,8 @@ public class DistantPortalExit : CustomObject, IPortalExit
   }
 
 
-  protected new void OnDrawGizmos()
+  protected void OnDrawGizmos()
   {
-    base.OnDrawGizmos();
 //    Debug.Log(transform.position-Vector3.up);
 //    Debug.Log(transform.position-Vector3.up);
     

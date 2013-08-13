@@ -244,7 +244,7 @@ public class BareerLevelControls : MonoBehaviour
   void PreInit()
   {
 
-    int count = transform.GetChildCount();
+    int count = transform.childCount;
     for (int i = 0; i < count; i++)
     {
       DestroyImmediate(transform.GetChild(0).gameObject);

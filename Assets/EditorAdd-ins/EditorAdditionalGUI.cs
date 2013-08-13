@@ -12,7 +12,7 @@ public class EditorAdditionalGUI : MonoBehaviour
 	public List<GameObject> prefabs;
 	public List<Texture2D> additionalTextures;
   public int selected { get; set; }
-	
+	public EmptyObject showObject;
   public List<BareerLevelControls> levels { get; set; }
   public List<CustomObject> Objects
   {

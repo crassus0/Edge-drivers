@@ -105,11 +105,7 @@ public abstract class CustomObject : MonoBehaviour
     Node = newNode;
   }
   public abstract CustomObjectInfo SerializeObject();
-  protected void OnDrawGizmos()
-  {
-    Gizmos.color = new Color(0, 0, 0, 0);
-    Gizmos.DrawSphere(transform.position, 20);
-  }
+
 	public abstract System.Type SerializedType();
 	
 }

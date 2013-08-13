@@ -59,9 +59,8 @@ public class ColoredNode : CustomObject
     transform.rotation = Quaternion.identity;
     transform.Rotate(new Vector3(0, (1 - Node.Index) * 180, 0));
   }
-  new void OnDrawGizmos()
+  void OnDrawGizmos()
   {
-    base.OnDrawGizmos();
     ChangeVisual();
   }
 	public override CustomObjectInfo SerializeObject ()

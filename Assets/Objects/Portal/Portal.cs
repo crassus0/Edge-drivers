@@ -43,10 +43,8 @@ public class Portal : CustomObject, IPortalExit
     x.RemoveUpdateFunc(OnPlanerEnter);
     x.EnteredPortal = true;
   }
-  protected new void OnDrawGizmos()
+  protected void OnDrawGizmos()
   {
-    base.OnDrawGizmos();
-    
     if(m_direction>=0)
     {
       

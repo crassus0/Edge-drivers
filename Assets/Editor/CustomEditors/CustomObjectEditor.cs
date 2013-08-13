@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 [CustomEditor(typeof(CustomObjectEditorSupply))]
 [CanEditMultipleObjects()]
 //[ExecuteInEditMode()]
@@ -10,6 +11,10 @@ public class CustomObjectEditor : Editor
   GraphNode m_currentNode;
   Creator creator;
   CustomObject edited;
+	List<CustomObject> adjacent;
+	string[] adjNames;
+	List<int>adjIndexes;
+	int selectedObject=-1;
   void OnEnable()
   {
     
@@ -23,6 +28,7 @@ public class CustomObjectEditor : Editor
     //	Debug.Log(target);
     if (!EditorAdditionalGUI.EditorOptions.Objects.Contains(x))
       EditorAdditionalGUI.EditorOptions.Objects.Add(x);
+		GetAdjacentObjects();
   }
   public override void OnInspectorGUI()
   {
@@ -57,8 +63,10 @@ public class CustomObjectEditor : Editor
       levelNames[i] = creator.levels[i].name;
     }
     int level = EditorGUILayout.IntPopup("Level", edited.Level, levelNames, levels);
-
-
+    int selected=EditorGUILayout.IntPopup("Selected object", selectedObject, adjNames, adjIndexes.ToArray());
+		if(GUILayout.Button("Delete"))
+			if(EditorUtility.DisplayDialog("Delete", "Are you sure", "Yes", "Cancel"))
+				DestroyObject();
     if (GUI.changed)
     {
 
@@ -77,6 +85,10 @@ public class CustomObjectEditor : Editor
 
 
       edited.transform.position = m_currentNode.NodeCoords();
+			if(selected!=selectedObject)
+			{
+				Selection.activeGameObject=adjacent[selected].gameObject;
+			}
     }
     //edited.transform.hideFlags=0;
     (target as CustomObjectEditorSupply).SetFlags();
@@ -91,11 +103,36 @@ public class CustomObjectEditor : Editor
   {
 
 
-
       m_currentNode = GraphNode.GetNodeByCoords(edited.transform.position, edited.Level);
 
     edited.Node = m_currentNode;
     edited.transform.position = m_currentNode.NodeCoords();
 
   }
+	void GetAdjacentObjects()
+	{
+		if(Application.isPlaying)
+			return;
+		adjacent=new List<CustomObject>();
+		GraphNode node=(target as CustomObjectEditorSupply).GetComponent<CustomObject>().Node;
+		int iD=(target as CustomObjectEditorSupply).GetComponent<CustomObject>().ObjectID;
+		int i=0;
+		adjIndexes=new List<int>();
+		foreach(CustomObject x in EditorAdditionalGUI.EditorOptions.Objects)
+		{
+			if(x.Node.Equals(node))
+			{
+				adjacent.Add(x);
+				if(x.ObjectID==iD)
+					selectedObject=i;
+				adjIndexes.Add(i++);
+			}
+		}
+		adjNames=adjacent.ConvertAll<string>(x=>x.name).ToArray();
+	}
+	void DestroyObject()
+	{
+		if(Application.isPlaying)return;
+		DestroyImmediate((target as CustomObjectEditorSupply).gameObject);
+	}
 }

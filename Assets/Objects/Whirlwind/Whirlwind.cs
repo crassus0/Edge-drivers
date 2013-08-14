@@ -4,13 +4,10 @@ using System.Collections;
 public class Whirlwind : CustomObject
 {
   public int spin;
+//	bool m_initialized=false;
   public override void OnStart()
   {
-    if (Node.Tag != NodeTag.None)
-    {
-      Creator.DestroyObject(this);
-      return;
-    }
+
     Node.Tag = NodeTag.Whirlwind;
     Node.TagModifier = spin;
 

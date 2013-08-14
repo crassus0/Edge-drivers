@@ -12,8 +12,9 @@ public class RedFireflySpawner : CustomObject
 
     if (obj as PlanerCore != null&&(obj as PlanerCore).State==0)
     {
-      RedFirefly x= ScriptableObject.CreateInstance<RedFirefly>();
-      x.Activate(obj as PlanerCore);
+      RedFireflyActivator x= ScriptableObject.CreateInstance<RedFireflyActivator>();
+			x.Activate(obj as PlanerCore);
+			
     }
   }
 	public override CustomObjectInfo SerializeObject ()

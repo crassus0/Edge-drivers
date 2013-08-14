@@ -12,6 +12,7 @@ public class GraphNode : System.IComparable<GraphNode>
   int m_level;
   [SerializeField]
   int m_index;
+	public List<CustomObject> Objects {get{return m_objects;}}
   [System.NonSerialized]
   List<CustomObject> m_objects;
   [System.NonSerialized]
@@ -33,7 +34,6 @@ public class GraphNode : System.IComparable<GraphNode>
 
   public static List<GraphNode> s_usedNodes;
   static HashSet<CustomObject> s_interact;
-  
   public static readonly float graphDistance = 32 / Mathf.Sqrt(3);
   int nodeGraph
   {
@@ -41,8 +41,6 @@ public class GraphNode : System.IComparable<GraphNode>
     set
     {
       DebugNodeGraph=value;
-      //if(this==GetNodeByParameters(2,0,1,0))
-        //Debug.Log(DebugNodeGraph);
     }
   }
 	[System.NonSerialized]
@@ -65,6 +63,7 @@ public class GraphNode : System.IComparable<GraphNode>
 
     return (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow);
   }
+
   public void ChangeState(byte[] states, List<BareerLevelControls> levels, bool useAbsolute=false)
   {
     //Debug.Log(Application.loadedLevelName);

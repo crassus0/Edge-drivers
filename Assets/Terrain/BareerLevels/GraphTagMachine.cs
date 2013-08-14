@@ -57,6 +57,21 @@ public static class GraphTagMachine
     }
     return directions;
   }
+	public static GraphNode GetNodeByDirection(GraphNode node, int direction)
+	{
+		//direction=GetDirection(node, direction);
+		if(GetDirections(node)[direction]==WayStatus.Free)
+			node=node.GetNodeByDirection(direction);
+		return node;
+	}
+	public static int GetDirection(GraphNode node, int direction)
+	{
+		if(node.Tag==NodeTag.Whirlwind)
+		{
+			direction=(direction+node.TagModifier+6)%6;
+		}
+		return direction;
+	}
 	public static bool GetTagStatus(NodeTag tag)
   {
     string colorString;

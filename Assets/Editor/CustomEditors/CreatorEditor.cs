@@ -338,6 +338,7 @@ public class CreatorEditor : Editor
 	  fout.Write(stream.ToArray(), 0, stream.ToArray().Length);
 		Debug.Log(fout.Name);
 		fout.Close();
+		AssetDatabase.Refresh();
 		
 		//EditorUtility.SetDirty();
 	}
@@ -356,7 +357,7 @@ public class CreatorEditor : Editor
 		loaded=true;
 		Selection.activeObject=null;
 		Selection.activeObject=targ;
-		AssetDatabase.Refresh();
+		
 	}
 
 }

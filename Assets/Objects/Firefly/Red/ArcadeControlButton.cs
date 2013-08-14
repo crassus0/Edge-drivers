@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ArcadeControlButton : ButtonObject
 {
-  RedFirefly m_controlled;
+  RedFireflyActivator m_controlled;
   int direction;
   public static Texture2D[] arcadeControlsTexture=new Texture2D[2];
   static ArcadeControlButton[] buttons=new ArcadeControlButton[2];
@@ -24,7 +24,7 @@ public class ArcadeControlButton : ButtonObject
   protected override void OnLoop()
   {
   }
-  public void InitButton(RedFirefly parent, int basicDirection)
+  public void InitButton(RedFireflyActivator parent, int basicDirection)
   {
     if (basicDirection == -1)
       buttons[0] = this;

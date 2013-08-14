@@ -4,10 +4,11 @@ using System.Collections;
 public class Initializer : MonoBehaviour {
 	public Creator creator;
 	public GameObject buttonPrefab;
-    public GameObject basicMinePrefab;
+  public GameObject basicMinePrefab;
 	public GameObject webMinePrefab;
   public GameObject terraformingMinePrefab;
   public GameObject weaponIconPrefab;
+	public GameObject redFireflyPrefab;
 	public Texture2D basicMineTexture;
 	public Texture2D webMineTexture;
   public Texture2D cancelActionTexture;
@@ -24,6 +25,7 @@ public class Initializer : MonoBehaviour {
 	  WebCatapultActivator.mineTexture=webMineTexture;
 	  ButtonObject.buttonPrefab=buttonPrefab.guiTexture;
     CancelAction.objectTexture = cancelActionTexture;
+		RedFireflyActivator.fireflyPrefab=redFireflyPrefab;
     HomePortal.homeTexture=homePortalTexture;
     ArcadeControlButton.arcadeControlsTexture = arcadeRotateButtons;
     LeftTerraformingMine.minePrefab = terraformingMinePrefab;

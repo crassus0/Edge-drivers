@@ -82,10 +82,7 @@ public class WarmingControls : CustomObject, IPlanerLike
     //Debug.Log("move");
     if (isEaten)
       Creator.DestroyObject(this);
-		if(Node.Tag==NodeTag.Whirlwind)
-		{
-			Direction+=Node.TagModifier;
-		}
+
     m_ai.OnUpdate();
     int index = (Node.Index + Direction % 2) % 2;
     while (GraphTagMachine.GetDirections(Node)[m_direction]==WayStatus.Blocked)
@@ -107,7 +104,7 @@ public class WarmingControls : CustomObject, IPlanerLike
     Move(m_direction);
 
     index = (Node.Index + Direction % 2) % 2;
-
+		Direction=GraphTagMachine.GetDirection(Node, Direction);
 
     (m_visualiser.GetComponent<WarmingVisualiser>()).PassiveAnimations();
     (m_visualiser.GetComponent<WarmingVisualiser>()).Move(index);

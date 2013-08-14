@@ -73,13 +73,13 @@ public class EditorAdditionalGUI : MonoBehaviour
   void Start()
   {
     m_editor = this;
-    //	  Debug.Log(Editor);
-
     Object[] customObjects = Resources.FindObjectsOfTypeAll(typeof(CustomObject));
     foreach (Object x in customObjects)
     {
-      if (!x.name.Contains("Prefab"))
+      if (!x.name.Contains("Prefab")&&(x as EmptyObject==null))
+			{
         Objects.Add((x as CustomObject));
+			}
     }
 		
 		

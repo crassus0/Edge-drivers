@@ -74,7 +74,7 @@ public abstract class CustomObject : MonoBehaviour
   {
 
     if (m_init) return;
-    if (m_visualiser != null && m_visualiser.GetComponent<CustomObjectVisualiser>())
+    if (m_visualiser != null && m_visualiser.GetComponent<CustomObjectVisualiser>()!=null)
       m_visualiser.GetComponent<CustomObjectVisualiser>().SetSpeed(GetStepCount());
     Creator.AddObject(this);
     m_init = true;
@@ -90,7 +90,6 @@ public abstract class CustomObject : MonoBehaviour
     {
       if (node != null)
         node.Leave(this);
-      
     }
 
   }

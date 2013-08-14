@@ -22,12 +22,7 @@ public class CustomObjectEditor : Editor
     edited = (target as CustomObjectEditorSupply).GetComponent<CustomObject>();
 
     (target as CustomObjectEditorSupply).SetFlags();
-    CustomObject x = edited.GetComponent<CustomObject>();
-    //x.Level = Level;
-    if (Application.isPlaying) return;
-    //	Debug.Log(target);
-    if (!EditorAdditionalGUI.EditorOptions.Objects.Contains(x))
-      EditorAdditionalGUI.EditorOptions.Objects.Add(x);
+
 		GetAdjacentObjects();
   }
   public override void OnInspectorGUI()
@@ -63,7 +58,18 @@ public class CustomObjectEditor : Editor
       levelNames[i] = creator.levels[i].name;
     }
     int level = EditorGUILayout.IntPopup("Level", edited.Level, levelNames, levels);
-    int selected=EditorGUILayout.IntPopup("Selected object", selectedObject, adjNames, adjIndexes.ToArray());
+		int selected;
+    try
+		{
+			selected=EditorGUILayout.IntPopup("Selected object", selectedObject, adjNames, adjIndexes.ToArray());
+		}
+		catch
+		{
+			Debug.Log(selectedObject);
+			Debug.Log(adjNames);
+			Debug.Log(adjIndexes);
+      throw;
+		}
 		if(GUILayout.Button("Delete"))
 			if(EditorUtility.DisplayDialog("Delete", "Are you sure", "Yes", "Cancel"))
 				DestroyObject();
@@ -111,20 +117,31 @@ public class CustomObjectEditor : Editor
   }
 	void GetAdjacentObjects()
 	{
-		if(Application.isPlaying)
-			return;
 		adjacent=new List<CustomObject>();
-		GraphNode node=(target as CustomObjectEditorSupply).GetComponent<CustomObject>().Node;
+		GraphNode node=(target as CustomObjectEditorSupply).GetComponent<CustomObject>().GetNode();
+		node=GraphNode.GetNodeByParameters(node.X, node.Y, node.Index, node.Level);
 		int iD=(target as CustomObjectEditorSupply).GetComponent<CustomObject>().ObjectID;
 		int i=0;
 		adjIndexes=new List<int>();
-		foreach(CustomObject x in EditorAdditionalGUI.EditorOptions.Objects)
+		if(!Application.isPlaying)
+		  foreach(CustomObject x in EditorAdditionalGUI.EditorOptions.Objects)
+		  {
+			  if(x.Node.Equals(node))
+			  { 
+				  adjacent.Add(x);
+				  if(x.ObjectID==iD)
+					  selectedObject=i;
+				  adjIndexes.Add(i++);
+			  }
+		  }
+		else
 		{
-			if(x.Node.Equals(node))
-			{
+			
+			foreach(CustomObject x in node.Objects)
+		  {
 				adjacent.Add(x);
 				if(x.ObjectID==iD)
-					selectedObject=i;
+				  selectedObject=i;
 				adjIndexes.Add(i++);
 			}
 		}

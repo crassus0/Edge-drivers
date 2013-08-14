@@ -203,7 +203,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 
   public void Init()
   {
-
 		GetInstanceID();
     for (int i = 0; i < transform.childCount; i++)
       DontDestroyOnLoad(transform.GetChild(i).gameObject);
@@ -241,7 +240,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   }
   public void InitInterface()
   {
-    m_cancelAction = ScriptableObject.CreateInstance<CancelAction>();
+		CutInterface();
+		m_cancelAction = ScriptableObject.CreateInstance<CancelAction>();
     m_cancelAction.Init(this, 0);
     m_homePortal=ScriptableObject.CreateInstance<HomePortal>();
     m_homePortal.Init(this,1);
@@ -254,6 +254,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     Destroy( m_cancelAction);
     Destroy(m_homePortal);
+		Destroy(m_stayButton);
     Destroy(m_mineController);
   }
 	public void Stay()

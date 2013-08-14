@@ -81,13 +81,17 @@ public class BasicPlanerAI : ScriptableObject
     {
       int newDir = route.Dequeue();
       float newWeight = weights.Dequeue();
-      if (newWeight < m_planer.GetNode().GetNodeByDirection(newDir).NodeValue(m_planer.EntityValue) - 0.5f || m_planer.GetNode().GetNodeByDirection(newDir).Tag!=tags.Dequeue())
-        AStarSearch();
+			NodeTag tag= tags.Dequeue();
+			GraphNode newNode=GraphTagMachine.GetNodeByDirection(m_planer.GetNode(), newDir);
+      if (newWeight < newNode.NodeValue(m_planer.EntityValue) - 0.5f || newNode.Tag!=tag)
+			{
+				AStarSearch();
+			}
       m_planer.SetNewDirection(newDir);
     }
     catch (System.InvalidOperationException)
     {
-
+			
       if(AStarSearch())
         ApplyDirection();
     }
@@ -173,7 +177,7 @@ public class BasicPlanerAI : ScriptableObject
         while (!current.Equals(startNode))
         {
 
-          //Debug.DrawRay(current.previous.node.NodeCoords(), 8*new Vector3(Mathf.Cos(current.prevDirection*Mathf.PI/3),0,Mathf.Sin(current.prevDirection*Mathf.PI/3)), Color.red);
+          Debug.DrawRay(current.previous.node.NodeCoords(), 8*new Vector3(Mathf.Cos(current.prevDirection*Mathf.PI/3),0,Mathf.Sin(current.prevDirection*Mathf.PI/3)), Color.red);
 
           queue.AddFirst(current);
           current = current.previous;
@@ -181,11 +185,12 @@ public class BasicPlanerAI : ScriptableObject
         foreach (AStarNode x in queue)
         {
           tags.Enqueue(x.node.Tag);
+					//Debug.Log(x.node.Tag);
           route.Enqueue(x.prevDirection);
           weights.Enqueue(x.previous == null ? 0 : x.distance - x.previous.distance);
         }
         found = true;
-        //Debug.Break();
+        Debug.Break();
       }
     }
 
@@ -202,10 +207,8 @@ public class BasicPlanerAI : ScriptableObject
   void UpdateDirection(AStarNode node, ref List<AStarNode> adj, ref List<AStarNode> check, int index)
   {
     AStarNode newNode;
-		if(node.node.Tag==NodeTag.Whirlwind)
-		{
-			index=(index+node.node.TagModifier+6)%6;
-		}
+		index=GraphTagMachine.GetDirection(node.node, index);
+
     WayStatus[] directions = GraphTagMachine.GetDirections(node.node);
     if (directions[index]==WayStatus.Free)
     {

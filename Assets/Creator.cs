@@ -94,17 +94,23 @@ public class Creator : MonoBehaviour
 		Instantiate(initializerPrefab);
 		prefabs=new List<GameObject>(EditorAdditionalGUI.EditorOptions.prefabs);
 		textures=new List<Texture2D>(EditorAdditionalGUI.EditorOptions.additionalTextures);
+	  m_addObjects=new HashSet<CustomObject>(EditorAdditionalGUI.EditorOptions.Objects.ToArray());
+		Destroy(EditorAdditionalGUI.EditorOptions.gameObject);
 	}
   public void Start()
   {
     if (m_init) return;
-		foreach(UnityEngine.Object x in Resources.FindObjectsOfTypeAll(typeof(CustomObject)))
+		if(!(testBuild&&Application.isEditor))
+		{
+		  foreach(UnityEngine.Object x in Resources.FindObjectsOfTypeAll(typeof(CustomObject)))
 		  {
-			  if(!(x).name.Contains("Prefab")&&!(x as EmptyObject==null))
-			  {
-				  Destroy((x as CustomObject).gameObject);
-			  }
+		    if(!(x).name.Contains("Prefab"))
+		    {
+			    if(x as EmptyObject!=null)continue;
+			    Destroy((x as CustomObject).gameObject);
+		    }
 		  }
+		}
     if(m_player==null)
     {
       m_player=(Instantiate(playerPrefab) as GameObject).GetComponent<PlanerCore>();
@@ -115,16 +121,21 @@ public class Creator : MonoBehaviour
     Camera.main.GetComponent<CameraControls>().Init();
 		string levelName="SafeHouse";
 		if(testBuild&&Application.isEditor)
-		  levelName=SceneName;
-		LoadLevel(levelName);
+		{
+			levelName=SceneName;
+		  m_energy=-1;
+			UpdateObjectList();
+		}
+		else
+		{
+			LoadLevel(levelName);
+		}
 		LoadGame();
     m_init = true;
 		AddObject(m_player);
-		
-
-		//prefabs=EditorAdditionalGUI.EditorOptions.
+		SwitchLevel();
 		GraphNode.InteractAll();
-    m_turnTime = levels[m_energy].SelectionPhaseDuration;
+		m_turnTime = levels[m_energy].SelectionPhaseDuration;
   }
   void SwitchLevel()
   {
@@ -136,15 +147,9 @@ public class Creator : MonoBehaviour
         levels[m_energy].Deactivate();
         Camera.main.animation.Play("CameraAnimation");
       }
-      try
-      {
-        levels[newEnergy].Activate();
-        levels[newEnergy].gameObject.SetActive(true);
-      }
-      catch
-      {
-        Debug.Log(newEnergy);
-      }
+     
+      levels[newEnergy].Activate();
+      levels[newEnergy].gameObject.SetActive(true);
       foreach (CustomObject x in m_objects)
         if (x != null)
         {
@@ -161,6 +166,8 @@ public class Creator : MonoBehaviour
   {
     if (m_addObjects == null)
       m_addObjects = new HashSet<CustomObject>();
+		if(m_objects==null)
+			m_objects=new List<CustomObject>();
     foreach (CustomObject x in m_addObjects)
       if (x != null)
       {
@@ -271,7 +278,7 @@ public class Creator : MonoBehaviour
   }
 	void ClearScene()
 	{
-		
+		Debug.Log("Clear");
 		BareerLevelControls.loadingLevel=true;
 		foreach(BareerLevelControls x in levels)
 		{
@@ -280,7 +287,8 @@ public class Creator : MonoBehaviour
 		levels.Clear();
 		BareerLevelControls.loadingLevel=false;
 		ClearObjects();
-		
+		GraphNode.ClearAll();
+
 	}
 	void ClearObjects()
 	{

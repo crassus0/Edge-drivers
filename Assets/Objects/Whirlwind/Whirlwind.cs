@@ -11,7 +11,7 @@ public class Whirlwind : CustomObject
     Node.Tag = NodeTag.Whirlwind;
     Node.TagModifier = spin;
 
-    m_visualiser.animation["Rotate"].speed = -0.2f*spin;
+    //m_visualiser.animation["Rotate"].speed = -0.2f*spin;
   }
 
   protected new void OnDestroy()
@@ -29,6 +29,10 @@ public class Whirlwind : CustomObject
 	public override System.Type SerializedType ()
 	{
 		return typeof(WhirlwindInfo);
+	}
+	void OnDrawGizmos()
+	{
+		Gizmos.DrawIcon(transform.position, "Whirlwind.png");
 	}
 }
 [System.Serializable]

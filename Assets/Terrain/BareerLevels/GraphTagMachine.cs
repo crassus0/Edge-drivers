@@ -55,6 +55,8 @@ public static class GraphTagMachine
         directions[0] = WayStatus.Free;
       }
     }
+		if(node.Tag==NodeTag.Stream)
+		  directions[(node.TagTarget+3)%6]=WayStatus.Unavailable;
     return directions;
   }
 	public static GraphNode GetNodeByDirection(GraphNode node, int direction)
@@ -69,6 +71,16 @@ public static class GraphTagMachine
 		if(node.Tag==NodeTag.Whirlwind)
 		{
 			direction=(direction+node.TagModifier+6)%6;
+		}
+		else if(node.Tag==NodeTag.Stream)
+		{
+			int dist=6+node.TagTarget-direction;
+			while(dist>3)
+				dist-=6;
+			if(Mathf.Abs(dist)>Mathf.Abs(node.TagModifier))
+				dist=System.Math.Abs(node.TagModifier)*System.Math.Sign(dist);
+			//Debug.Log(dist);
+			direction=(6+dist+direction)%6;
 		}
 		return direction;
 	}
@@ -93,9 +105,10 @@ public static class GraphTagMachine
         break;
       }
 		  case NodeTag.Whirlwind:
-			{
-				return false;
-			}
+			case NodeTag.Stream:
+		  {
+			  return false;
+		  }
       default:
       {
         return true;
@@ -108,11 +121,12 @@ public static class GraphTagMachine
 }
 public enum NodeTag
 {
-   None,
-   Whirlwind,
-   RedColoured,
-   BlueColoured,
-   GreenColoured
+  None,
+  Whirlwind,
+  RedColoured,
+  BlueColoured,
+  GreenColoured,
+	Stream
 }
 public enum WayStatus
 {

@@ -177,7 +177,7 @@ public class BasicPlanerAI : ScriptableObject
         while (!current.Equals(startNode))
         {
 
-          Debug.DrawRay(current.previous.node.NodeCoords(), 8*new Vector3(Mathf.Cos(current.prevDirection*Mathf.PI/3),0,Mathf.Sin(current.prevDirection*Mathf.PI/3)), Color.red);
+          //Debug.DrawRay(current.previous.node.NodeCoords(), 8*new Vector3(Mathf.Cos(current.prevDirection*Mathf.PI/3),0,Mathf.Sin(current.prevDirection*Mathf.PI/3)), Color.red);
 
           queue.AddFirst(current);
           current = current.previous;
@@ -190,7 +190,7 @@ public class BasicPlanerAI : ScriptableObject
           weights.Enqueue(x.previous == null ? 0 : x.distance - x.previous.distance);
         }
         found = true;
-        Debug.Break();
+        //Debug.Break();
       }
     }
 

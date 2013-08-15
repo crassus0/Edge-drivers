@@ -72,7 +72,7 @@ public class PlanerMoveControls : ScriptableObject
       m_planer.Visualiser.Move(rotatedAngle);
 
     }
-    else
+    else if(directions[m_direction]==WayStatus.Blocked)
     {
       isHit=true;
       int newDirection = m_planer.GetNode().GetHitDirection(m_direction);
@@ -84,6 +84,11 @@ public class PlanerMoveControls : ScriptableObject
       m_planer.transform.Rotate(new Vector3(0, -60 * m_direction, 0));
       m_planer.Visualiser.Hit(rotatedAngle);
     }
+		else
+		{
+			Direction=(3+Direction)%6;
+			isHit=true;
+		}
 		Direction=GraphTagMachine.GetDirection(m_planer.Node, Direction);
 		m_stay=false;
 		

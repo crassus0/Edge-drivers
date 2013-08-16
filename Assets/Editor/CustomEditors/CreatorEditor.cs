@@ -172,16 +172,6 @@ public class CreatorEditor : Editor
 
     EditorUtility.SetDirty(targ.levels[(targ.ActiveLevel)]);
   }
-	void GetTextures()
-	{
-		Object[] tex=AssetDatabase.LoadAllAssetsAtPath("Assets/UncommonTextures");
-		for(int i=0; i<tex.Length; i++)
-		{
-			targ.additionalTextures[i]=tex[i] as Texture2D;
-			
-		}
-		Creator.textures=new List<Texture2D>(targ.additionalTextures);
-	}
   //SCENE  GUI
   void OnSceneGUI()
   {

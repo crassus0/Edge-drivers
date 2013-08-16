@@ -210,7 +210,10 @@ public class TriggerInfo:CustomObjectInfo
 	{
 		
 		trigger = CreateInstance() as Trigger;
-		trigger.texture= Creator.textures.Find(x => x.name==texture);
+		if(texture.Length>1)
+		{
+			trigger.texture= Resources.Load("Textures/"+texture, typeof(Texture2D)) as Texture2D;
+		}
 		trigger.TargetTriggerName=TargetTriggerName;
 		trigger.MultiUseTrigger=MultiUseTrigger;
 		trigger.OnObjectStay=OnObjectStay;

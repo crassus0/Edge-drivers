@@ -10,7 +10,6 @@ public class EditorAdditionalGUI : MonoBehaviour
   public Texture2D[] buttonTextures;
   public string[] objectNames;
 	public List<GameObject> prefabs;
-	public List<Texture2D> additionalTextures;
   public int selected { get; set; }
 	public EmptyObject showObject;
   public List<BareerLevelControls> levels { get; set; }

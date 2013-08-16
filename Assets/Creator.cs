@@ -30,9 +30,7 @@ public class Creator : MonoBehaviour
   public GameObject playerPrefab;
 	public GameObject initializerPrefab;
   public DistantPortalExit defaultPortal;
-	//public 
 	public static List<GameObject> prefabs;
-	public static List<Texture2D> textures;
   public float TurnDuration
   {
     get
@@ -93,7 +91,6 @@ public class Creator : MonoBehaviour
 	{
 		Instantiate(initializerPrefab);
 		prefabs=new List<GameObject>(EditorAdditionalGUI.EditorOptions.prefabs);
-		textures=new List<Texture2D>(EditorAdditionalGUI.EditorOptions.additionalTextures);
 	  m_addObjects=new HashSet<CustomObject>(EditorAdditionalGUI.EditorOptions.Objects.ToArray());
 		Destroy(EditorAdditionalGUI.EditorOptions.gameObject);
 	}

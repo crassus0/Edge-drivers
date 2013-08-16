@@ -287,7 +287,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
       m_hitPoints++;
       Agility=3-m_hitPoints;
       m_regenCooldown = 10;
-      Creator.creator.SetSpeed(1-0.3f*Agility);
+//      Creator.creator.SetSpeed(1-0.3f*Agility);
     }
     else
       m_regenCooldown--;
@@ -411,7 +411,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
       m_hitPoints--;
       Agility=3-m_hitPoints;
       m_regenCooldown = 10;
-      Creator.creator.SetSpeed(1-0.3f*Agility);
+//      Creator.creator.SetSpeed(1-0.3f*Agility);
     }
   }
   public override CustomObjectInfo SerializeObject ()

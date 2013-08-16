@@ -371,10 +371,23 @@ public class Creator : MonoBehaviour
     return t;
     
   }
-  public void SetSpeed(float modifier=1)
+	public void Pause()
+	{
+		if(OnPause)
+		{
+			OnPause=false;
+			SetSpeed();
+		}
+		else
+		{
+			OnPause=true;
+			SetSpeed(0);
+		}
+	}
+  void SetSpeed(float modifier=1)
   {
     Time.timeScale = modifier/ TurnDuration;
-    Time.fixedDeltaTime *= 1 / TurnDuration;
+    //Time.fixedDeltaTime *= 1 / TurnDuration;
   }
   void OnApplicationQuit()
   {

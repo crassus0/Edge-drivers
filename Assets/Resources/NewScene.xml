@@ -2,16 +2,6 @@
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <name>NewScene</name>
   <objectsInfo>
-    <CustomObjectInfo xsi:type="RedFireflySpawnerInfo">
-      <node>
-        <i>4</i>
-        <j>5</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>0</instanceID>
-      <instanceName>RedFireflySpawner11</instanceName>
-    </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
         <i>1</i>
@@ -19,9 +9,20 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>1</instanceID>
+      <instanceID>0</instanceID>
       <instanceName>ColoredNode7</instanceName>
       <color>1</color>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="AnchorInfo">
+      <node>
+        <i>2</i>
+        <j>6</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>1</instanceID>
+      <instanceName>Anchor</instanceName>
+      <showPicture>Bareer</showPicture>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
@@ -34,17 +35,6 @@
       <instanceName>ColoredNode3</instanceName>
       <color>1</color>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="WhirlwindInfo">
-      <node>
-        <i>1</i>
-        <j>3</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>3</instanceID>
-      <instanceName>Whirlwind8</instanceName>
-      <spin>-1</spin>
-    </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
         <i>2</i>
@@ -52,9 +42,19 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>4</instanceID>
+      <instanceID>3</instanceID>
       <instanceName>ColoredNode5</instanceName>
       <color>1</color>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="RedFireflySpawnerInfo">
+      <node>
+        <i>6</i>
+        <j>4</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>4</instanceID>
+      <instanceName>RedFireflySpawner11</instanceName>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalExitInfo">
       <node>
@@ -78,17 +78,6 @@
       <instanceName>ColoredNode6</instanceName>
       <color>1</color>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="WhirlwindInfo">
-      <node>
-        <i>3</i>
-        <j>3</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>7</instanceID>
-      <instanceName>Whirlwind1</instanceName>
-      <spin>-1</spin>
-    </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
         <i>2</i>
@@ -96,7 +85,7 @@
         <index>1</index>
         <level>0</level>
       </node>
-      <instanceID>8</instanceID>
+      <instanceID>7</instanceID>
       <instanceName>ColoredNode4</instanceName>
       <color>1</color>
     </CustomObjectInfo>
@@ -107,16 +96,39 @@
         <index>1</index>
         <level>0</level>
       </node>
-      <instanceID>9</instanceID>
+      <instanceID>8</instanceID>
       <instanceName>ColoredNode2</instanceName>
       <color>1</color>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="StreamInfo">
+      <node>
+        <i>1</i>
+        <j>3</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>9</instanceID>
+      <instanceName>Stream</instanceName>
+      <power>1</power>
+      <direction>2</direction>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="WhirlwindInfo">
+      <node>
+        <i>3</i>
+        <j>3</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>10</instanceID>
+      <instanceName>Whirlwind9</instanceName>
+      <spin>-1</spin>
     </CustomObjectInfo>
   </objectsInfo>
   <info>
     <LevelInfo>
       <name>SafeHouse</name>
       <m_bareers>PT09PT09PQAfFRUVFRUVNR0XFRUVFRU3Hx01PRUVFTUdNxUdFRUVNx8VPR0VFRU1HRUVFRUVFTcfFxcXFxcXNw==</m_bareers>
-      <SelectionPhaseDuration>0</SelectionPhaseDuration>
+      <SelectionPhaseDuration>0.5</SelectionPhaseDuration>
       <SelectionPhaseType>OnAction</SelectionPhaseType>
       <MovePhaseDuration>0.5</MovePhaseDuration>
       <NumAreas>1</NumAreas>

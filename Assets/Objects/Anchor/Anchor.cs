@@ -13,7 +13,6 @@ public class Anchor : CustomObject
 	void OnInteract(CustomObject obj, InteractType type)
 	{
 	  if(obj as PlanerCore==null)return;
-		m_activated=true;
 	  gameObject.GetComponent<Anchor>().m_activated=true;
 		Creator.creator.Pause();
   }
@@ -58,7 +57,7 @@ public class AnchorInfo: CustomObjectInfo
 	public override CustomObject Deserialize ()
 	{
 		Anchor info=CreateInstance() as Anchor;
-		info.showPicture=Resources.Load(showPicture, typeof(Texture2D)) as Texture2D;
+		info.showPicture=Resources.Load("InfoPictures/"+showPicture, typeof(Texture2D)) as Texture2D;
 		return info;
 	}
 	public override void EstablishConnections ()

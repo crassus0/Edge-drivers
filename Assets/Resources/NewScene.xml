@@ -2,59 +2,61 @@
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <name>NewScene</name>
   <objectsInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
+    <CustomObjectInfo xsi:type="WhirlwindInfo">
       <node>
-        <i>1</i>
-        <j>4</j>
-        <index>0</index>
+        <i>3</i>
+        <j>3</j>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>0</instanceID>
-      <instanceName>ColoredNode7</instanceName>
-      <color>1</color>
+      <instanceName>Whirlwind9</instanceName>
+      <spin>-1</spin>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="AnchorInfo">
+    <CustomObjectInfo xsi:type="StreamInfo">
       <node>
-        <i>2</i>
-        <j>6</j>
-        <index>0</index>
+        <i>1</i>
+        <j>3</j>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>1</instanceID>
-      <instanceName>Anchor</instanceName>
-      <showPicture>Bareer</showPicture>
+      <instanceName>Stream</instanceName>
+      <power>1</power>
+      <direction>2</direction>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
         <i>2</i>
         <j>4</j>
-        <index>0</index>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>2</instanceID>
-      <instanceName>ColoredNode3</instanceName>
+      <instanceName>ColoredNode2</instanceName>
       <color>1</color>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
         <i>2</i>
         <j>3</j>
-        <index>0</index>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>3</instanceID>
-      <instanceName>ColoredNode5</instanceName>
+      <instanceName>ColoredNode4</instanceName>
       <color>1</color>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="RedFireflySpawnerInfo">
+    <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
-        <i>6</i>
-        <j>4</j>
+        <i>1</i>
+        <j>2</j>
         <index>1</index>
         <level>0</level>
       </node>
       <instanceID>4</instanceID>
-      <instanceName>RedFireflySpawner11</instanceName>
+      <instanceName>ColoredNode6</instanceName>
+      <color>1</color>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalExitInfo">
       <node>
@@ -67,61 +69,59 @@
       <instanceName>DefaultEnter</instanceName>
       <Direction>1</Direction>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
+    <CustomObjectInfo xsi:type="RedFireflySpawnerInfo">
       <node>
-        <i>1</i>
-        <j>2</j>
+        <i>6</i>
+        <j>4</j>
         <index>1</index>
         <level>0</level>
       </node>
       <instanceID>6</instanceID>
-      <instanceName>ColoredNode6</instanceName>
-      <color>1</color>
+      <instanceName>RedFireflySpawner11</instanceName>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
         <i>2</i>
         <j>3</j>
-        <index>1</index>
+        <index>0</index>
         <level>0</level>
       </node>
       <instanceID>7</instanceID>
-      <instanceName>ColoredNode4</instanceName>
+      <instanceName>ColoredNode5</instanceName>
       <color>1</color>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
         <i>2</i>
         <j>4</j>
-        <index>1</index>
+        <index>0</index>
         <level>0</level>
       </node>
       <instanceID>8</instanceID>
-      <instanceName>ColoredNode2</instanceName>
+      <instanceName>ColoredNode3</instanceName>
       <color>1</color>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="StreamInfo">
+    <CustomObjectInfo xsi:type="AnchorInfo">
       <node>
-        <i>1</i>
-        <j>3</j>
-        <index>1</index>
+        <i>2</i>
+        <j>6</j>
+        <index>0</index>
         <level>0</level>
       </node>
       <instanceID>9</instanceID>
-      <instanceName>Stream</instanceName>
-      <power>1</power>
-      <direction>2</direction>
+      <instanceName>Anchor</instanceName>
+      <showPicture>Bareer</showPicture>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="WhirlwindInfo">
+    <CustomObjectInfo xsi:type="ColoredNodeInfo">
       <node>
-        <i>3</i>
-        <j>3</j>
-        <index>1</index>
+        <i>1</i>
+        <j>4</j>
+        <index>0</index>
         <level>0</level>
       </node>
       <instanceID>10</instanceID>
-      <instanceName>Whirlwind9</instanceName>
-      <spin>-1</spin>
+      <instanceName>ColoredNode7</instanceName>
+      <color>1</color>
     </CustomObjectInfo>
   </objectsInfo>
   <info>

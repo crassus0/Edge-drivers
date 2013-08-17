@@ -51,6 +51,9 @@ public class CreatorEditor : Editor
   void ShowActiveLevel()
   {
 		creator.SceneName=EditorGUILayout.TextField("Scene name", creator.SceneName);
+		Texture2D texture=Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture as Texture2D;
+		texture=EditorGUILayout.ObjectField("Background", texture, typeof(Texture2D),false) as Texture2D;
+		Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture=texture;
     int[] levelValues = new int[targ.levels.Count];
     string[] levelNames = new string[levelValues.Length];
     for (int i = 0; i < levelValues.Length; i++)
@@ -314,6 +317,7 @@ public class CreatorEditor : Editor
 		objects.info=EditorAdditionalGUI.EditorOptions.levels.ConvertAll<LevelInfo>(x=>x.SerializeLevel());
 		objects.name=Creator.creator.SceneName;
 		objects.defaultPortal=Creator.creator.defaultPortal.ObjectID;
+		objects.mainTexture=Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture.name;
 		System.Type[] types=new System.Type[EditorAdditionalGUI.EditorOptions.prefabs.Count+1];
 		for(int i=0; i<EditorAdditionalGUI.EditorOptions.prefabs.Count; i++)
 		{
@@ -343,6 +347,9 @@ public class CreatorEditor : Editor
 		targ.Objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());
 		Creator.creator.defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
 		x.objectsInfo.ForEach(y=>y.EstablishConnections());
+		if(x.mainTexture.Length>0)
+		  Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture=Resources.Load("Background/"+x.mainTexture, typeof(Texture2D)) as Texture2D;
+
 		Creator.creator.SceneName=x.name;
 		loaded=true;
 		Selection.activeObject=null;

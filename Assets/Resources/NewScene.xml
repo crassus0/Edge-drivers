@@ -2,62 +2,6 @@
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <name>NewScene</name>
   <objectsInfo>
-    <CustomObjectInfo xsi:type="WhirlwindInfo">
-      <node>
-        <i>3</i>
-        <j>3</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>0</instanceID>
-      <instanceName>Whirlwind9</instanceName>
-      <spin>-1</spin>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="StreamInfo">
-      <node>
-        <i>1</i>
-        <j>3</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>1</instanceID>
-      <instanceName>Stream</instanceName>
-      <power>1</power>
-      <direction>2</direction>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
-      <node>
-        <i>2</i>
-        <j>4</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>2</instanceID>
-      <instanceName>ColoredNode2</instanceName>
-      <color>1</color>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
-      <node>
-        <i>2</i>
-        <j>3</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>3</instanceID>
-      <instanceName>ColoredNode4</instanceName>
-      <color>1</color>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
-      <node>
-        <i>1</i>
-        <j>2</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>4</instanceID>
-      <instanceName>ColoredNode6</instanceName>
-      <color>1</color>
-    </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalExitInfo">
       <node>
         <i>3</i>
@@ -65,74 +9,61 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>5</instanceID>
+      <instanceID>0</instanceID>
       <instanceName>DefaultEnter</instanceName>
       <Direction>1</Direction>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="RedFireflySpawnerInfo">
+    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
       <node>
-        <i>6</i>
+        <i>4</i>
         <j>4</j>
-        <index>1</index>
+        <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>6</instanceID>
-      <instanceName>RedFireflySpawner11</instanceName>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
-      <node>
-        <i>2</i>
+      <instanceID>1</instanceID>
+      <instanceName>DistantPortal2</instanceName>
+      <m_targetScene>IntTries</m_targetScene>
+      <m_targetNode>
+        <i>3</i>
         <j>3</j>
         <index>0</index>
         <level>0</level>
-      </node>
-      <instanceID>7</instanceID>
-      <instanceName>ColoredNode5</instanceName>
-      <color>1</color>
+      </m_targetNode>
+      <direction>0</direction>
+      <m_targetPortalID>19530</m_targetPortalID>
+      <m_sceneStatus>-1</m_sceneStatus>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
-      <node>
-        <i>2</i>
-        <j>4</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>8</instanceID>
-      <instanceName>ColoredNode3</instanceName>
-      <color>1</color>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="AnchorInfo">
+    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
       <node>
         <i>2</i>
         <j>6</j>
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>9</instanceID>
-      <instanceName>Anchor</instanceName>
-      <showPicture>Bareer</showPicture>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="ColoredNodeInfo">
-      <node>
-        <i>1</i>
-        <j>4</j>
+      <instanceID>2</instanceID>
+      <instanceName>GlobalMapPortal</instanceName>
+      <m_targetScene>NewScene</m_targetScene>
+      <m_targetNode>
+        <i>3</i>
+        <j>3</j>
         <index>0</index>
         <level>0</level>
-      </node>
-      <instanceID>10</instanceID>
-      <instanceName>ColoredNode7</instanceName>
-      <color>1</color>
+      </m_targetNode>
+      <direction>0</direction>
+      <m_targetPortalID>0</m_targetPortalID>
+      <m_sceneStatus>3</m_sceneStatus>
     </CustomObjectInfo>
   </objectsInfo>
   <info>
     <LevelInfo>
       <name>SafeHouse</name>
-      <m_bareers>PT09PT09PQAfFRUVFRUVNR0XFRUVFRU3Hx01PRUVFTUdNxUdFRUVNx8VPR0VFRU1HRUVFRUVFTcfFxcXFxcXNw==</m_bareers>
-      <SelectionPhaseDuration>0.5</SelectionPhaseDuration>
+      <m_bareers>PT09PT09PQAfFRUVFRUVNR0VFRUVFRU3HxUVFRUVFTUdFRUVFRUVNx8VFRUVFRU1HRUVFRUVFTcfFxcXFxcXNw==</m_bareers>
+      <SelectionPhaseDuration>0</SelectionPhaseDuration>
       <SelectionPhaseType>OnAction</SelectionPhaseType>
       <MovePhaseDuration>0.5</MovePhaseDuration>
       <NumAreas>1</NumAreas>
     </LevelInfo>
   </info>
-  <defaultPortal>5</defaultPortal>
+  <defaultPortal>0</defaultPortal>
+  <mainTexture>Background2</mainTexture>
 </LevelObjectsInfo>

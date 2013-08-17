@@ -11,6 +11,8 @@ public class LevelObjectsInfo
   public List<CustomObjectInfo> objectsInfo;
 	public List<LevelInfo> info;
 	public int defaultPortal;
+	[System.Runtime.Serialization.OptionalField]
+	public string mainTexture="";
 	public static LevelObjectsInfo LoadLevelInfo(string levelName)
 	{
 		System.Type[] types=new System.Type[Creator.prefabs.Count+1];

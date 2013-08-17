@@ -22,6 +22,7 @@ public class Creator : MonoBehaviour
     }
   }
   public string SceneName;
+	public Texture2D SceneTexture;
   public GameObject testPortal;
   public List<BareerLevelControls> levels;
   public static string PreviousLevel { get; set; }
@@ -324,6 +325,8 @@ public class Creator : MonoBehaviour
 		m_objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());
 		x.objectsInfo.ForEach(y=>y.EstablishConnections());
 		defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
+		if(x.mainTexture.Length>0)
+		  Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.material.mainTexture=Resources.Load("Background/"+x.mainTexture, typeof(Texture2D)) as Texture2D;
 		SceneName=x.name;
 		AddObject(m_player);
     PlayerSaveData.SetPlanerData(m_player, false);

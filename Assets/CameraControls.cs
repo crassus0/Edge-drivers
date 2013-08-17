@@ -4,7 +4,8 @@ using System.Collections;
 public class CameraControls:MonoBehaviour
 {
 	public float maxCameraSize=300;
-
+	public GameObject Background;
+	public GameObject BackgroundTexture;
 	float m_curentScale=1;
 	float m_targetScale=1;
 	float m_previousScale=1;
@@ -41,7 +42,7 @@ public class CameraControls:MonoBehaviour
 		m_curentScale=m_targetScale;
 	  else
 		m_curentScale=(9*m_curentScale+m_targetScale)/10;
-      
+    Background.transform.position=transform.position*0.9f;
 	 
 	  if(m_moveTime<m_maxMoveTime)
 	  {

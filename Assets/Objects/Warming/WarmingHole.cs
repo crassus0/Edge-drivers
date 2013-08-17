@@ -19,7 +19,7 @@ public class WarmingHole : CustomObject
   {
     if (turn++ == cooldown)
     {
-      WarmingControls warm= (Instantiate(m_warmingPrefab) as GameObject).GetComponent<WarmingControls>();
+      Warming warm= (Instantiate(m_warmingPrefab) as GameObject).GetComponent<Warming>();
       turn = 0;
       
       warm.m_warmingConcentration=intensity[(step++)%intensity.Length];

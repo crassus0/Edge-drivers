@@ -351,7 +351,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   }
   void OnInteract(CustomObject obj, InteractType type)
   {
-      WarmingControls warm = obj as WarmingControls;
+      Warming warm = obj as Warming;
       if (warm != null&&!warm.isEaten)
       {
         AddConcentration(warm.m_warmingConcentration);
@@ -382,6 +382,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     if (entity.GetType() == typeof(DistantPortalEnter)&&(entity as DistantPortalEnter).Status>0) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(WeaponPrototype)) return BasicPlanerAI.MaxWeight;
     if (entity.GetType() == typeof(RedFireflySpawner)) return BasicPlanerAI.MaxWeight;
+		if (entity.GetType() == typeof(Anchor)) return BasicPlanerAI.MaxWeight;
     return 0;
   }
   public List<int> CanRotateWithTag(GraphNode node, int direction)

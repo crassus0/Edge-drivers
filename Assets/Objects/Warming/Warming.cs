@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarmingControls : CustomObject, IPlanerLike
+public class Warming : CustomObject, IPlanerLike
 {
   public BasicPlanerAI m_ai { get; set; }
   System.Action<IPlanerLike> m_updateFunc;

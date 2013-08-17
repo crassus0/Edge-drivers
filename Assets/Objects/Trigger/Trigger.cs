@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Trigger : CustomObject, IActivatable
+public class Trigger : CustomObject, IActivatable, IDeactivatable
 {
 
   bool targetEntered;
 	public Texture2D texture;
+	[HideInInspector]
 	public string TargetTriggerName;
 	public bool MultiUseTrigger;
 	public bool OnObjectStay;
@@ -56,6 +57,13 @@ public class Trigger : CustomObject, IActivatable
 			OnUpdate+=CheckExistance;
 		else
 			Interact = OnInteractEnter;
+	}
+	public void Deactivate ()
+	{
+		activeTrigger = true;
+    
+		OnUpdate=null;
+		Interact = null;
 	}
 	void DeactivateTrigger()
 	{
@@ -108,7 +116,7 @@ public class Trigger : CustomObject, IActivatable
   public override void OnStart()
   {
 		ActivateOnStart=true;
-		TargetTrigger=System.Type.GetType(TargetTriggerName, false, true);
+		TargetTrigger=System.Type.GetType(TargetTriggerName, true, true);
     if (ActivateOnStart)
     {
       Activate ();

@@ -62,7 +62,7 @@ public class EditorMenu : EditorWindow
   void DrawButtons()
   {
     //GUILayout.Label("BareerEdit");
-    m_selectedOption = GUILayout.SelectionGrid(m_selectedOption, editor.buttonTextures, 4, GUILayout.Width(160), GUILayout.Height(80), GUILayout.MinHeight(160));
+    m_selectedOption = GUILayout.SelectionGrid(m_selectedOption, editor.buttonTextures, 4,  GUILayout.MinHeight(200));
 
   }
   void CheckActiveState()

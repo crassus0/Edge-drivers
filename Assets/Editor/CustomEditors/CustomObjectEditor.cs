@@ -39,6 +39,7 @@ public class CustomObjectEditor : Editor
     {
       Debug.Log(edited);
     }
+		(target as CustomObjectEditorSupply).transform.localScale=new Vector3(16,1,16);
     EditorGUILayout.BeginHorizontal();
     EditorGUILayout.LabelField("X", GUILayout.MaxWidth(45));
     int xCoord = EditorGUILayout.IntField(m_currentNode.X, GUILayout.ExpandWidth(true));

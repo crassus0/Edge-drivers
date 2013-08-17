@@ -3,10 +3,6 @@ using System.Collections;
 //[ExecuteInEditMode()]
 public class CustomObjectEditorSupply : MonoBehaviour 
 {
-
-	
-
-	
 	void OnDestroy()
 	{
 	  if(Application.isPlaying)return;

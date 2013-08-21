@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <name>SafeHouse</name>
+  <name>Hardcore</name>
   <objectsInfo>
-    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
-      <node>
-        <i>2</i>
-        <j>6</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>0</instanceID>
-      <instanceName>GlobalMapPortal</instanceName>
-      <m_targetScene>GlobalMap</m_targetScene>
-      <m_targetNode>
-        <i>0</i>
-        <j>0</j>
-        <index>1</index>
-        <level>0</level>
-      </m_targetNode>
-      <direction>0</direction>
-      <m_targetPortalID>0</m_targetPortalID>
-      <m_sceneStatus>3</m_sceneStatus>
-      <targetPortalName>DefaultEnter</targetPortalName>
-    </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalExitInfo">
       <node>
         <i>3</i>
@@ -30,7 +9,7 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>1</instanceID>
+      <instanceID>0</instanceID>
       <instanceName>DefaultEnter</instanceName>
       <Direction>1</Direction>
     </CustomObjectInfo>
@@ -45,6 +24,6 @@
       <NumAreas>1</NumAreas>
     </LevelInfo>
   </info>
-  <defaultPortal>1</defaultPortal>
+  <defaultPortal>0</defaultPortal>
   <mainTexture>Background2</mainTexture>
 </LevelObjectsInfo>

@@ -34,6 +34,7 @@ public static class PlayerSaveData
   }
   public static void Clear()
   {
+		Debug.Log("Clear");
     PlayerPrefs.DeleteAll();
   }
   public static void SaveDiscoveredScene(string sceneName, int sceneStatus)
@@ -46,7 +47,8 @@ public static class PlayerSaveData
   {
     if (!PlayerPrefs.HasKey(sceneName))
       PlayerPrefs.SetInt(sceneName, 0);
-    return PlayerPrefs.GetInt(sceneName);
+		int status=PlayerPrefs.GetInt(sceneName);
+    return status;
   }
   public static string[] GetMines()
   {
@@ -73,33 +75,7 @@ public static class PlayerSaveData
         return false;
       }
     }
-
-    if (!firstLoad)
-    {
-      
-      try
-      {
-        int x = PlayerPrefs.GetInt("XCoord");
-        int y = PlayerPrefs.GetInt("YCoord");
-        int index = PlayerPrefs.GetInt("IndexCoord");
-        int level = PlayerPrefs.GetInt("LevelCoord");
-        int direction = PlayerPrefs.GetInt("Direction");
-        //planer.Node = GraphNode.GetNodeByParameters(x, y, index, level);
-        
-        planer.OnEnterPortal(GraphNode.GetNodeByParameters(x, y, index, level), direction);
-        planer.SetNewDirection(direction, true);
-       
-      }
-      catch (System.Exception)
-      {
-        EnterPortal(planer);
-      }
-    }
-    else
-    {
-      EnterPortal(planer);
-
-    }
+    EnterPortal(planer);
     if (!PlayerPrefs.HasKey("CurrentLevel") || !PlayerPrefs.HasKey("Concentration") || !PlayerPrefs.HasKey("MaxConcentration"))
     {
       return true;

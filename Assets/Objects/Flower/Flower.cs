@@ -45,18 +45,22 @@ public class Flower : CustomObject, IActivatable, IDeactivatable
 }
 public class FlowerInfo:CustomObjectInfo
 {
-	public string basicTexture;
-	public string activatedTexture;
+	public string basicTexture="";
+	public string activatedTexture="";
 	public Vector3 position;
 	public Quaternion rotation;
 	public Vector3 scale;
 	public override CustomObject Deserialize ()
 	{
 		Flower x = CreateInstance() as Flower;
+		if(basicTexture.Length>0)
+		{
+			x.basicTexture=Resources.Load("Textures/"+basicTexture, typeof(Texture2D)) as Texture2D;
+			x.m_visualiser.renderer.sharedMaterial=new Material(Shader.Find("Transparent/Diffuse"));
+		  x.m_visualiser.renderer.sharedMaterial.mainTexture=x.basicTexture;
+		}
 		if(activatedTexture.Length>0)
 		  x.activatedTexture=Resources.Load("Textures/"+activatedTexture, typeof(Texture2D)) as Texture2D;
-		if(basicTexture.Length>0)
-		  x.basicTexture=Resources.Load("Textures/"+basicTexture, typeof(Texture2D)) as Texture2D;
 		x.m_visualiser.transform.position=position;
 		x.m_visualiser.transform.rotation=rotation;
 		x.m_visualiser.transform.localScale=scale;

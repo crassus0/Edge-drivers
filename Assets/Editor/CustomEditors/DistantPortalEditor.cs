@@ -41,6 +41,7 @@ public class DistantPortalEditor : Editor
       if (m_portalIndex >= 0)
       {
         targ.m_targetPortalID = m_portalList[m_portalIndex].instanceID;
+				targ.m_targetPortalName=m_portalList[m_portalIndex].instanceName;
 				NodeInformation node=m_portalList[m_portalIndex].node;
         targ.m_targetNode = GraphNode.GetNodeByParameters(node.i,node.j,node.index, node.level);
       }
@@ -63,6 +64,8 @@ public class DistantPortalEditor : Editor
 			{
 				m_portalList.Add(portal);
 				m_portalNames.Add(portal.instanceName);
+				if(targ.m_targetPortalName.Equals(portal.instanceName))
+					m_portalIndex=i;
 				m_indexes.Add(i++);
 			}
 		}

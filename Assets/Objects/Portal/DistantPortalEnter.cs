@@ -9,6 +9,7 @@ public class DistantPortalEnter : CustomObject
   public GraphNode m_targetNode;
   public int direction;
   public int m_targetPortalID;
+	public string m_targetPortalName;
   public int Status
   {
     get { return PlayerSaveData.GetSceneStatus(m_targetScene); }
@@ -33,7 +34,6 @@ public class DistantPortalEnter : CustomObject
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
-    //Debug.Log("Interact");
     if (m_targetScene == null) return;
     if (Status < 2) return;
     if (type == InteractType.Stay)
@@ -83,8 +83,8 @@ public class DistantPortalEnter : CustomObject
     PlanerCore x = planer as PlanerCore;
     x.RemoveUpdateFunc(OnPlanerEnter);
     x.EnteredPortal = true;
-    PlayerSaveData.Save(x, m_targetNode, direction, true);
-    Creator.creator.LoadLevel(m_targetScene);
+		x.SetNewDirection(direction, true);
+    Creator.creator.LoadLevel(m_targetScene, m_targetPortalName);
   }
 	public override CustomObjectInfo SerializeObject ()
 	{
@@ -92,6 +92,7 @@ public class DistantPortalEnter : CustomObject
 		x.m_targetNode=new NodeInformation(m_targetNode);
 		x.m_targetPortalID=m_targetPortalID;
 		x.m_targetScene=m_targetScene;
+		x.targetPortalName=m_targetPortalName;
 		x.direction=direction;
 		x.m_sceneStatus=defaultStatus;
 		x.BasicSerialization(this);
@@ -111,6 +112,8 @@ public class DistantPortalEnterInfo:CustomObjectInfo
   public int m_targetPortalID;
 	[System.Runtime.Serialization.OptionalField]
 	public int m_sceneStatus;
+	[System.Runtime.Serialization.OptionalField]
+	public string targetPortalName;
 	public override CustomObject Deserialize ()
 	{
 		DistantPortalEnter x = CreateInstance() as DistantPortalEnter;
@@ -119,6 +122,7 @@ public class DistantPortalEnterInfo:CustomObjectInfo
 		x.m_targetScene=m_targetScene;
 		x.direction=direction;
 		x.defaultStatus=m_sceneStatus;
+		x.m_targetPortalName=targetPortalName;
 		return x;
 	}
 	public override void EstablishConnections ()

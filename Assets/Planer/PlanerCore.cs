@@ -197,7 +197,20 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   public void OnLevelChange(int i) { m_basicAI.ChangeLevel(i); }
   public void OnDamageDealt(int damage)
   {
+		
     if (!m_initislized) return;
+		if (m_hitPoints == 1)
+    {
+      EnteredPortal = true;
+      OnEnterPortal(m_savedNode, m_savedDirection);
+    }
+    else
+    {
+      m_hitPoints--;
+      Agility=3-m_hitPoints;
+      m_regenCooldown = 10;
+      Creator.creator.SetSpeed(1-0.3f*Agility);
+    }
   }
 
 
@@ -206,7 +219,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 		GetInstanceID();
     for (int i = 0; i < transform.childCount; i++)
       DontDestroyOnLoad(transform.GetChild(i).gameObject);
-    PlayerSaveData.Clear();
+    //PlayerSaveData.Clear();
     OnUpdate = OnUpdated;
     Interact = OnInteract;
     if (!Creator.creator.testBuild) 
@@ -391,29 +404,20 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 		List<int>x = new List<int>();
 		x.Add(direction);
 		if(GraphTagMachine.GetTagStatus(node.Tag))
-		  for(int i=1; i<MaxRotateAngle; i++)
+		  for(int i=1; i<=MaxRotateAngle; i++)
 		  {
 			  x.Add((i+direction+6)%6);
-			  x.Add((-i+direction+6)%6);
+			  if(i<3)
+			    x.Add((-i+direction+6)%6);
 		  }
 		return x;
   }
   public void FireflyDestroy(YellowFirefly firefly)
   {
-    firefly.Direction++;
+		SetNewDirection(Direction+1);
+		firefly.Direction=Direction+3;
+		OnDamageDealt(1);
     //SetNewDirection(Direction - 1, true);
-    if (m_hitPoints == 1)
-    {
-      EnteredPortal = true;
-      OnEnterPortal(m_savedNode, m_savedDirection);
-    }
-    else
-    {
-      m_hitPoints--;
-      Agility=3-m_hitPoints;
-      m_regenCooldown = 10;
-//      Creator.creator.SetSpeed(1-0.3f*Agility);
-    }
   }
   public override CustomObjectInfo SerializeObject ()
 	{

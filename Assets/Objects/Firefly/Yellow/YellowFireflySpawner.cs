@@ -29,8 +29,9 @@ public class YellowFireflySpawner : ObjectSpawner
 	{
 	  YellowFireflySpawnerInfo x = new YellowFireflySpawnerInfo();
 		x.BasicSerialization(this);
-		x.prefabName=prefab.name.Remove(prefab.name.Length-6);
+		x.prefabName="YellowFirefly";
 	  x.cooldown=cooldown;	
+		x.direction=Direction;
 		x.spin=spin;
 		return x;
 	}
@@ -43,6 +44,7 @@ public class YellowFireflySpawner : ObjectSpawner
 public class YellowFireflySpawnerInfo:ObjectSpawnerInfo
 {
 	public int spin;
+	
 	public override CustomObject Deserialize ()
 	{
 	  YellowFireflySpawner x = base.Deserialize() as YellowFireflySpawner;

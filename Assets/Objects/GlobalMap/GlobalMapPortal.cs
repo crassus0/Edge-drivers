@@ -36,6 +36,8 @@ public class GlobalMapPortal : DistantPortalEnter
 		x.m_targetNode=new NodeInformation(m_targetNode);
 		x.m_targetPortalID=m_targetPortalID;
 		x.m_targetScene=m_targetScene;
+		x.m_sceneStatus=defaultStatus;
+		x.targetPortalName=m_targetPortalName;
 		x.direction=direction;
 		x.BasicSerialization(this);
 		x.m_path=m_path.ConvertAll<int>(y=>y.ObjectID);
@@ -54,12 +56,13 @@ public class GlobalMapPortalInfo:DistantPortalEnterInfo
 	GlobalMapPortal portal;
 	public override CustomObject Deserialize ()
 	{
-		GlobalMapPortal portal  = base.Deserialize() as GlobalMapPortal;
+		portal  = base.Deserialize() as GlobalMapPortal;
 		return portal;
 	}
 	public override void EstablishConnections ()
 	{
-		portal.m_path=m_path.ConvertAll<TerraformingMine>(x=>GetObjectByID(x) as TerraformingMine);
+		
+		portal.m_path=m_path.ConvertAll<TerraformingMine>((x)=>GetObjectByID(x) as TerraformingMine);
 	}
 	public override string GetName ()
 	{

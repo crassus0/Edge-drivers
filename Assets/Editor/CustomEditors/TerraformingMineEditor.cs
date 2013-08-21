@@ -17,6 +17,7 @@ public class TerraformingMineEditor:Editor
   {
     TerraformingMine targ = target as TerraformingMine;
     targ.ActivateOnStart=EditorGUILayout.Toggle("Activate on start", targ.ActivateOnStart);
+		targ.visible=EditorGUILayout.Toggle("Visible", targ.visible);
     showArray = EditorGUILayout.Foldout(showArray, "Strings");
     string zeroName = targ.Node.Index == 0 ? "  Top" : "  Bottom";
     if (showArray)
@@ -27,7 +28,6 @@ public class TerraformingMineEditor:Editor
     }
     
     targ.steps = EditorGUILayout.IntSlider("Steps", targ.steps, -1, 50);
-    targ.ActivateOnStart = EditorGUILayout.Toggle("Activate on start", targ.ActivateOnStart);
   }
 }
 

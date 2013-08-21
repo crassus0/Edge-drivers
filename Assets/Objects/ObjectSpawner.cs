@@ -18,7 +18,7 @@ public class ObjectSpawner : CustomObject, IActivatable
   }
   public bool ActivateOnStart { get { return false; } }
   [SerializeField]
-  int m_direction;
+  int m_direction=0;
   public override void OnStart()
   {
     if(cooldown>0)
@@ -54,7 +54,7 @@ public class ObjectSpawner : CustomObject, IActivatable
   }
   protected void OnDrawGizmos()
   {
-    Gizmos.DrawIcon(transform.position, "Spawner.png");
+    Gizmos.DrawIcon(transform.position, "ObjectSpawner.png");
     if (prefab != null&& (prefab.GetComponent<CustomObject>() as IAutoMove)!=null)
     {
       
@@ -68,9 +68,15 @@ public class ObjectSpawner : CustomObject, IActivatable
 	public override CustomObjectInfo SerializeObject ()
 	{
 		ObjectSpawnerInfo x = new ObjectSpawnerInfo();
+		if(Creator.prefabs.Find(z=>z.name.Equals(prefab.name))==null)
+		{
+			Creator.prefabs.Add(prefab);
+		}
+		
 		x.BasicSerialization(this);
 		x.prefabName=prefab.name.Remove(prefab.name.Length-6);
 	  x.cooldown=cooldown;	
+		x.direction=m_direction;
 		return x;
 	}
 	public override System.Type SerializedType ()
@@ -82,11 +88,18 @@ public class ObjectSpawnerInfo:CustomObjectInfo
 {
 	public string prefabName;
 	public int cooldown;
+	public int direction;
 	public override CustomObject Deserialize ()
 	{
 		ObjectSpawner x = CreateInstance() as ObjectSpawner;
 		x.cooldown=cooldown;
-		x.prefab=GetPrefabByName(prefabName);
+		x.Direction=direction;
+		prefabName=prefabName+"Prefab";
+		x.prefab=Creator.prefabs.Find(z=>z.name.Equals(prefabName));
+		if(x.prefab==null)
+		{
+			x.prefab=Resources.Load("Prefabs/"+prefabName) as GameObject;
+		}
 		return x;
 	}
 	public override void EstablishConnections ()

@@ -276,7 +276,7 @@ public class Creator : MonoBehaviour
   }
 	void ClearScene()
 	{
-		Debug.Log("Clear");
+//		Debug.Log("Clear");
 		BareerLevelControls.loadingLevel=true;
 		foreach(BareerLevelControls x in levels)
 		{
@@ -293,30 +293,52 @@ public class Creator : MonoBehaviour
 	  if(m_objects==null)return;
 		foreach(CustomObject x in m_objects)
 		{
+			
 			if(!ReferenceEquals(x, m_player))
-			  Destroy(x.gameObject);
+			{
+				Destroy(x.gameObject);
+				x.Destroyed=true;
+				x.name="Destroy";
+			}
 		}
 		
 		m_objects.Clear();
 		foreach(CustomObject x in m_addObjects)
 		{
-			  Destroy(x.gameObject);
+			
+			if(!ReferenceEquals(x, m_player)&&!x.Destroyed)
+			{
+				Destroy(x.gameObject);
+				x.Destroyed=true;
+				x.name="Destroy";
+			}
 		}
 		
 		m_addObjects.Clear();
 		foreach(CustomObject x in m_removeObjects)
 		{
-			  Destroy(x.gameObject);
+			
+			if(!ReferenceEquals(x, m_player)&&!x.Destroyed)
+			{
+				Destroy(x.gameObject);
+				x.Destroyed=true;
+				x.name="Destroy";
+			}
 		}
 		m_removeObjects.Clear();
 		foreach(CustomObject x in m_startObjects)
 		{
-			  Destroy(x.gameObject);
+			if(!ReferenceEquals(x, m_player)&&!x.Destroyed)
+			{ 
+				Destroy(x.gameObject);
+				x.Destroyed=true;
+				x.name="Destroy";
+			}
 		}
 		
 		m_startObjects.Clear();
 	}
-	public void LoadLevel(string levelName)
+	public void LoadLevel(string levelName, string portalName="")
 	{
 		LevelObjectsInfo x = LevelObjectsInfo.LoadLevelInfo(levelName);
 		GraphNode.ClearAll();
@@ -324,7 +346,16 @@ public class Creator : MonoBehaviour
 		levels=x.info.ConvertAll<BareerLevelControls>(y=>y.Deserialize());
 		m_objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());
 		x.objectsInfo.ForEach(y=>y.EstablishConnections());
-		defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
+		try
+		{
+			
+			defaultPortal=(GameObject.Find(portalName) as GameObject).GetComponent<DistantPortalExit>();
+			
+		}
+		catch(NullReferenceException)
+		{
+		  defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
+		}
 		if(x.mainTexture.Length>0)
 		  Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.material.mainTexture=Resources.Load("Background/"+x.mainTexture, typeof(Texture2D)) as Texture2D;
 		SceneName=x.name;
@@ -384,14 +415,14 @@ public class Creator : MonoBehaviour
 			SetSpeed(0);
 		}
 	}
-  void SetSpeed(float modifier=1)
+  public void SetSpeed(float modifier=1)
   {
     Time.timeScale = modifier/ TurnDuration;
     //Time.fixedDeltaTime *= 1 / TurnDuration;
   }
   void OnApplicationQuit()
   {
-    PlayerSaveData.Clear();
+    //PlayerSaveData.Clear();
   }
   struct xTest
   {

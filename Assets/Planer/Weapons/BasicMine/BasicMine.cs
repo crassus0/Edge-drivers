@@ -5,7 +5,7 @@ using System.Collections;
 public class BasicMine : CustomObject, IFireflyDestroyable
 {
   //public BasicMineVisualiser m_visualiser;
-  int damage = 5;
+  int damage = 1;
   public override void OnStart()
   {
     Interact = OnInteract;
@@ -33,7 +33,7 @@ public class BasicMine : CustomObject, IFireflyDestroyable
   public void FireflyDestroy(YellowFirefly firefly)
   {
     firefly.Direction--;
-    Destroy(gameObject);
+    Creator.DestroyObject(this);
     Destroyed = true;
   }
 	public override CustomObjectInfo SerializeObject ()

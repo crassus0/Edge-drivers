@@ -20,17 +20,13 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
 
   public override void OnStart()
   {
-    if (!m_initialized)
-    {
-      //Debug.Log(Application.loadedLevelName);
+    
       m_initialized = true;
       if (!visible)
         Destroy(transform.GetChild(0).gameObject);
       OnUpdate = OnUpdated;
       if(ActivateOnStart)
         Activate();
-			ActivateOnStart=false;
-    }
 	}
   public void Activate()
   {
@@ -41,13 +37,12 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   }
   public void Deactivate()
   {
+		if(!m_active)return;
 		m_active=false;
     if (ActivateOnStart && !Destroyed) return;
-    if (m_prevState != null)
-    {
+
       Node.ChangeState(m_prevState, Creator.creator.levels, true);
 
-    }
     Node.Reactivate();
     foreach (GraphNode x in Node.GetAdjacent())
     {
@@ -70,8 +65,6 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
     if (Creator.IsLoading) return;
     Destroyed = true;
     base.OnDestroy();
-    //Activate = null;
-    //Debug.Log(Application.loadedLevelName);
     Deactivate();
 
   }
@@ -104,7 +97,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   }
   public virtual void FireflyDestroy(YellowFirefly firefly)
   {
-    
+    if(!visible)return;
     YellowFirefly newFirefly =(Instantiate(firefly.gameObject) as GameObject).GetComponent<YellowFirefly>();
     newFirefly.m_visualiser.transform.position = newFirefly.transform.position;
     newFirefly.Direction--;

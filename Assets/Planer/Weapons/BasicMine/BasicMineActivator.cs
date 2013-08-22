@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class BasicMineActivator : ButtonObject
+public class BasicMineActivator : ButtonObject, IWeaponActivator
 {
   int cooldown = 0;
   int number = -1;
-
+	
+	public int NumCharges {get;	set;}
   public static GameObject minePrefab;
   public static Texture2D mineTexture;
   public bool IsActive { get; set; }
@@ -42,4 +43,8 @@ public class BasicMineActivator : ButtonObject
   {
     return "BasicMine";
   }
+	static BasicMineActivator()
+	{
+		PlayerSaveData.SaveCharges("BasicMineActivator",  MineController.MaxNumCharges);
+	}
 }

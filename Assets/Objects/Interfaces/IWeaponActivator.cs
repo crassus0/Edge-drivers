@@ -1,9 +1,8 @@
 using System;
 
-namespace AssemblyCSharp
+public interface IWeaponActivator
 {
-	public interface IWeaponActivator
-	{
-	}
+	int NumCharges{get;set;}
 }
+
 

@@ -10,7 +10,7 @@ public class MineController : ScriptableObject
   PlanerCore m_planer;
   List<ButtonObject> m_mines;
   public List<ButtonObject> Mines { get { return m_mines; } }
-
+	public static readonly int MaxNumCharges=10000;
   public void Init(PlanerCore planer)
   {
     //Debug.Log("init");
@@ -36,17 +36,30 @@ public class MineController : ScriptableObject
       m_mines[i].OnUpdate();
     }
   }
-  public void RenewObjectList(string[] mines)
+  public void RenewObjectList(int[] mines)
   {
     DestroyMines();
     m_mines = new List<ButtonObject>();
     for (int i = 0; i < mines.Length; i++)
     {
-      //Debug.Log(mines[i]);
-      ButtonObject x = ScriptableObject.CreateInstance(mines[i]) as ButtonObject;
+      string name;
+			int index;
+			if(mines[i]>0)
+			{
+				name=Armory.UpgradeNames[i][mines[i]];
+				index=mines[i];
+			}
+			else
+			{
+				name=m_planer.Upgrades[i];
+				index=Armory.WeaponIndex(name);
+			}
+			ButtonObject x = ScriptableObject.CreateInstance(name) as ButtonObject;
       x.Init(m_planer, i);
+			(x as IWeaponActivator).NumCharges=Armory.GetNumCharges(i, index);
       m_mines.Add(x);
     }
+		
   }
   void OnDestroy()
   {
@@ -58,10 +71,13 @@ public class MineController : ScriptableObject
     for (int i = 0; i < m_mines.Count; i++)
     {
       if(m_mines[i]!=null)
-        Destroy(m_mines[i]);
+			{
+				//PlayerSaveData.SaveCharges(m_mines[i].GetType().Name, (m_mines[i] as IWeaponActivator).NumCharges);
+				Destroy(m_mines[i]);
+			}
     }
   }
-  public static MineController GetMineController(string[] mines, PlanerCore planer)
+  public static MineController GetMineController(int[] mines, PlanerCore planer)
   {
     MineController newController=ScriptableObject.CreateInstance<MineController>();
     newController.Init(planer);

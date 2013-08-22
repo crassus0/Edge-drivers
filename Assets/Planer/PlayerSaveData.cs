@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.Runtime.Serialization;
 [Serializable]
@@ -17,9 +18,10 @@ public static class PlayerSaveData
     if (currentLevel == "GlobalMap")
       currentLevel = Creator.PreviousLevel;
     PlayerPrefs.SetString("CurrentLevel", currentLevel);
+		
     for (int i = 0; i < planer.MineController.Mines.Count; i++)
     {
-      PlayerPrefs.SetString("Mine" + i, planer.MineController.Mines[i].GetType().ToString());
+      PlayerPrefs.SetInt("Mine" + i, Armory.WeaponIndex(planer.MineController.Mines[i].GetType().Name));
     }
     if (onPlaySave)
     {
@@ -32,11 +34,30 @@ public static class PlayerSaveData
       PlayerPrefs.SetInt("Direction", direction);
     }
   }
+	public static void SaveCharges(string weaponName, int charges)
+	{
+		PlayerPrefs.SetInt("Weapon"+weaponName, charges);
+	}
   public static void Clear()
   {
 		Debug.Log("Clear");
     PlayerPrefs.DeleteAll();
   }
+	public static List<int> WeaponList(int category)
+	{
+		List<int> categoryList=new List<int>();
+		for(int i=0; i<Armory.UpgradeNames[category].Length; i++)
+		{
+			string index="Weapon"+Armory.UpgradeNames[category][i];
+			if (!PlayerPrefs.HasKey(index))
+			{
+				PlayerPrefs.SetInt(index, 0);
+			}
+			
+			categoryList.Add(PlayerPrefs.GetInt(index));
+		}
+		return categoryList;
+	}
   public static void SaveDiscoveredScene(string sceneName, int sceneStatus)
   {
     
@@ -50,13 +71,13 @@ public static class PlayerSaveData
 		int status=PlayerPrefs.GetInt(sceneName);
     return status;
   }
-  public static string[] GetMines()
+  public static int[] GetMines()
   {
     int mineCount = PlayerPrefs.GetInt("MineCount");
-    string[] mines = new string[mineCount];
+    int[] mines = new int[mineCount];
     for (int i = 0; i < mineCount; i++)
     {
-      mines[i] = PlayerPrefs.GetString("Mine" + i);
+      mines[i] = PlayerPrefs.GetInt("Mine" + i);
     }
     return mines;
   }
@@ -84,7 +105,7 @@ public static class PlayerSaveData
     planer.Concentration = PlayerPrefs.GetFloat("Concentration");
     planer.MaxConcentration = PlayerPrefs.GetFloat("MaxConcentration");
     planer.m_visualiser.transform.position=planer.transform.position;
-    string[] mines = GetMines();
+    int[] mines = GetMines();
     ScriptableObject.Destroy(planer.MineController);
     planer.MineController = MineController.GetMineController(mines, planer);
     return true;
@@ -101,6 +122,7 @@ public static class PlayerSaveData
 
     planer.OnEnterPortal(enter.GetNode(), enter.Direction);
   }
+	
   public static bool GetColorStatus(string color)
   {
 

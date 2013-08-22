@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class ButtonObject : ScriptableObject
 {
 
 
   public static GUITexture buttonPrefab;
-  bool m_hasGUI = false;
+	bool m_hasGUI = false;
   PlanerCore m_parentPlaner;
   int m_index;
   GUITexture m_button;

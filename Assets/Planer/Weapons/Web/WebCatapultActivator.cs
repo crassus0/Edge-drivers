@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class WebCatapultActivator : ButtonObject
+public class WebCatapultActivator : ButtonObject, IWeaponActivator
 {
   int cooldown = 0;
   int number = -1;
@@ -9,6 +9,7 @@ public class WebCatapultActivator : ButtonObject
   public static GameObject minePrefab;
   public static Texture2D mineTexture;
   public bool IsActive { get; set; }
+	public int NumCharges {get;	set;}
   public override void Activate(bool isUp)
   {
     if (!isUp)
@@ -47,4 +48,8 @@ public class WebCatapultActivator : ButtonObject
   {
     return "Web Catapult";
   }
+	static WebCatapultActivator()
+	{
+		PlayerSaveData.SaveCharges("WebCatapultActivator",  MineController.MaxNumCharges);
+	}
 }

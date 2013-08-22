@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class LeftTerraformingMine : ButtonObject
+public class LeftTerraformingMine : ButtonObject, IWeaponActivator
 {
   int cooldown = 0;
   public static GameObject minePrefab;
   public static Texture2D mineTexture;
   public bool IsActive { get; set; }
+		public int NumCharges {get;	set;}
   public override string GetName()
   {
     return "LeftTerraformingMine";
@@ -41,4 +42,8 @@ public class LeftTerraformingMine : ButtonObject
     if (cooldown > 0) cooldown--;
     else Activated = false;
   }
+	static LeftTerraformingMine()
+	{
+		PlayerSaveData.SaveCharges("LeftTerraformingMine",  MineController.MaxNumCharges);
+	}
 }

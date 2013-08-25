@@ -3,35 +3,70 @@ using System.Collections;
 
 public class HealthBarControls : MonoBehaviour
 {
-    public GUITexture indicator;
-	public GUITexture background;
-	float m_healthValue;
-	int m_allign;
-	float m_width;
-	float m_heigth;
-	float m_top;
-	Vector2 m_ratio;
-	// Use this for initialization
-	public void Init (Allign allign) 
-	{
-	  m_ratio = new Vector2(0.1f, 0.3f);
-	  m_allign=Utility.AllignToIntHorizontal(allign);
-	  int numTextures = GUIButtonControls.numColumnTextures;
-	  m_width=1.2f*Screen.height/numTextures;
-	  m_heigth=0.6f*Screen.height/numTextures;
-	  m_top=(Screen.height/numTextures-m_heigth)/2;
-	  Rect pixelInsert= new Rect(-m_allign*m_width,m_top,m_width,m_heigth);
-	  background.pixelInset=pixelInsert;
-//	  Debug.Log("Init");
-	}
-	public void SetValue(float newValue)
-	{
-	  //Debug.Log(newValue);
-//	  int numTextures = GUIButtonControls.numTextures;
-	  Rect pixelInsert= new Rect(-m_allign*m_width+m_ratio.x*m_width,m_top+m_heigth*m_ratio.y, newValue*m_width*(1-2*m_ratio.x),m_heigth*(1-2*m_ratio.y)) ;
-	  Color newColor = new Color(1-newValue, newValue, 0,1);
-	  indicator.pixelInset=pixelInsert;
-	  indicator.color=newColor;
-	}
+  public Texture2D acttiveHPTexture;
+  public Texture2D lostHPTexture;
+  public Texture2D hpCooldownBackcround;
+  public Texture2D hpCooldownArrow;
+  static float width;
+  float curentCooldown;
+  float maxCooldown;
+  int hp = 0;
+  void OnGUI()
+  {
+    if (Event.current.type != EventType.Repaint) return;
+    width = Screen.height / 5;
 
+    DrawHP();
+    DrawCooldown();
+  }
+  void DrawHP()
+  {
+    GUI.BeginGroup(new Rect(0, 0, width, width));
+    {
+      int numHP = Creator.Player.m_hitPoints;
+
+      int maxHP = 3;
+      float itemWidth = width / 5;
+      Texture2D texture = acttiveHPTexture;
+      for (int i = 0; i < maxHP; i++)
+      {
+        if (i == numHP)
+          texture = lostHPTexture;
+
+        GUI.DrawTexture(new Rect(itemWidth * (i + 1.2f), width * 0.2f, itemWidth * 0.6f, width * 0.6f), texture);
+      }
+    }
+    GUI.EndGroup();
+  }
+  void DrawCooldown()
+  {
+    float smallWidth = 0.05f * width;
+    maxCooldown = Creator.Player.GetStepCount() * 0.25f;
+    int step = PlanerCore.MaxRegenCooldown - Creator.Player.m_regenCooldown;
+    step = step % PlanerCore.MaxRegenCooldown;
+    hp = hp % PlanerCore.MaxRegenCooldown;
+    if (hp != step)
+    {
+      curentCooldown += Time.deltaTime;
+    }
+
+    if (curentCooldown >= maxCooldown)
+    {
+      curentCooldown = 0;
+      hp++;
+    }
+
+    GUI.BeginGroup(new Rect(Screen.width - width, 0, width, width));
+    {
+
+      float angle = ((hp + curentCooldown / maxCooldown) / PlanerCore.MaxRegenCooldown) * 360;
+
+      GUIUtility.RotateAroundPivot(angle, new Vector2(width / 2, width / 2));
+      GUI.DrawTexture(new Rect(width / 2 - smallWidth, smallWidth, 2 * smallWidth, width / 2 - 2 * smallWidth), hpCooldownArrow);
+      GUIUtility.RotateAroundPivot(-angle, new Vector2(width / 2, width / 2));
+      GUI.DrawTexture(new Rect(smallWidth, smallWidth, width - 2 * smallWidth, width - 2 * smallWidth), hpCooldownBackcround);
+    }
+    GUI.EndGroup();
+
+  }
 }

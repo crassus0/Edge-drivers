@@ -10,8 +10,6 @@ public static class PlayerSaveData
   {
     //Debug.Log("OnSave");
     //PlayerPrefs.DeleteAll();
-    PlayerPrefs.SetFloat("Concentration", planer.Concentration);
-    PlayerPrefs.SetFloat("MaxConcentration", planer.MaxConcentration);
     PlayerPrefs.SetInt("MineCount", planer.MineController.Mines.Count);
     //Debug.Log(Application.loadedLevelName);
     string currentLevel = Application.loadedLevelName;
@@ -97,13 +95,11 @@ public static class PlayerSaveData
       }
     }
     EnterPortal(planer);
-    if (!PlayerPrefs.HasKey("CurrentLevel") || !PlayerPrefs.HasKey("Concentration") || !PlayerPrefs.HasKey("MaxConcentration"))
+    if (!PlayerPrefs.HasKey("CurrentLevel"))
     {
       return true;
     }
     planer.prevNode = planer.Node.GetNodeByDirection((planer.Direction + 3) % 6);
-    planer.Concentration = PlayerPrefs.GetFloat("Concentration");
-    planer.MaxConcentration = PlayerPrefs.GetFloat("MaxConcentration");
     planer.m_visualiser.transform.position=planer.transform.position;
     int[] mines = GetMines();
     ScriptableObject.Destroy(planer.MineController);

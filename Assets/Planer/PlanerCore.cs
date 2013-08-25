@@ -6,7 +6,7 @@ using System.Xml;
 public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 {
   public static float BasicScale = 1.2f;
-  uint id;
+
 
   bool m_initislized = false;
   //public int energy=2;
@@ -24,9 +24,10 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   CancelAction m_cancelAction;
   HomePortal m_homePortal;
 	StayButton m_stayButton;
-  int m_hitPoints=maxHp;
+  public int m_hitPoints{get; set;}
   static readonly int maxHp = 3;
-  int m_regenCooldown;
+  public int m_regenCooldown{get;set;}
+  public static readonly int MaxRegenCooldown=10;
   public int State
   {
     get { return m_state;}
@@ -59,10 +60,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   [SerializeField]
   List<string> m_upgrades=new List<string>();
 
-  public uint ID
-  {
-    get { return id; }
-  }
   public List<ButtonObject> Mines { get { return m_mineController.Mines; } }
   public GraphNode prevNode { get; set; }
   public PlanerMoveControls MoveControls
@@ -92,34 +89,17 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     get
     {
-      if (Application.isPlaying)
+
         return m_moveControls.Agility;
-      else
-        return agility;
+    
     }
     set
     {
-      if (Application.isPlaying)
+      
         m_moveControls.Agility = value;
-      else
-        agility = value;
+   
     }
   }
-  public float Concentration
-  {
-    get { return m_concentration; }
-    set { m_concentration = value; }
-  }
-  [SerializeField]
-  float m_concentration=0.5f;
-  public float MaxConcentration
-  {
-    get { return m_MaxConcentration; }
-    set { m_MaxConcentration = value; }
-  }
-  [SerializeField]
-  float m_MaxConcentration=1;
-  static readonly int MaxConcentrationIncrement = 2;
   public int Direction
   {
     get
@@ -145,20 +125,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   public void CancelTarget()
   {
     m_basicAI.SetTarget(null);
-  }
-  public void AddConcentration(float t)
-  {
-    float t1 = Mathf.Sqrt(1 / (MaxConcentration - Concentration)) + t;
-    Concentration =MaxConcentration*(1- 1 / (t1 * t1));
-  }
-  public void RemoveConcentration(float t)
-  {
-    Concentration -= t;
-  }
-  public void AddMaxConcentration(float t)
-  {
-    float t1=Mathf.Pow(MaxConcentrationIncrement, MaxConcentration)+t;
-    MaxConcentration = Mathf.Log(t1) / Mathf.Log(MaxConcentrationIncrement);
   }
   public override int GetStepCount ()
   {
@@ -208,7 +174,8 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     {
       m_hitPoints--;
       Agility=3-m_hitPoints;
-      m_regenCooldown = 10;
+
+      m_regenCooldown=MaxRegenCooldown;
       Creator.creator.SetSpeed(1-0.3f*Agility);
     }
   }
@@ -216,6 +183,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
 
   public void Init()
   {
+		m_hitPoints=maxHp;
 		GetInstanceID();
     for (int i = 0; i < transform.childCount; i++)
       DontDestroyOnLoad(transform.GetChild(i).gameObject);
@@ -229,7 +197,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     //	  Debug.Log(m_init);
     m_updateFunc = UpdateFuncBasic;
     Type = ObjectType.Planer;
-    id = Creator.GetID();
     m_moveControls = ScriptableObject.CreateInstance<PlanerMoveControls>();
     PlanerMoveControls.MoveParameters moveParameters;
     moveParameters.agility = agility;
@@ -295,20 +262,30 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   }
   void OnUpdated()
   {
-    if (m_regenCooldown == 0 && m_hitPoints != maxHp)
-    {
-      m_hitPoints++;
-      Agility=3-m_hitPoints;
-      m_regenCooldown = 10;
-//      Creator.creator.SetSpeed(1-0.3f*Agility);
-    }
-    else
-      m_regenCooldown--;
+    
+    
     EnteredPortal = false;
     if (m_updateFunc != null)
       m_updateFunc(this);
-   
+    if (m_regenCooldown <= 0)
+    {
+      AddHP();
+
+    }
+    else if (m_hitPoints < maxHp) 
+    {
+      m_regenCooldown--;
+    }
   }
+	void AddHP()
+	{
+    m_regenCooldown = MaxRegenCooldown;
+    if (m_hitPoints >= maxHp) return;
+		m_hitPoints++;
+    Agility=3-m_hitPoints;
+    Creator.creator.SetSpeed(1-0.3f*Agility);
+		
+	}
   void UpdateFuncBasic(IPlanerLike planer)
   {
 
@@ -367,7 +344,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
       Warming warm = obj as Warming;
       if (warm != null&&!warm.isEaten)
       {
-        AddConcentration(warm.m_warmingConcentration);
+			  AddHP();
         warm.isEaten = true;
       }
   }

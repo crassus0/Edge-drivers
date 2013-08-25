@@ -25,14 +25,12 @@ public class PlanerEditor : Editor
     }
     int direction = (EditorGUILayout.IntField("Direction", targetObject.Direction) + 6) % 6;
     int agility = EditorGUILayout.IntField("Agility", targetObject.Agility);
-    float concentration = EditorGUILayout.FloatField("Concentration", targetObject.Concentration);
     if (GUI.changed)
     {
       targetObject.transform.rotation = Quaternion.identity;
       targetObject.transform.Rotate(new Vector3(0, -60 * direction, 0));
       targetObject.Direction = direction;
       targetObject.Agility = agility;
-      targetObject.Concentration = concentration;
     }
     EditorUtility.SetDirty(target);
   }

@@ -12,6 +12,7 @@ public class Creator : MonoBehaviour
   int subStep = 0;
   public bool testBuild = false;
 	bool m_loading=false;
+  public float basicFixedTime;
   public IPortalExit testEnter 
   {
     get 
@@ -97,7 +98,9 @@ public class Creator : MonoBehaviour
 	}
   public void Start()
   {
+     
     if (m_init) return;
+    basicFixedTime= Time.fixedDeltaTime;
 		if(!(testBuild&&Application.isEditor))
 		{
 		  foreach(UnityEngine.Object x in Resources.FindObjectsOfTypeAll(typeof(CustomObject)))
@@ -418,7 +421,7 @@ public class Creator : MonoBehaviour
   public void SetSpeed(float modifier=1)
   {
     Time.timeScale = modifier/ TurnDuration;
-    //Time.fixedDeltaTime *= 1 / TurnDuration;
+    Time.fixedDeltaTime =basicFixedTime*(modifier / TurnDuration);
   }
   void OnApplicationQuit()
   {

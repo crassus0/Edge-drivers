@@ -8,7 +8,6 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   public byte[] PrevState { get { return m_prevState; } }
   byte[] m_prevState;
   public bool visible = true;
-  bool m_initialized = false;
   bool m_active=false;
   public bool ActivateOnStart
   { 
@@ -20,8 +19,6 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
 
   public override void OnStart()
   {
-    
-      m_initialized = true;
       if (!visible)
         Destroy(transform.GetChild(0).gameObject);
       OnUpdate = OnUpdated;

@@ -17,10 +17,8 @@ public class InputControls : MonoBehaviour
   }
   void Update()
   {
-
     if (Creator.OnPause)
     {
-
       return;
     }
     GetMouseInput();

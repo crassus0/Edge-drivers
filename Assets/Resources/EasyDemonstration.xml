@@ -33,14 +33,14 @@
         <z>176.202087</z>
       </position>
       <rotation>
-        <x>-9.217241E-08</x>
+        <x>-9.217243E-08</x>
         <y>0.2759367</y>
-        <z>-3.188475E-08</z>
+        <z>-3.18847562E-08</z>
         <w>-0.961175859</w>
         <eulerAngles>
-          <x>1.11603094E-05</x>
+          <x>1.11603113E-05</x>
           <y>327.964325</y>
-          <z>5.973776E-07</z>
+          <z>5.973778E-07</z>
         </eulerAngles>
       </rotation>
       <scale>
@@ -168,9 +168,9 @@
       <basicTexture>Oasis</basicTexture>
       <activatedTexture />
       <position>
-        <x>437.614319</x>
+        <x>455.29422</x>
         <y>-2</y>
-        <z>319.093</z>
+        <z>338.737335</z>
       </position>
       <rotation>
         <x>0</x>
@@ -184,9 +184,9 @@
         </eulerAngles>
       </rotation>
       <scale>
-        <x>5.357077</x>
+        <x>4</x>
         <y>1</y>
-        <z>7.299262</z>
+        <z>4</z>
       </scale>
     </CustomObjectInfo>
   </objectsInfo>

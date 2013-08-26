@@ -198,7 +198,9 @@ public class CreatorEditor : Editor
     if (currentEvent.type == EventType.ScrollWheel) return;
     if (currentEvent.button == 2) return;
     if (currentEvent.type == EventType.Repaint) return;
+    if (currentEvent.type == EventType.Layout) return;
     if (currentEvent.type == EventType.KeyDown || currentEvent.type == EventType.KeyUp) return;
+    
     Event.current.Use();
   }
   void OnInstrument()

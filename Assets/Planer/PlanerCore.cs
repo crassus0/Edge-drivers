@@ -165,6 +165,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
 		
     if (!m_initislized) return;
+    m_regenCooldown = MaxRegenCooldown;
 		if (m_hitPoints == 1)
     {
       EnteredPortal = true;
@@ -174,8 +175,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     {
       m_hitPoints--;
       Agility=3-m_hitPoints;
-
-      m_regenCooldown=MaxRegenCooldown;
       Creator.creator.SetSpeed(1-0.3f*Agility);
     }
   }

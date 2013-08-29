@@ -185,6 +185,7 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
 	{
 		TriggerInfo z = new TriggerInfo();
 		z.BasicSerialization(this);
+    z.texture = texture.name;
 		z.TargetTriggerName=TargetTriggerName;
 		z.MultiUseTrigger=MultiUseTrigger;
 		z.OnObjectStay=OnObjectStay;
@@ -218,7 +219,8 @@ public class TriggerInfo:CustomObjectInfo
 	{
 		
 		trigger = CreateInstance() as Trigger;
-		if(texture.Length>1)
+		
+    if(texture!=null&&texture.Length>1)
 		{
 			trigger.texture= Resources.Load("Textures/"+texture, typeof(Texture2D)) as Texture2D;
 		}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <name>Hardcore</name>
+  <objectsInfo>
+    <CustomObjectInfo xsi:type="FlowerInfo">
+      <node>
+        <i>3</i>
+        <j>2</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>0</instanceID>
+      <instanceName>Flower2</instanceName>
+      <basicTexture>Transparent</basicTexture>
+      <activatedTexture>Transparent</activatedTexture>
+      <position>
+        <x>256</x>
+        <y>-2</y>
+        <z>184.752075</z>
+      </position>
+      <rotation>
+        <x>0</x>
+        <y>1</y>
+        <z>0</z>
+        <w>-2.82129974E-07</w>
+        <eulerAngles>
+          <x>0</x>
+          <y>180.000046</y>
+          <z>0</z>
+        </eulerAngles>
+      </rotation>
+      <scale>
+        <x>1</x>
+        <y>1</y>
+        <z>1</z>
+      </scale>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="DistantPortalExitInfo">
+      <node>
+        <i>1</i>
+        <j>1</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>1</instanceID>
+      <instanceName>DefaultEnter</instanceName>
+      <Direction>1</Direction>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>1</i>
+        <j>6</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>2</instanceID>
+      <instanceName>Trigger3</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate>
+        <int>0</int>
+        <int>3</int>
+      </toActivate>
+      <toDestroy />
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="FlowerInfo">
+      <node>
+        <i>1</i>
+        <j>6</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>3</instanceID>
+      <instanceName>Flower1</instanceName>
+      <basicTexture>Transparent</basicTexture>
+      <activatedTexture>Transparent</activatedTexture>
+      <position>
+        <x>128</x>
+        <y>-2</y>
+        <z>369.504181</z>
+      </position>
+      <rotation>
+        <x>0</x>
+        <y>0</y>
+        <z>0</z>
+        <w>1</w>
+        <eulerAngles>
+          <x>0</x>
+          <y>0</y>
+          <z>0</z>
+        </eulerAngles>
+      </rotation>
+      <scale>
+        <x>1</x>
+        <y>1</y>
+        <z>1</z>
+      </scale>
+    </CustomObjectInfo>
+  </objectsInfo>
+  <info>
+    <LevelInfo>
+      <name>SafeHouse</name>
+      <m_bareers>PT09PT09PQAVFRUVFRUVFR8VFRUVFRU1FRUVFRUVFRUdFRUWFhUVNxUVFRUVFRUVHxUVJRUZFTUVFRUVFRUVFR0VFSUZFRU3FRUVFRUVFRUfFRUVFRUVNRUVFRUVFRUVHRUVFRUVFTcVFRUVFRUVFR8XFxcXFxc3FRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFQ==</m_bareers>
+      <SelectionPhaseDuration>0</SelectionPhaseDuration>
+      <SelectionPhaseType>OnAction</SelectionPhaseType>
+      <MovePhaseDuration>0.5</MovePhaseDuration>
+      <NumAreas>2</NumAreas>
+    </LevelInfo>
+  </info>
+  <defaultPortal>1</defaultPortal>
+  <mainTexture>Background2</mainTexture>
+</LevelObjectsInfo>

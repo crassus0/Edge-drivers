@@ -185,7 +185,10 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
 	{
 		TriggerInfo z = new TriggerInfo();
 		z.BasicSerialization(this);
-    z.texture = texture.name;
+    if (texture != null)
+      z.texture = texture.name;
+    else
+      z.texture = "";
 		z.TargetTriggerName=TargetTriggerName;
 		z.MultiUseTrigger=MultiUseTrigger;
 		z.OnObjectStay=OnObjectStay;

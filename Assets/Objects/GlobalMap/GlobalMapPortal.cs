@@ -9,17 +9,16 @@ public class GlobalMapPortal : DistantPortalEnter
   public override void OnStart()
   {
     base.OnStart();
-    int isActive = PlayerSaveData.GetSceneStatus(m_targetScene);
-    if (isActive == 0)
+    if (defaultStatus == 0)
     {
       Creator.DestroyObject(this);
     }
-    if (isActive == 1)
+    if (defaultStatus == 1)
     {
       Interact = null;
       
     }
-    if (isActive >= 1)
+    if (defaultStatus >= 1)
     {
       foreach (TerraformingMine x in m_path)
       {

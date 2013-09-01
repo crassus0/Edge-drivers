@@ -70,7 +70,10 @@ public class RedFireflyActivator : ScriptableObject
     DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null&&x.Status==1)
     {
-      x.Status = 2;
+      if(x.defaultStatus==1)
+      {
+        x.Status = 2;
+      }
     }
 
   }

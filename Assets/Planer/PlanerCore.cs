@@ -70,7 +70,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     get
     {
-
       return m_visualiser.GetComponent<PlanerVisualControls>();
     }
   }
@@ -79,7 +78,6 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
     get { return m_mineController; }
     set 
     {
-
       if (m_mineController != null)
         Destroy(m_mineController);
       m_mineController = value; 
@@ -89,15 +87,11 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   {
     get
     {
-
         return m_moveControls.Agility;
-    
     }
     set
     {
-      
         m_moveControls.Agility = value;
-   
     }
   }
   public int Direction

@@ -8,8 +8,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable, IDeactivatabl
   public byte[] PrevState { get { return m_prevState; } }
   byte[] m_prevState;
   public bool visible = true;
-  bool m_active { get { return md_active; } set { md_active = value; Debug.Log("asd"); Debug.Log(value); } }
-  bool md_active = false;
+  bool m_active = false;
   public bool ActivateOnStart
   {
     get { return m_activateOnStart; }
@@ -37,7 +36,6 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable, IDeactivatabl
   }
   public void Deactivate()
   {
-    Debug.Log(m_active);
     if (!m_active) return;
     m_active = false;
     if (ActivateOnStart && !Destroyed) return;

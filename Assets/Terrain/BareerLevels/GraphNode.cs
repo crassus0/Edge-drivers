@@ -118,7 +118,7 @@ public class GraphNode : System.IComparable<GraphNode>
     {
       foreach (CustomObject x in m_objects)
       {
-        IActivatable y = x as IActivatable;
+        IActivatable y = x as TerraformingMine;
         if (y != null&&y.ActivateOnStart)
           y.Activate();
       }

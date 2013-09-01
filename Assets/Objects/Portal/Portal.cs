@@ -58,7 +58,10 @@ public class Portal : CustomObject, IPortalExit
 	public override CustomObjectInfo SerializeObject ()
 	{
 		PortalInfo x = new PortalInfo();
-		x.PairPortal=PairPortal.ObjectID;
+    if (PairPortal != null)
+      x.PairPortal = PairPortal.ObjectID;
+    else
+      x.PairPortal = -1;
 		x.Direction=Direction;
 		x.BasicSerialization(this);
 		return x;

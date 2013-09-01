@@ -34,7 +34,6 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
 	}
   public void Activate()
   {
-    
     if (!activeTrigger)
     {
       ActivateTrigger();

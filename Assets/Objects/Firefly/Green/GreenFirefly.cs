@@ -30,7 +30,8 @@ public class GreenFirefly : CustomObject, IAutoMove
     DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null)
     {
-      x.Status = 1;
+      if(x.defaultStatus<1)
+        x.defaultStatus = 1;
     }
   }
   void OnUpdated()

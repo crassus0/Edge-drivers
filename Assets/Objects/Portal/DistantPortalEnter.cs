@@ -17,8 +17,9 @@ public class DistantPortalEnter : CustomObject
     {
       if (Status < value)
       {
-        PlayerSaveData.SaveDiscoveredScene(m_targetScene, value);
-        SetActiveVisualiser(Status);
+        defaultStatus=value;
+        Debug.Log(value);
+        SetActiveVisualiser(value);
       }
     }
   }
@@ -26,28 +27,29 @@ public class DistantPortalEnter : CustomObject
   public override void OnStart()
   {
     m_visualiser.renderer.material = new Material(m_visualiser.renderer.material);
-    if (Status < defaultStatus)
-      Status = defaultStatus;
+
+    if(defaultStatus<Status)
+      defaultStatus=Status;
     //Status = PlayerSaveData.GetSceneStatus(m_targetScene);
     Interact = OnInteract;
-    SetActiveVisualiser(Status);
+    SetActiveVisualiser(defaultStatus);
   }
   public void OnInteract(CustomObject obj, InteractType type)
   {
     if (m_targetScene == null) return;
-    if (Status < 2) return;
+    if (defaultStatus < 2) return;
     if (type == InteractType.Stay)
     {
 
       PlanerCore x = obj as PlanerCore;
       if (x != null&&x.State==0)
       {
-          if (Status == 2)
-            Status = 1;
+          if (defaultStatus == 2)
+            defaultStatus = 1;
 
           if (object.ReferenceEquals(x, Creator.Player))
           {
-            //PlayerSaveData.SaveDiscoveredScene(m_targetScene, 2);
+            PlayerSaveData.SaveDiscoveredScene(m_targetScene, defaultStatus);
             x.AddUpdateFunc(OnPlanerEnter);
             x.HasTarget = true;
           }

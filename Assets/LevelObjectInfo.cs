@@ -15,7 +15,17 @@ public class LevelObjectsInfo
 	public string mainTexture="";
 	public static LevelObjectsInfo LoadLevelInfo(string levelName)
 	{
-		System.Type[] types=new System.Type[Creator.prefabs.Count+1];
+   
+    System.Type[] types;
+    try
+    {
+		  types=new System.Type[Creator.prefabs.Count+1];
+    }
+    catch
+    {
+      Debug.Log(Creator.prefabs);
+      throw;
+    }
 		for(int i=0; i<Creator.prefabs.Count; i++)
 		{
 			types[i]=Creator.prefabs[i].GetComponent<CustomObject>().SerializedType();

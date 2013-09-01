@@ -373,8 +373,6 @@ public class GraphNode : System.IComparable<GraphNode>
   //technicals
   void SetNodeGraph()
   {
-    triangleRow=BareerAreaControls.areaSize *Creator.creator.levels[m_level].NumAreas;
-    Debug.Log(Creator.creator.levels[m_level].NumAreas);
     if (m_index == 0)
     {
       if (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow)

@@ -68,7 +68,7 @@ public abstract class CustomObject : MonoBehaviour
     return node;
   }
   public Action OnUpdate;
-
+  public Action OnDestroyed;
   //protected void OnStart(){}
   protected void Awake()
   {

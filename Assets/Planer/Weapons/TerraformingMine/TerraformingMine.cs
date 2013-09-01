@@ -1,44 +1,47 @@
 using UnityEngine;
 using System.Collections;
 
-public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatable, IActivatable
+public class TerraformingMine : CustomObject, IFireflyDestroyable, IDeactivatable, IActivatable
 {
   public int steps = -1;
-  public byte[] states= new byte[3];
+  public byte[] states = new byte[3];
   public byte[] PrevState { get { return m_prevState; } }
   byte[] m_prevState;
   public bool visible = true;
-  bool m_active=false;
+  bool m_active { get { return md_active; } set { md_active = value; Debug.Log("asd"); Debug.Log(value); } }
+  bool md_active = false;
   public bool ActivateOnStart
-  { 
-    get { return m_activateOnStart;}
-    set { m_activateOnStart=value;}
+  {
+    get { return m_activateOnStart; }
+    set { m_activateOnStart = value; }
   }
   [SerializeField]
   bool m_activateOnStart;
 
   public override void OnStart()
   {
-      if (!visible)
-        Destroy(transform.GetChild(0).gameObject);
-      OnUpdate = OnUpdated;
-      if(ActivateOnStart)
-        Activate();
-	}
+    OnDestroyed = OnDestroy;
+    if (!visible)
+      Destroy(transform.GetChild(0).gameObject);
+    OnUpdate = OnUpdated;
+    if (ActivateOnStart)
+      Activate();
+  }
   public void Activate()
   {
-    m_active=true;
+    m_active = true;
+
     if (Destroyed) return;
     m_prevState = Node.GetNodeGraph();
     Node.ChangeState(states, Creator.creator.levels);
   }
   public void Deactivate()
   {
-		if(!m_active)return;
-		m_active=false;
+    Debug.Log(m_active);
+    if (!m_active) return;
+    m_active = false;
     if (ActivateOnStart && !Destroyed) return;
-
-      Node.ChangeState(m_prevState, Creator.creator.levels, true);
+    Node.ChangeState(m_prevState, Creator.creator.levels, true);
 
     Node.Reactivate();
     foreach (GraphNode x in Node.GetAdjacent())
@@ -48,8 +51,9 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   }
   void OnUpdated()
   {
-    if(!m_active)return;
-    if (steps < 0) 
+
+    if (!m_active) return;
+    if (steps < 0)
       OnUpdate = null;
     if (steps-- == 0)
     {
@@ -59,21 +63,24 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   }
   new void OnDestroy()
   {
+
     if (Creator.IsLoading) return;
+
     Destroyed = true;
-    base.OnDestroy();
     Deactivate();
+    base.OnDestroy();
+
 
   }
   protected void OnDrawGizmos()
   {
     Vector3[] coords = new Vector3[3];
-    int yMultiplier=Node.Index==0?1:-1;
+    int yMultiplier = Node.Index == 0 ? 1 : -1;
     coords[0] = new Vector3(-2, 0, yMultiplier * 1.154700f);
     coords[1] = new Vector3(2, 0, yMultiplier * 1.154700f);
     coords[2] = new Vector3(0, 0, yMultiplier * -2.309401f);
     ColorByState(states[0]);
-    Gizmos.DrawLine(transform.position+coords[0]*16,transform.position+coords[1]*16);
+    Gizmos.DrawLine(transform.position + coords[0] * 16, transform.position + coords[1] * 16);
     ColorByState(states[1]);
     Gizmos.DrawLine(transform.position + coords[0] * 16, transform.position + coords[2] * 16);
     ColorByState(states[2]);
@@ -81,7 +88,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
   }
   static void ColorByState(int state)
   {
-     if (state == 0)
+    if (state == 0)
       Gizmos.color = Color.black;
     if (state == 1)
       Gizmos.color = Color.white;
@@ -90,54 +97,54 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable,  IDeactivatab
     if (state == 3)
       Gizmos.color = Color.yellow;
     if (state == 6)
-      Gizmos.color = new Color(0,0,0,0);
+      Gizmos.color = new Color(0, 0, 0, 0);
   }
   public virtual void FireflyDestroy(YellowFirefly firefly)
   {
-    if(!visible)return;
-    YellowFirefly newFirefly =(Instantiate(firefly.gameObject) as GameObject).GetComponent<YellowFirefly>();
+    if (!visible) return;
+    YellowFirefly newFirefly = (Instantiate(firefly.gameObject) as GameObject).GetComponent<YellowFirefly>();
     newFirefly.m_visualiser.transform.position = newFirefly.transform.position;
     newFirefly.Direction--;
     firefly.Direction++;
     Interact = null;
     Creator.DestroyObject(this);
   }
-	public override CustomObjectInfo SerializeObject ()
-	{
-		TerraformingMineInfo x = new TerraformingMineInfo();
-		x.BasicSerialization(this);
-  	x.steps=steps;
-		x.states=states;
-		x.visible=visible;
-		x.ActivateOnStart=ActivateOnStart;
-		return x;
-	}
-	public override System.Type SerializedType ()
-	{
-		return typeof(TerraformingMineInfo);
-	}
+  public override CustomObjectInfo SerializeObject()
+  {
+    TerraformingMineInfo x = new TerraformingMineInfo();
+    x.BasicSerialization(this);
+    x.steps = steps;
+    x.states = states;
+    x.visible = visible;
+    x.ActivateOnStart = ActivateOnStart;
+    return x;
+  }
+  public override System.Type SerializedType()
+  {
+    return typeof(TerraformingMineInfo);
+  }
 }
 [System.Serializable]
-public class TerraformingMineInfo:CustomObjectInfo
+public class TerraformingMineInfo : CustomObjectInfo
 {
-	public int steps;
+  public int steps;
   public byte[] states;
   public bool visible;
-	public bool ActivateOnStart;
-	public override CustomObject Deserialize ()
-	{
-		TerraformingMine x = CreateInstance() as TerraformingMine;
-		x.steps=steps;
-		x.states=states;
-		x.visible=visible;
-		x.ActivateOnStart=ActivateOnStart;
-		return x;
-	}
-	public override void EstablishConnections ()
-	{
-	}
-	public override string GetName ()
-	{
-		return "TerraformingMine";
-	}
+  public bool ActivateOnStart;
+  public override CustomObject Deserialize()
+  {
+    TerraformingMine x = CreateInstance() as TerraformingMine;
+    x.steps = steps;
+    x.states = states;
+    x.visible = visible;
+    x.ActivateOnStart = ActivateOnStart;
+    return x;
+  }
+  public override void EstablishConnections()
+  {
+  }
+  public override string GetName()
+  {
+    return "TerraformingMine";
+  }
 }

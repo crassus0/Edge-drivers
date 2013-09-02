@@ -85,7 +85,7 @@ public class Warming : CustomObject, IPlanerLike
 
     m_ai.OnUpdate();
     int index = (Node.Index + Direction % 2) % 2;
-    while (GraphTagMachine.GetDirections(Node)[m_direction]==WayStatus.Blocked)
+    while (GraphTagMachine.GetDirections(Node)[m_direction]!=WayStatus.Free)
     {
       if (index == 0)
       {

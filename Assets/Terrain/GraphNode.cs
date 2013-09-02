@@ -26,6 +26,7 @@ public class GraphNode : System.IComparable<GraphNode>
   }
   [System.NonSerialized]
   NodeTag m_tag=NodeTag.None;
+  public bool HiddenTag { get; set; }
   public int TagModifier { get; set; }
 	public int TagTarget{get;set;}
   public int Level { get { return m_level; } }

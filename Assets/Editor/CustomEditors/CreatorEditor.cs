@@ -344,6 +344,7 @@ public class CreatorEditor : Editor
 		LevelObjectsInfo x = LevelObjectsInfo.LoadLevelInfo(levelName);
 		EditorAdditionalGUI targ = EditorAdditionalGUI.EditorOptions;
 		targ.ClearScene();
+    GraphNode.ClearAll();
 		targ.levels=x.info.ConvertAll<BareerLevelControls>(y=>y.Deserialize());
 		Creator.creator.levels=targ.levels;
 		targ.Objects=x.objectsInfo.ConvertAll<CustomObject>(y=>y.Deserialize());

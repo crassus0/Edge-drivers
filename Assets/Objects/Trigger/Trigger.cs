@@ -60,13 +60,14 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
 	}
 	public void Deactivate ()
 	{
-		activeTrigger = true;
+		activeTrigger = false;
     
 		OnUpdate=null;
 		Interact = null;
 	}
 	void DeactivateTrigger()
 	{
+    activeTrigger = false;
     Interact = null;
 		OnUpdate=null;
 	}
@@ -115,8 +116,8 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
   }
   public override void OnStart()
   {
-		ActivateOnStart=true;
-		TargetTrigger=System.Type.GetType(TargetTriggerName, true, true);
+		//ActivateOnStart=true;
+		TargetTrigger=System.Type.GetType(TargetTriggerName, false, true);
     if (ActivateOnStart)
     {
       Activate ();
@@ -160,6 +161,7 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
 	}
 	void OnAction()
 	{
+    
 	  foreach (CustomObject x in toActivate)
     {
       if (x as IActivatable != null)
@@ -185,7 +187,10 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
 	{
 		TriggerInfo z = new TriggerInfo();
 		z.BasicSerialization(this);
-    z.texture = texture.name;
+    if (texture != null)
+      z.texture = texture.name;
+    else
+      z.texture = "";
 		z.TargetTriggerName=TargetTriggerName;
 		z.MultiUseTrigger=MultiUseTrigger;
 		z.OnObjectStay=OnObjectStay;
@@ -227,7 +232,7 @@ public class TriggerInfo:CustomObjectInfo
 		trigger.TargetTriggerName=TargetTriggerName;
 		trigger.MultiUseTrigger=MultiUseTrigger;
 		trigger.OnObjectStay=OnObjectStay;
-			trigger.ActivateOnStart=ActivateOnStart;
+		trigger.ActivateOnStart=ActivateOnStart;
 		trigger.delay=delay;
 		
 		return trigger;

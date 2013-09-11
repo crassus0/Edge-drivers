@@ -7,11 +7,13 @@ public class Whirlwind : CustomObject
 //	bool m_initialized=false;
   public override void OnStart()
   {
-
-    Node.Tag = NodeTag.Whirlwind;
-    Node.TagModifier = spin;
-
-    //m_visualiser.animation["Rotate"].speed = -0.2f*spin;
+    if (spin != 0)
+    {
+      Node.Tag = NodeTag.Whirlwind;
+      Node.TagModifier = spin;
+    }
+    else
+      Node.HiddenTag = true;
   }
 
   protected new void OnDestroy()

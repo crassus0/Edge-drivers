@@ -26,6 +26,7 @@ public class GraphNode : System.IComparable<GraphNode>
   }
   [System.NonSerialized]
   NodeTag m_tag=NodeTag.None;
+  public bool HiddenTag { get; set; }
   public int TagModifier { get; set; }
 	public int TagTarget{get;set;}
   public int Level { get { return m_level; } }
@@ -118,7 +119,7 @@ public class GraphNode : System.IComparable<GraphNode>
     {
       foreach (CustomObject x in m_objects)
       {
-        IActivatable y = x as IActivatable;
+        IActivatable y = x as TerraformingMine;
         if (y != null&&y.ActivateOnStart)
           y.Activate();
       }
@@ -373,12 +374,12 @@ public class GraphNode : System.IComparable<GraphNode>
   //technicals
   void SetNodeGraph()
   {
-
     if (m_index == 0)
     {
       if (m_i >= 0 && m_i < triangleRow && m_j >= 0 && m_j < triangleRow)
       {
         nodeGraph = Creator.GetBareerMap(m_level)[m_i + m_j * triangleRow];
+
         if(basicNodeGraph<0)
           basicNodeGraph = nodeGraph;
       }

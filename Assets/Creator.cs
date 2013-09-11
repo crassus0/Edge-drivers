@@ -193,6 +193,8 @@ public class Creator : MonoBehaviour
         
         if(m_objects.Contains(x))
         {
+          if (x.OnDestroyed != null)
+            x.OnDestroyed();
           m_objects.Remove(x);
           x.Node.LeaveImmidiately(x);
           Destroy(x.gameObject);
@@ -274,7 +276,10 @@ public class Creator : MonoBehaviour
   public static void DestroyObject(CustomObject obj)
   {
     if (creator.m_removeObjects == null)
+    {
       creator.m_removeObjects = new HashSet<CustomObject>();
+    }
+    
     creator.m_removeObjects.Add(obj);
   }
 	void ClearScene()

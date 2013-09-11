@@ -3,9 +3,10 @@ using System.Collections;
 public class StreamVisualizer : MonoBehaviour 
 {
 	public Stream parent;
+  public float MaxSpeed = 10E30f;
 	void Update()
 	{
-		
+
 		int rotationSpeed=parent.power;
 		ParticleSystem.Particle [] particless=new  ParticleSystem.Particle[particleSystem.particleCount];
 		particleSystem.GetParticles(particless);
@@ -24,6 +25,8 @@ public class StreamVisualizer : MonoBehaviour
 			
 			
 		  direction.z=-position.z*0.2f*parent.power;
+      if (direction.magnitude > MaxSpeed)
+        direction = direction.normalized * MaxSpeed;
 			if(position.x>basicScale-1)
 			{
 				direction.z=-direction.z;

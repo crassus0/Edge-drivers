@@ -68,7 +68,7 @@ public abstract class CustomObject : MonoBehaviour
     return node;
   }
   public Action OnUpdate;
-
+  public Action OnDestroyed;
   //protected void OnStart(){}
   protected void Awake()
   {
@@ -156,6 +156,8 @@ public abstract class CustomObjectInfo
 	}
 	public static CustomObject GetObjectByID(int id)
 	{
+    if (id < 0)
+      return null;
 		CustomObject[] objects;
 		if(Application.isPlaying)
 			objects=Creator.creator.m_objects.ToArray();

@@ -55,8 +55,19 @@ public static class GraphTagMachine
         directions[0] = WayStatus.Free;
       }
     }
-		if(node.Tag==NodeTag.Stream)
-		  directions[(node.TagTarget+3)%6]=WayStatus.Unavailable;
+    for (int i = 0; i < 6; i++)
+    {
+      if (node.GetNodeByDirection(i).HiddenTag)
+      {
+        
+        directions[i] = WayStatus.Hidden;
+      }
+    }
+    if (node.Tag == NodeTag.Stream)
+    {
+
+      directions[(node.TagTarget + 3) % 6] = WayStatus.Unavailable;
+    }
     return directions;
   }
 	public static GraphNode GetNodeByDirection(GraphNode node, int direction)
@@ -126,9 +137,9 @@ public enum NodeTag
   RedColoured,
   BlueColoured,
   GreenColoured,
-	Stream
+	Stream,
 }
 public enum WayStatus
 {
-  Free, Blocked, Unavailable
+  Free, Blocked, Unavailable, Hidden
 }

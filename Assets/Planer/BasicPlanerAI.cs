@@ -207,9 +207,13 @@ public class BasicPlanerAI : ScriptableObject
   void UpdateDirection(AStarNode node, ref List<AStarNode> adj, ref List<AStarNode> check, int index)
   {
     AStarNode newNode;
+    WayStatus[] directions = GraphTagMachine.GetDirections(node.node);
+
+    if (directions[index] == WayStatus.Unavailable || directions[index] == WayStatus.Hidden)
+      return;
 		index=GraphTagMachine.GetDirection(node.node, index);
 
-    WayStatus[] directions = GraphTagMachine.GetDirections(node.node);
+    
     if (directions[index]==WayStatus.Free)
     {
       newNode = new AStarNode(node.node.GetNodeByDirection(index), index, node.distance + 1 + 0.01f * Mathf.Abs((node.direction + 6 - index) % 6), node);

@@ -26,14 +26,14 @@ public class HealthBarControls : MonoBehaviour
       int numHP = Creator.Player.m_hitPoints;
 
       int maxHP = 3;
-      float itemWidth = width / 5;
+      float itemWidth = width / 4;
       Texture2D texture = acttiveHPTexture;
-      for (int i = 0; i < maxHP; i++)
+      for (int i = 1; i < maxHP; i++)
       {
         if (i == numHP)
           texture = lostHPTexture;
 
-        GUI.DrawTexture(new Rect(itemWidth * (i + 1.2f), width * 0.2f, itemWidth * 0.6f, width * 0.6f), texture);
+        GUI.DrawTexture(new Rect(itemWidth * (i + 0.2f), width * 0.2f, itemWidth * 0.6f, width * 0.6f), texture);
       }
     }
     GUI.EndGroup();

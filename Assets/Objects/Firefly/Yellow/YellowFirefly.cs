@@ -35,8 +35,8 @@ public class YellowFirefly : CustomObject, IAutoMove
     DistantPortalEnter x = obj as DistantPortalEnter;
     if (x != null)
     {
-      if (x.Status == 0) return;
-      if(x.Status==2)
+      if (x.defaultStatus == 0) return;
+      if(x.defaultStatus==2)
         x.Status = 3;
       Creator.DestroyObject(this);
     }

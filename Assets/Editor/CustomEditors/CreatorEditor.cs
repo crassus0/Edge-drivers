@@ -23,7 +23,9 @@ public class CreatorEditor : Editor
 	void OnEnable()
 	{
 		targ = target as EditorAdditionalGUI;
-		creator=GameObject.Find("Creator").GetComponent<Creator>();
+    GameObject x = GameObject.Find("Creator") as GameObject;
+    if(x!=null)
+		  creator=x.GetComponent<Creator>();
 		Creator.prefabs=targ.prefabs;
 	}
   public override void OnInspectorGUI()

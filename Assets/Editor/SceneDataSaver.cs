@@ -11,14 +11,12 @@ public static class SceneDataSaver
     List<string> temp = new List<string>();
     foreach (string x in Directory.GetFiles("Assets/Resources"))
     {
+      if (!x.EndsWith("xml")) continue;
       string name = x.Substring(x.LastIndexOf('\\') + 1);
-      if (name.EndsWith("xml"))
-      {
-				
-        name = name.Substring(0, name.Length - 4);
-				temp.Add(name);
+      name = name.Substring(name.LastIndexOf('/') + 1);
+      name = name.Substring(0, name.Length - 4);
+			temp.Add(name);
 
-      }
     }
     return temp.ToArray();
   }

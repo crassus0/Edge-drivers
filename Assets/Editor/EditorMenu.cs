@@ -87,6 +87,7 @@ public class EditorMenu : EditorWindow
     GameObject planerPrefab = AssetDatabase.LoadAssetAtPath("Assets/ObjectPrefabs/" + type + "Prefab.prefab", typeof(GameObject)) as GameObject;
     GraphNode node=GraphNode.GetNodeByCoords(coords, editor.ActiveLevel);
 		GameObject planer = Instantiate(planerPrefab, coords, Quaternion.Euler(0, 180*node.Index,0)) as GameObject;
+    planer.transform.parent = Creator.ObjectFolder.transform;
     planer.name = type + EditorAdditionalGUI.EditorOptions.Objects.Count;
     planer.SetActive(true);
     EditorAdditionalGUI.EditorOptions.Objects.Add(planer.GetComponent<CustomObject>());

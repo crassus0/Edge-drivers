@@ -14,6 +14,8 @@ public class StayButton : ButtonObject
   {
     if (!Application.isPlaying) return;
     Button = (GUITexture)Instantiate(buttonPrefab);
+    Button.transform.parent = Creator.GUIFolder.transform;
+
     Button.transform.position = new Vector3(1, 1 - (float)((index + 2)) / GUIButtonControls.numColumnTextures, 0);
     Button.GetComponent<GUIButtonControls>().Init(this, Allign.Left, index);
     Button.name = "ControlButton";

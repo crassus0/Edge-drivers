@@ -26,6 +26,29 @@ public class Creator : MonoBehaviour
 	public Texture2D SceneTexture;
   public GameObject testPortal;
   public List<BareerLevelControls> levels;
+  public static GameObject GUIFolder { get; set; }
+  public static GameObject ObjectFolder
+  {
+    get 
+    {
+      if (s_ObjectFolder == null)
+        s_ObjectFolder = GameObject.Find("ObjectFolder");
+      return s_ObjectFolder;
+    }
+    
+  }
+  static GameObject s_ObjectFolder;
+  public static GameObject LeveltFolder
+  {
+    get
+    {
+      if (s_LevelFolder == null)
+        s_LevelFolder = GameObject.Find("LevelFolder");
+      return s_LevelFolder;
+    }
+
+  }
+  static GameObject s_LevelFolder;
   public static string PreviousLevel { get; set; }
   public static bool IsLoading { get; set; }
 	public GameObject levelPrefab;
@@ -91,9 +114,13 @@ public class Creator : MonoBehaviour
 	
 	public void Awake()
 	{
-		Instantiate(initializerPrefab);
+    GUIFolder = GameObject.Find("GUI");
+    GameObject initializer = Instantiate(initializerPrefab) as GameObject;
+    initializer.transform.parent = GUIFolder.transform;
+    initializer.name = "Initializer";
 		prefabs=new List<GameObject>(EditorAdditionalGUI.EditorOptions.prefabs);
 	  m_addObjects=new HashSet<CustomObject>(EditorAdditionalGUI.EditorOptions.Objects.ToArray());
+    
 		Destroy(EditorAdditionalGUI.EditorOptions.gameObject);
 	}
   public void Start()
@@ -177,7 +204,7 @@ public class Creator : MonoBehaviour
           m_objects.Add(x);
         x.gameObject.SetActive(x.Level == m_energy);
         m_startObjects.Add(x);
-        x.transform.parent=transform;
+        x.transform.parent=ObjectFolder.transform;
       }
     m_addObjects.Clear();
     foreach (CustomObject x in m_startObjects)

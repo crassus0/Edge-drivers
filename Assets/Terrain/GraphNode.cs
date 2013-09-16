@@ -151,6 +151,7 @@ public class GraphNode : System.IComparable<GraphNode>
       savedNode = s_usedNodes[index];
 
     }
+    
     savedNode.m_toEnter.Add(enteringObject);
     
     if (!setGraph)
@@ -202,7 +203,8 @@ public class GraphNode : System.IComparable<GraphNode>
   }
   public void LeaveImmidiately(CustomObject leavingObject)
   {
-    m_objects.Remove(leavingObject);
+    if (m_objects != null) 
+      m_objects.Remove(leavingObject);
   }
   public bool HasObjectOfType(System.Type type)
   {

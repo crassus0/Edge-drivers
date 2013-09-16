@@ -85,15 +85,7 @@ public static class PlayerSaveData
   {
     planer.InitInterface();
 
-    if ("SafeHouse" != Application.loadedLevelName && firstLoad)
-    {
-      if (!(Creator.creator.testBuild && Application.isEditor))
-      {
 
-        Application.LoadLevel("SafeHouse");
-        return false;
-      }
-    }
     EnterPortal(planer);
     if (!PlayerPrefs.HasKey("CurrentLevel"))
     {

@@ -53,6 +53,7 @@ public class DistantPortalEditor : Editor
   void UpdatePortalList()
   {
     LevelObjectsInfo info=LevelObjectsInfo.LoadLevelInfo(m_levelNames[m_index]);
+    if (info == null) return;
 		m_portalList=new List<DistantPortalExitInfo>();
 		m_portalNames=new List<string>();
 	  m_indexes=new List<int>();

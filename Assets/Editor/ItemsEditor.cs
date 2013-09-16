@@ -12,7 +12,7 @@ public static class ItemsEditor
     //	  Debug.Log(EditorAdditionalGUI.EditorOptions);
     level.name = "Level" + EditorAdditionalGUI.EditorOptions.levels.Count;
     EditorAdditionalGUI.EditorOptions.levels.Add(level);
-    level.transform.parent = GameObject.Find("Creator").transform;
+    level.transform.parent = GameObject.Find("Levels").transform;
     level.Init();
   }
   [MenuItem("EdgeDrivers/Show Hidden")]

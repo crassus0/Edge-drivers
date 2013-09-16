@@ -20,7 +20,7 @@ public class TerraformingMine : CustomObject, IFireflyDestroyable, IDeactivatabl
   public override void OnStart()
   {
     OnDestroyed = OnDestroy;
-    if (!visible)
+    if (!visible&&transform.childCount>0)
       Destroy(transform.GetChild(0).gameObject);
     OnUpdate = OnUpdated;
     if (ActivateOnStart)

@@ -120,6 +120,7 @@ public abstract class CustomObjectInfo
 	protected CustomObject CreateInstance()
 	{
 		GameObject gameObject =  GetPrefabByName(GetName());
+    gameObject.transform.parent = Creator.ObjectFolder.transform;
 		CustomObject customObject =gameObject.GetComponent<CustomObject>();
 		customObject.Node =GraphNode.GetNodeByParameters(node.i,node.j, node.index, node.level);
 		customObject.ObjectID=instanceID;

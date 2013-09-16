@@ -68,7 +68,7 @@ public class RedFireflyActivator : ScriptableObject
   void OnInteract(CustomObject obj, InteractType type)
   {
     DistantPortalEnter x = obj as DistantPortalEnter;
-    if (x != null&&x.Status==1)
+    if (x != null)
     {
       if(x.defaultStatus==1)
       {

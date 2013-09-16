@@ -44,7 +44,7 @@
       <node>
         <i>5</i>
         <j>1</j>
-        <index>0</index>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>2</instanceID>
@@ -57,7 +57,7 @@
         <level>0</level>
       </m_targetNode>
       <direction>0</direction>
-      <m_targetPortalID>1</m_targetPortalID>
+      <m_targetPortalID>20</m_targetPortalID>
       <m_sceneStatus>0</m_sceneStatus>
       <targetPortalName>DefaultEnter</targetPortalName>
       <m_path>

@@ -4,256 +4,36 @@
   <objectsInfo>
     <CustomObjectInfo xsi:type="TriggerInfo">
       <node>
-        <i>5</i>
-        <j>3</j>
-        <index>0</index>
+        <i>1</i>
+        <j>5</j>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>0</instanceID>
-      <instanceName>EscapingFinalTrigger</instanceName>
+      <instanceName>EscapingTrigger1</instanceName>
       <texture />
-      <TargetTriggerName />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
       <MultiUseTrigger>false</MultiUseTrigger>
       <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>false</ActivateOnStart>
+      <ActivateOnStart>true</ActivateOnStart>
       <delay>0</delay>
       <toActivate>
-        <int>17</int>
+        <int>16</int>
+        <int>2</int>
+        <int>32</int>
       </toActivate>
       <toDestroy />
       <toDeactivate />
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
+    <CustomObjectInfo xsi:type="RedFireflySpawnerInfo">
       <node>
-        <i>11</i>
+        <i>7</i>
         <j>8</j>
         <index>0</index>
         <level>0</level>
       </node>
       <instanceID>1</instanceID>
-      <instanceName>PuzzleTrigger</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate>
-        <int>17</int>
-        <int>7</int>
-        <int>35</int>
-      </toActivate>
-      <toDestroy />
-      <toDeactivate />
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
-      <node>
-        <i>5</i>
-        <j>2</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>2</instanceID>
-      <instanceName>DemoFinalTrigger</instanceName>
-      <texture />
-      <TargetTriggerName />
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate>
-        <int>0</int>
-      </toActivate>
-      <toDestroy />
-      <toDeactivate />
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
-      <node>
-        <i>5</i>
-        <j>4</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>3</instanceID>
-      <instanceName>DemoTrigger</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate>
-        <int>4</int>
-        <int>34</int>
-        <int>2</int>
-      </toActivate>
-      <toDestroy />
-      <toDeactivate />
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="FlowerInfo">
-      <node>
-        <i>5</i>
-        <j>2</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>4</instanceID>
-      <instanceName>DemoFlowerFinal</instanceName>
-      <basicTexture>Transparent</basicTexture>
-      <activatedTexture>Arrow2</activatedTexture>
-      <position>
-        <x>384</x>
-        <y>-2</y>
-        <z>147.801666</z>
-      </position>
-      <rotation>
-        <x>0</x>
-        <y>0</y>
-        <z>0</z>
-        <w>1</w>
-        <eulerAngles>
-          <x>0</x>
-          <y>0</y>
-          <z>0</z>
-        </eulerAngles>
-      </rotation>
-      <scale>
-        <x>0.4</x>
-        <y>1</y>
-        <z>1</z>
-      </scale>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TerraformingMineInfo">
-      <node>
-        <i>12</i>
-        <j>5</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>5</instanceID>
-      <instanceName>PuzzleTensor4</instanceName>
-      <steps>-1</steps>
-      <states>AwMD</states>
-      <visible>false</visible>
-      <ActivateOnStart>true</ActivateOnStart>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
-      <node>
-        <i>0</i>
-        <j>4</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>6</instanceID>
-      <instanceName>EscapingTrigger2</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>false</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate>
-        <int>24</int>
-        <int>8</int>
-      </toActivate>
-      <toDestroy />
-      <toDeactivate>
-        <int>11</int>
-      </toDeactivate>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="FlowerInfo">
-      <node>
-        <i>11</i>
-        <j>8</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>7</instanceID>
-      <instanceName>PuzzleFlower</instanceName>
-      <basicTexture>Arrow2</basicTexture>
-      <activatedTexture>Transparent</activatedTexture>
-      <position>
-        <x>768</x>
-        <y>-2</y>
-        <z>480.3554</z>
-      </position>
-      <rotation>
-        <x>0</x>
-        <y>0.8660254</y>
-        <z>0</z>
-        <w>-0.50000006</w>
-        <eulerAngles>
-          <x>0</x>
-          <y>240.000015</y>
-          <z>0</z>
-        </eulerAngles>
-      </rotation>
-      <scale>
-        <x>0.4</x>
-        <y>1</y>
-        <z>1</z>
-      </scale>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="FlowerInfo">
-      <node>
-        <i>2</i>
-        <j>2</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>8</instanceID>
-      <instanceName>EscapingFlower3</instanceName>
-      <basicTexture>Transparent</basicTexture>
-      <activatedTexture>Arrow2</activatedTexture>
-      <position>
-        <x>192</x>
-        <y>-2</y>
-        <z>184.752075</z>
-      </position>
-      <rotation>
-        <x>0</x>
-        <y>0.866025448</y>
-        <z>0</z>
-        <w>0.49999997</w>
-        <eulerAngles>
-          <x>0</x>
-          <y>120.000008</y>
-          <z>0</z>
-        </eulerAngles>
-      </rotation>
-      <scale>
-        <x>0.4</x>
-        <y>1</y>
-        <z>1</z>
-      </scale>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TerraformingMineInfo">
-      <node>
-        <i>11</i>
-        <j>8</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>9</instanceID>
-      <instanceName>PuzzleGoalTensor</instanceName>
-      <steps>-1</steps>
-      <states>AwYG</states>
-      <visible>false</visible>
-      <ActivateOnStart>true</ActivateOnStart>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TerraformingMineInfo">
-      <node>
-        <i>5</i>
-        <j>3</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>10</instanceID>
-      <instanceName>ExitTensor1</instanceName>
-      <steps>-1</steps>
-      <states>AwMG</states>
-      <visible>false</visible>
-      <ActivateOnStart>true</ActivateOnStart>
+      <instanceName>RedFireflySpawner35</instanceName>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="FlowerInfo">
       <node>
@@ -262,7 +42,7 @@
         <index>1</index>
         <level>0</level>
       </node>
-      <instanceID>11</instanceID>
+      <instanceID>2</instanceID>
       <instanceName>EscapingFlower2</instanceName>
       <basicTexture>Transparent</basicTexture>
       <activatedTexture>Arrow2</activatedTexture>
@@ -290,13 +70,27 @@
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="TerraformingMineInfo">
       <node>
-        <i>8</i>
-        <j>4</j>
-        <index>1</index>
+        <i>6</i>
+        <j>3</j>
+        <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>12</instanceID>
-      <instanceName>PuzzleTensor2</instanceName>
+      <instanceID>3</instanceID>
+      <instanceName>ExitTensor2</instanceName>
+      <steps>-1</steps>
+      <states>AwYD</states>
+      <visible>false</visible>
+      <ActivateOnStart>true</ActivateOnStart>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TerraformingMineInfo">
+      <node>
+        <i>11</i>
+        <j>6</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>4</instanceID>
+      <instanceName>PuzzleTensor3</instanceName>
       <steps>-1</steps>
       <states>AwMD</states>
       <visible>false</visible>
@@ -305,14 +99,14 @@
     <CustomObjectInfo xsi:type="TerraformingMineInfo">
       <node>
         <i>5</i>
-        <j>2</j>
+        <j>3</j>
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>13</instanceID>
-      <instanceName>ExitTensor3</instanceName>
+      <instanceID>5</instanceID>
+      <instanceName>ExitTensor1</instanceName>
       <steps>-1</steps>
-      <states>BgMD</states>
+      <states>AwMG</states>
       <visible>false</visible>
       <ActivateOnStart>true</ActivateOnStart>
     </CustomObjectInfo>
@@ -323,7 +117,7 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>14</instanceID>
+      <instanceID>6</instanceID>
       <instanceName>PuzzleTrigger5</instanceName>
       <texture />
       <TargetTriggerName>PlanerCore</TargetTriggerName>
@@ -333,21 +127,193 @@
       <delay>0</delay>
       <toActivate />
       <toDestroy>
-        <int>25</int>
+        <int>12</int>
       </toDestroy>
       <toDeactivate />
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="StreamInfo">
+    <CustomObjectInfo xsi:type="TriggerInfo">
       <node>
-        <i>3</i>
-        <j>1</j>
+        <i>12</i>
+        <j>5</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>7</instanceID>
+      <instanceName>PuzzleTrigger4</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate />
+      <toDestroy>
+        <int>26</int>
+      </toDestroy>
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TerraformingMineInfo">
+      <node>
+        <i>8</i>
+        <j>4</j>
         <index>1</index>
         <level>0</level>
       </node>
+      <instanceID>8</instanceID>
+      <instanceName>PuzzleTensor2</instanceName>
+      <steps>-1</steps>
+      <states>AwMD</states>
+      <visible>false</visible>
+      <ActivateOnStart>true</ActivateOnStart>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>11</i>
+        <j>8</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>9</instanceID>
+      <instanceName>PuzzleTrigger</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate>
+        <int>17</int>
+        <int>14</int>
+        <int>27</int>
+      </toActivate>
+      <toDestroy />
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TerraformingMineInfo">
+      <node>
+        <i>11</i>
+        <j>8</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>10</instanceID>
+      <instanceName>PuzzleGoalTensor</instanceName>
+      <steps>-1</steps>
+      <states>AwYG</states>
+      <visible>false</visible>
+      <ActivateOnStart>true</ActivateOnStart>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>11</i>
+        <j>5</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>11</instanceID>
+      <instanceName>PuzzleTrigger3</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate />
+      <toDestroy>
+        <int>4</int>
+      </toDestroy>
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TerraformingMineInfo">
+      <node>
+        <i>13</i>
+        <j>8</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>12</instanceID>
+      <instanceName>PuzzleTensor5</instanceName>
+      <steps>-1</steps>
+      <states>AwMD</states>
+      <visible>false</visible>
+      <ActivateOnStart>true</ActivateOnStart>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>5</i>
+        <j>2</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>13</instanceID>
+      <instanceName>ExitTrigger</instanceName>
+      <texture />
+      <TargetTriggerName />
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate />
+      <toDestroy>
+        <int>21</int>
+        <int>5</int>
+        <int>3</int>
+      </toDestroy>
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="FlowerInfo">
+      <node>
+        <i>11</i>
+        <j>8</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>14</instanceID>
+      <instanceName>PuzzleFlower</instanceName>
+      <basicTexture>Arrow2</basicTexture>
+      <activatedTexture>Transparent</activatedTexture>
+      <position>
+        <x>768</x>
+        <y>-2</y>
+        <z>480.3554</z>
+      </position>
+      <rotation>
+        <x>0</x>
+        <y>0.8660254</y>
+        <z>0</z>
+        <w>-0.50000006</w>
+        <eulerAngles>
+          <x>0</x>
+          <y>240.000015</y>
+          <z>0</z>
+        </eulerAngles>
+      </rotation>
+      <scale>
+        <x>0.4</x>
+        <y>1</y>
+        <z>1</z>
+      </scale>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>5</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
       <instanceID>15</instanceID>
-      <instanceName>EscapingExitStream</instanceName>
-      <power>4</power>
-      <direction>0</direction>
+      <instanceName>EscapingFinalTrigger</instanceName>
+      <texture />
+      <TargetTriggerName />
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>false</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate>
+        <int>17</int>
+      </toActivate>
+      <toDestroy />
+      <toDeactivate />
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="FlowerInfo">
       <node>
@@ -398,20 +364,43 @@
       <ActivateOnStart>false</ActivateOnStart>
       <delay>0</delay>
       <toActivate>
-        <int>30</int>
+        <int>13</int>
       </toActivate>
       <toDestroy />
       <toDeactivate />
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="TriggerInfo">
       <node>
-        <i>8</i>
-        <j>5</j>
+        <i>5</i>
+        <j>4</j>
         <index>0</index>
         <level>0</level>
       </node>
       <instanceID>18</instanceID>
-      <instanceName>PuzzleTrigger2</instanceName>
+      <instanceName>DemoTrigger</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate>
+        <int>31</int>
+        <int>30</int>
+        <int>24</int>
+      </toActivate>
+      <toDestroy />
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>11</i>
+        <j>8</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>19</instanceID>
+      <instanceName>PuzzleGoalTrigger</instanceName>
       <texture />
       <TargetTriggerName>PlanerCore</TargetTriggerName>
       <MultiUseTrigger>false</MultiUseTrigger>
@@ -420,95 +409,62 @@
       <delay>0</delay>
       <toActivate />
       <toDestroy>
-        <int>12</int>
+        <int>10</int>
       </toDestroy>
       <toDeactivate />
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TerraformingMineInfo">
+    <CustomObjectInfo xsi:type="DistantPortalExitInfo">
       <node>
-        <i>8</i>
-        <j>7</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>19</instanceID>
-      <instanceName>PuzzleTensor1</instanceName>
-      <steps>-1</steps>
-      <states>AwMD</states>
-      <visible>false</visible>
-      <ActivateOnStart>true</ActivateOnStart>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TerraformingMineInfo">
-      <node>
-        <i>6</i>
+        <i>3</i>
         <j>3</j>
         <index>0</index>
         <level>0</level>
       </node>
       <instanceID>20</instanceID>
-      <instanceName>ExitTensor2</instanceName>
-      <steps>-1</steps>
-      <states>AwYD</states>
-      <visible>false</visible>
-      <ActivateOnStart>true</ActivateOnStart>
+      <instanceName>DefaultEnter</instanceName>
+      <Direction>1</Direction>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
+    <CustomObjectInfo xsi:type="TerraformingMineInfo">
       <node>
-        <i>12</i>
-        <j>5</j>
+        <i>5</i>
+        <j>2</j>
         <index>0</index>
         <level>0</level>
       </node>
       <instanceID>21</instanceID>
-      <instanceName>PuzzleTrigger4</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
+      <instanceName>ExitTensor3</instanceName>
+      <steps>-1</steps>
+      <states>BgMD</states>
+      <visible>false</visible>
       <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate />
-      <toDestroy>
-        <int>5</int>
-      </toDestroy>
-      <toDeactivate />
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
+    <CustomObjectInfo xsi:type="StreamInfo">
       <node>
-        <i>8</i>
-        <j>8</j>
-        <index>0</index>
+        <i>3</i>
+        <j>1</j>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>22</instanceID>
-      <instanceName>PuzzleTrigger1</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate />
-      <toDestroy>
-        <int>19</int>
-      </toDestroy>
-      <toDeactivate />
+      <instanceName>EscapingExitStream</instanceName>
+      <power>4</power>
+      <direction>0</direction>
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="FlowerInfo">
       <node>
-        <i>5</i>
-        <j>3</j>
-        <index>0</index>
+        <i>2</i>
+        <j>2</j>
+        <index>1</index>
         <level>0</level>
       </node>
       <instanceID>23</instanceID>
-      <instanceName>EscapingFlowerFinal</instanceName>
+      <instanceName>EscapingFlower3</instanceName>
       <basicTexture>Transparent</basicTexture>
       <activatedTexture>Arrow2</activatedTexture>
       <position>
-        <x>352</x>
-        <y>0</y>
-        <z>203.2273</z>
+        <x>192</x>
+        <y>-2</y>
+        <z>184.752075</z>
       </position>
       <rotation>
         <x>0</x>
@@ -529,12 +485,115 @@
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="TriggerInfo">
       <node>
+        <i>5</i>
+        <j>2</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>24</instanceID>
+      <instanceName>DemoFinalTrigger</instanceName>
+      <texture />
+      <TargetTriggerName />
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate>
+        <int>15</int>
+      </toActivate>
+      <toDestroy />
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>8</i>
+        <j>5</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>25</instanceID>
+      <instanceName>PuzzleTrigger2</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate />
+      <toDestroy>
+        <int>8</int>
+      </toDestroy>
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TerraformingMineInfo">
+      <node>
+        <i>12</i>
+        <j>5</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>26</instanceID>
+      <instanceName>PuzzleTensor4</instanceName>
+      <steps>-1</steps>
+      <states>AwMD</states>
+      <visible>false</visible>
+      <ActivateOnStart>true</ActivateOnStart>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="FlowerInfo">
+      <node>
+        <i>6</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>27</instanceID>
+      <instanceName>PuzzleFlowerFinal</instanceName>
+      <basicTexture>Transparent</basicTexture>
+      <activatedTexture>Arrow2</activatedTexture>
+      <position>
+        <x>416</x>
+        <y>-2</y>
+        <z>203.2273</z>
+      </position>
+      <rotation>
+        <x>0</x>
+        <y>0.8660254</y>
+        <z>0</z>
+        <w>-0.50000006</w>
+        <eulerAngles>
+          <x>0</x>
+          <y>240.000015</y>
+          <z>0</z>
+        </eulerAngles>
+      </rotation>
+      <scale>
+        <x>0.4</x>
+        <y>1</y>
+        <z>1</z>
+      </scale>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TerraformingMineInfo">
+      <node>
+        <i>8</i>
+        <j>7</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>28</instanceID>
+      <instanceName>PuzzleTensor1</instanceName>
+      <steps>-1</steps>
+      <states>AwMD</states>
+      <visible>false</visible>
+      <ActivateOnStart>true</ActivateOnStart>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
         <i>2</i>
         <j>2</j>
         <index>1</index>
         <level>0</level>
       </node>
-      <instanceID>24</instanceID>
+      <instanceID>29</instanceID>
       <instanceName>EscapingTrigger3</instanceName>
       <texture />
       <TargetTriggerName>PlanerCore</TargetTriggerName>
@@ -543,171 +602,13 @@
       <ActivateOnStart>false</ActivateOnStart>
       <delay>0</delay>
       <toActivate>
-        <int>23</int>
-        <int>0</int>
+        <int>35</int>
+        <int>15</int>
       </toActivate>
       <toDestroy />
       <toDeactivate>
-        <int>8</int>
+        <int>23</int>
       </toDeactivate>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TerraformingMineInfo">
-      <node>
-        <i>13</i>
-        <j>8</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>25</instanceID>
-      <instanceName>PuzzleTensor5</instanceName>
-      <steps>-1</steps>
-      <states>AwMD</states>
-      <visible>false</visible>
-      <ActivateOnStart>true</ActivateOnStart>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
-      <node>
-        <i>11</i>
-        <j>5</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>26</instanceID>
-      <instanceName>PuzzleTrigger3</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate />
-      <toDestroy>
-        <int>32</int>
-      </toDestroy>
-      <toDeactivate />
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
-      <node>
-        <i>1</i>
-        <j>5</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>27</instanceID>
-      <instanceName>EscapingTrigger1</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate>
-        <int>16</int>
-        <int>11</int>
-        <int>6</int>
-      </toActivate>
-      <toDestroy />
-      <toDeactivate />
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="RedFireflySpawnerInfo">
-      <node>
-        <i>7</i>
-        <j>8</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>28</instanceID>
-      <instanceName>RedFireflySpawner35</instanceName>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
-      <node>
-        <i>5</i>
-        <j>2</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>29</instanceID>
-      <instanceName>ExitPortal</instanceName>
-      <m_targetScene>GlobalMap</m_targetScene>
-      <m_targetNode>
-        <i>1</i>
-        <j>1</j>
-        <index>0</index>
-        <level>0</level>
-      </m_targetNode>
-      <direction>0</direction>
-      <m_targetPortalID>6</m_targetPortalID>
-      <m_sceneStatus>1</m_sceneStatus>
-      <targetPortalName>DefaultEnter</targetPortalName>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
-      <node>
-        <i>5</i>
-        <j>2</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>30</instanceID>
-      <instanceName>ExitTrigger</instanceName>
-      <texture />
-      <TargetTriggerName />
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate />
-      <toDestroy>
-        <int>13</int>
-        <int>10</int>
-        <int>20</int>
-      </toDestroy>
-      <toDeactivate />
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="DistantPortalExitInfo">
-      <node>
-        <i>3</i>
-        <j>3</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>31</instanceID>
-      <instanceName>DefaultEnter</instanceName>
-      <Direction>1</Direction>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TerraformingMineInfo">
-      <node>
-        <i>11</i>
-        <j>6</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>32</instanceID>
-      <instanceName>PuzzleTensor3</instanceName>
-      <steps>-1</steps>
-      <states>AwMD</states>
-      <visible>false</visible>
-      <ActivateOnStart>true</ActivateOnStart>
-    </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="TriggerInfo">
-      <node>
-        <i>11</i>
-        <j>8</j>
-        <index>1</index>
-        <level>0</level>
-      </node>
-      <instanceID>33</instanceID>
-      <instanceName>PuzzleGoalTrigger</instanceName>
-      <texture />
-      <TargetTriggerName>PlanerCore</TargetTriggerName>
-      <MultiUseTrigger>false</MultiUseTrigger>
-      <OnObjectStay>false</OnObjectStay>
-      <ActivateOnStart>true</ActivateOnStart>
-      <delay>0</delay>
-      <toActivate />
-      <toDestroy>
-        <int>9</int>
-      </toDestroy>
-      <toDeactivate />
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="FlowerInfo">
       <node>
@@ -716,7 +617,7 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>34</instanceID>
+      <instanceID>30</instanceID>
       <instanceName>DemoFlower</instanceName>
       <basicTexture>Arrow2</basicTexture>
       <activatedTexture>Transparent</activatedTexture>
@@ -744,28 +645,127 @@
     </CustomObjectInfo>
     <CustomObjectInfo xsi:type="FlowerInfo">
       <node>
-        <i>6</i>
+        <i>5</i>
+        <j>2</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>31</instanceID>
+      <instanceName>DemoFlowerFinal</instanceName>
+      <basicTexture>Transparent</basicTexture>
+      <activatedTexture>Arrow2</activatedTexture>
+      <position>
+        <x>384</x>
+        <y>-2</y>
+        <z>147.801666</z>
+      </position>
+      <rotation>
+        <x>0</x>
+        <y>0</y>
+        <z>0</z>
+        <w>1</w>
+        <eulerAngles>
+          <x>0</x>
+          <y>0</y>
+          <z>0</z>
+        </eulerAngles>
+      </rotation>
+      <scale>
+        <x>0.4</x>
+        <y>1</y>
+        <z>1</z>
+      </scale>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>0</i>
+        <j>4</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>32</instanceID>
+      <instanceName>EscapingTrigger2</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>false</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate>
+        <int>29</int>
+        <int>23</int>
+      </toActivate>
+      <toDestroy />
+      <toDeactivate>
+        <int>2</int>
+      </toDeactivate>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
+      <node>
+        <i>5</i>
+        <j>2</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>33</instanceID>
+      <instanceName>ExitPortal</instanceName>
+      <m_targetScene>FinalScene</m_targetScene>
+      <m_targetNode>
+        <i>3</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </m_targetNode>
+      <direction>0</direction>
+      <m_targetPortalID>0</m_targetPortalID>
+      <m_sceneStatus>1</m_sceneStatus>
+      <targetPortalName>DefaultEnter</targetPortalName>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="TriggerInfo">
+      <node>
+        <i>8</i>
+        <j>8</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>34</instanceID>
+      <instanceName>PuzzleTrigger1</instanceName>
+      <texture />
+      <TargetTriggerName>PlanerCore</TargetTriggerName>
+      <MultiUseTrigger>false</MultiUseTrigger>
+      <OnObjectStay>false</OnObjectStay>
+      <ActivateOnStart>true</ActivateOnStart>
+      <delay>0</delay>
+      <toActivate />
+      <toDestroy>
+        <int>28</int>
+      </toDestroy>
+      <toDeactivate />
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="FlowerInfo">
+      <node>
+        <i>5</i>
         <j>3</j>
         <index>0</index>
         <level>0</level>
       </node>
       <instanceID>35</instanceID>
-      <instanceName>PuzzleFlowerFinal</instanceName>
+      <instanceName>EscapingFlowerFinal</instanceName>
       <basicTexture>Transparent</basicTexture>
       <activatedTexture>Arrow2</activatedTexture>
       <position>
-        <x>416</x>
-        <y>-2</y>
+        <x>352</x>
+        <y>0</y>
         <z>203.2273</z>
       </position>
       <rotation>
         <x>0</x>
-        <y>0.8660254</y>
+        <y>0.866025448</y>
         <z>0</z>
-        <w>-0.50000006</w>
+        <w>0.49999997</w>
         <eulerAngles>
           <x>0</x>
-          <y>240.000015</y>
+          <y>120.000008</y>
           <z>0</z>
         </eulerAngles>
       </rotation>
@@ -786,6 +786,6 @@
       <NumAreas>2</NumAreas>
     </LevelInfo>
   </info>
-  <defaultPortal>31</defaultPortal>
+  <defaultPortal>20</defaultPortal>
   <mainTexture>Background2</mainTexture>
 </LevelObjectsInfo>

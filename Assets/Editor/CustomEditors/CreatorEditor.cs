@@ -15,6 +15,7 @@ public class CreatorEditor : Editor
   EditorAdditionalGUI targ;
   int m_activeLevelSize;
 	static bool loaded=true;
+  bool m_ShowBackground;
 	public Creator creator;
   //int count = 0;
   //int activeLevel=1;
@@ -24,6 +25,7 @@ public class CreatorEditor : Editor
 	{
 		targ = target as EditorAdditionalGUI;
     GameObject x = GameObject.Find("Creator") as GameObject;
+    m_ShowBackground= Camera.main.GetComponent<CameraControls>().Background.activeSelf;
     if(x!=null)
 		  creator=x.GetComponent<Creator>();
 		Creator.prefabs=targ.prefabs;
@@ -32,8 +34,8 @@ public class CreatorEditor : Editor
   {
     //KeyCheck();
     PreInit();
-    ShowActiveLevel();
     ShowInstrumentSetup();
+    ShowActiveLevel();
     ShowActiveLevelEditor();
   }
   void PreInit()
@@ -52,9 +54,11 @@ public class CreatorEditor : Editor
   }
   void ShowActiveLevel()
   {
-		creator.SceneName=EditorGUILayout.TextField("Scene name", creator.SceneName);
+    targ.m_ShowSceneSetup=EditorGUILayout.Foldout(targ.m_ShowSceneSetup, "Scene options");
+    if(!targ.m_ShowSceneSetup)return;
+		creator.SceneName=EditorGUILayout.TextField("  Scene name", creator.SceneName);
 		Texture2D texture=Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture as Texture2D;
-		texture=EditorGUILayout.ObjectField("Background", texture, typeof(Texture2D),false) as Texture2D;
+		texture=EditorGUILayout.ObjectField("  Background", texture, typeof(Texture2D),false) as Texture2D;
 		Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture=texture;
     int[] levelValues = new int[targ.levels.Count];
     string[] levelNames = new string[levelValues.Length];
@@ -67,7 +71,7 @@ public class CreatorEditor : Editor
     //	    Debug.Log(targ.ActiveLevel);
     //	    Debug.Log(levelNames);
     //	    Debug.Log(levelValues);
-    activeLevel = EditorGUILayout.IntPopup("Active Level", activeLevel, levelNames, levelValues);
+    activeLevel = EditorGUILayout.IntPopup("  Active Level", activeLevel, levelNames, levelValues);
     //Debug.Log(activeLevel);
 
     targ.ActiveLevel = activeLevel;
@@ -82,7 +86,12 @@ public class CreatorEditor : Editor
   {
     targ.ShowInstrument = EditorGUILayout.Foldout(targ.ShowInstrument, "Instrument");
     if (!targ.ShowInstrument) return;
-    targ.InstrumentRadius = EditorGUILayout.Slider("Radius", targ.InstrumentRadius / 16, 1, 50) * 16;
+    targ.InstrumentRadius = EditorGUILayout.Slider("  Radius", targ.InstrumentRadius / 16, 1, 50) * 16;
+    m_ShowBackground=EditorGUILayout.Toggle("  Show Background", m_ShowBackground);
+    Creator.creator.testBuild=EditorGUILayout.Toggle("  Test build", Creator.creator.testBuild);
+    Creator.creator.testPortal=EditorGUILayout.ObjectField("  Test portal", Creator.creator.testPortal, typeof(GameObject), true) as GameObject;
+    if(GUI.changed)
+      Camera.main.GetComponent<CameraControls>().Background.SetActive(m_ShowBackground);
   }
   void OnChangedActiveLevel()
   {
@@ -117,10 +126,10 @@ public class CreatorEditor : Editor
   }
   void ShowActiveLevelEditor()
   {
-
+    targ.m_ShowLevelSetup=EditorGUILayout.Foldout(targ.m_ShowLevelSetup,"Level options");
+    if(!targ.m_ShowLevelSetup)return;
     GUILayout.Space(10);
-    GUILayout.Label("ActiveLevel");
-    m_activeLevelSize = EditorGUILayout.IntSlider("NumAreas", m_activeLevelSize, 1, 8);
+    m_activeLevelSize = EditorGUILayout.IntSlider("  NumAreas", m_activeLevelSize, 1, 8);
     //Debug.Log(m_activeLevelSize);
     if (m_activeLevelSize <= 0) m_activeLevelSize = 1;
     GUILayout.BeginHorizontal();
@@ -138,18 +147,18 @@ public class CreatorEditor : Editor
       }
     }
     GUILayout.EndHorizontal();
-    string name = EditorGUILayout.TextField("Name", targ.levels[(targ.ActiveLevel)].name);
+    string name = EditorGUILayout.TextField("  Name", targ.levels[(targ.ActiveLevel)].name);
     if (GUI.changed)
     {
       targ.levels[(targ.ActiveLevel)].name = name;
     }
-    float t = EditorGUILayout.FloatField("Move phase duration", targ.levels[targ.ActiveLevel].MovePhaseDuration);
+    float t = EditorGUILayout.FloatField("  Move phase duration", targ.levels[targ.ActiveLevel].MovePhaseDuration);
     if (t < 0) t = 0;
     targ.levels[targ.ActiveLevel].MovePhaseDuration = t;
-    t = EditorGUILayout.FloatField("Action phase duration", targ.levels[targ.ActiveLevel].SelectionPhaseDuration);
+    t = EditorGUILayout.FloatField("  Action phase duration", targ.levels[targ.ActiveLevel].SelectionPhaseDuration);
     if (t < 0) t = 0;
     targ.levels[targ.ActiveLevel].SelectionPhaseDuration = t;
-    targ.levels[targ.ActiveLevel].SelectionPhaseType = (PhaseType)EditorGUILayout.EnumPopup("Action phase type", targ.levels[targ.ActiveLevel].SelectionPhaseType);
+    targ.levels[targ.ActiveLevel].SelectionPhaseType = (PhaseType)EditorGUILayout.EnumPopup("  Action phase type", targ.levels[targ.ActiveLevel].SelectionPhaseType);
     if (targ.levels.Count > 1)
     {
       if (GUILayout.Button("DeleteLevel") && EditorUtility.DisplayDialog("Delete level", "Are you sure?", "Yes", "No"))

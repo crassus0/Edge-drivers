@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using System.IO;
 public static class ItemsEditor
 {
 
@@ -15,7 +16,7 @@ public static class ItemsEditor
     level.transform.parent = GameObject.Find("Levels").transform;
     level.Init();
   }
-  [MenuItem("EdgeDrivers/Show Hidden")]
+  //[MenuItem("EdgeDrivers/Show Hidden")]
   static void ShowHidden()
   {
     Object[] x = Resources.FindObjectsOfTypeAll(typeof(Object));
@@ -57,5 +58,31 @@ public static class ItemsEditor
   static void ClearSaves()
   {
     PlayerSaveData.Clear();
+  }
+  [MenuItem("EdgeDrivers/Import texture/Background")]
+  static void ImportBackground()
+  {
+    ImportTexture("Background");
+  }
+  [MenuItem("EdgeDrivers/Import texture/InfoPicture")]
+  static void ImportInfoPicture()
+  {
+    ImportTexture("InfoPictures");
+  }
+  [MenuItem("EdgeDrivers/Import texture/Texture")]
+  static void ImportTexture()
+  {
+    ImportTexture("Textures");
+  }
+  static void ImportTexture(string folder)
+  {
+    string path = EditorUtility.OpenFilePanel("Select texture", "", "png");
+    if(path.Length<1)return;
+    string newPath=path.Substring(path.LastIndexOf('/')+1);
+
+    newPath=newPath.Substring(newPath.LastIndexOf('\\')+1);
+    newPath="Assets/Resources/"+folder+"/"+newPath;
+    File.Copy(path, newPath);
+    AssetDatabase.Refresh();
   }
 }

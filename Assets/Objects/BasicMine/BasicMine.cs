@@ -27,7 +27,9 @@ public class BasicMine : CustomObject, IFireflyDestroyable
       PlanerCore planer = obj as PlanerCore;
       if (planer == null) return;
       planer.OnDamageDealt(damage);
-      (m_visualiser.GetComponent<BasicMineVisualiser>()).OnDestroy();
+      m_visualiser.transform.parent = transform.parent;
+      (m_visualiser.GetComponent<BasicMineVisualiser>()).OnDestroyed();
+      Creator.DestroyObject(this);
     }
   }
   public void FireflyDestroy(YellowFirefly firefly)

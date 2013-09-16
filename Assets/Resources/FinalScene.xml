@@ -2,6 +2,60 @@
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <name>FinalScene</name>
   <objectsInfo>
+    <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
+      <node>
+        <i>2</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>0</instanceID>
+      <instanceName>DistantPortalEnter12</instanceName>
+      <m_targetScene>GlobalMap</m_targetScene>
+      <m_targetNode>
+        <i>1</i>
+        <j>1</j>
+        <index>0</index>
+        <level>0</level>
+      </m_targetNode>
+      <direction>0</direction>
+      <m_targetPortalID>6</m_targetPortalID>
+      <m_sceneStatus>-1</m_sceneStatus>
+      <targetPortalName>DefaultEnter</targetPortalName>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="WhirlwindInfo">
+      <node>
+        <i>3</i>
+        <j>4</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>1</instanceID>
+      <instanceName>Whirlwind6</instanceName>
+      <spin>-1</spin>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="ColoredNodeInfo">
+      <node>
+        <i>3</i>
+        <j>3</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>2</instanceID>
+      <instanceName>ColoredNode3</instanceName>
+      <color>1</color>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="ColoredNodeInfo">
+      <node>
+        <i>3</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>3</instanceID>
+      <instanceName>ColoredNode1</instanceName>
+      <color>1</color>
+    </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalExitInfo">
       <node>
         <i>3</i>
@@ -9,21 +63,89 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>0</instanceID>
+      <instanceID>4</instanceID>
       <instanceName>DefaultEnter</instanceName>
       <Direction>1</Direction>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="ColoredNodeInfo">
+      <node>
+        <i>4</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>5</instanceID>
+      <instanceName>ColoredNode6</instanceName>
+      <color>1</color>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="ColoredNodeInfo">
+      <node>
+        <i>5</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>6</instanceID>
+      <instanceName>ColoredNode7</instanceName>
+      <color>1</color>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="WhirlwindInfo">
+      <node>
+        <i>4</i>
+        <j>3</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>7</instanceID>
+      <instanceName>Whirlwind7</instanceName>
+      <spin>-1</spin>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="WhirlwindInfo">
+      <node>
+        <i>4</i>
+        <j>2</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>8</instanceID>
+      <instanceName>Whirlwind8</instanceName>
+      <spin>2</spin>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="StreamInfo">
+      <node>
+        <i>5</i>
+        <j>3</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>9</instanceID>
+      <instanceName>Stream9</instanceName>
+      <power>1</power>
+      <direction>1</direction>
+    </CustomObjectInfo>
+    <CustomObjectInfo xsi:type="PortalInfo">
+      <node>
+        <i>2</i>
+        <j>1</j>
+        <index>1</index>
+        <level>0</level>
+      </node>
+      <instanceID>10</instanceID>
+      <instanceName>Portal9</instanceName>
+      <PairPortal>-1</PairPortal>
+      <Direction>-1</Direction>
     </CustomObjectInfo>
   </objectsInfo>
   <info>
     <LevelInfo>
       <name>SafeHouse</name>
-      <m_bareers>PT09PT09PQAfFRUVFRUVNR0VFRUVFRU3HxUVFRUVFTUdFRUVFRUVNx8VFRUVFRU1HRUVFRUVFTcfFxcXFxcXNw==</m_bareers>
+      <m_bareers>PT89FRUVFRUVFRUVFRUVFR8dFTUVFRUVFRUVFRUVFRU9FRU1FxUVFRUVFRUVFRUVHxcXFR01FRUVFRUVFRUVFR0VNRc9NRUVFRUVFRUVFRUfFRUVFRUVFRUVFRUVFRUVHRUVFRUVFRUVFRUVFRUVFR0VFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFQ==</m_bareers>
       <SelectionPhaseDuration>0</SelectionPhaseDuration>
       <SelectionPhaseType>OnAction</SelectionPhaseType>
       <MovePhaseDuration>0.5</MovePhaseDuration>
-      <NumAreas>1</NumAreas>
+      <NumAreas>2</NumAreas>
     </LevelInfo>
   </info>
-  <defaultPortal>0</defaultPortal>
+  <defaultPortal>4</defaultPortal>
   <mainTexture>Background2</mainTexture>
 </LevelObjectsInfo>

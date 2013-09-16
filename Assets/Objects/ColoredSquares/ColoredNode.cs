@@ -6,6 +6,7 @@ public class ColoredNode : CustomObject
   public int color;
   public override void OnStart()
   {
+
     switch (color)
     {
       case 0:
@@ -53,8 +54,8 @@ public class ColoredNode : CustomObject
         }
     }
     visColor.a = 0.5f;
-
-      m_visualiser.renderer.sharedMaterial.color = visColor;
+    m_visualiser.renderer.sharedMaterial = new Material(Shader.Find("Transparent/Diffuse"));
+    m_visualiser.renderer.sharedMaterial.color = visColor;
 
     transform.rotation = Quaternion.identity;
     transform.Rotate(new Vector3(0, (1 - Node.Index) * 180, 0));

@@ -12,6 +12,8 @@ public class EditorAdditionalGUI : MonoBehaviour
 	public List<GameObject> prefabs;
   public int selected { get; set; }
 	public EmptyObject showObject;
+  public bool m_ShowSceneSetup{get; set;}
+  public bool m_ShowLevelSetup{get; set;}
   public List<BareerLevelControls> levels { get; set; }
   public List<CustomObject> Objects
   {

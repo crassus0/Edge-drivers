@@ -114,6 +114,7 @@ public class Creator : MonoBehaviour
 	
 	public void Awake()
 	{
+    Camera.main.GetComponent<CameraControls>().Background.SetActive(true);
     GUIFolder = GameObject.Find("GUI");
     GameObject initializer = Instantiate(initializerPrefab) as GameObject;
     initializer.transform.parent = GUIFolder.transform;

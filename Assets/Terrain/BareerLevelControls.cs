@@ -253,7 +253,7 @@ public class BareerLevelControls : MonoBehaviour
   void OnDestroy()
   {
     if (loadingLevel||Application.isPlaying) return;
-    transform.parent.GetComponent<Creator>().levels.Remove(this);
+    transform.parent.parent.GetComponent<Creator>().levels.Remove(this);
     if (EditorAdditionalGUI.EditorOptions != null)
       EditorAdditionalGUI.EditorOptions.ActiveLevel = 0;
   }

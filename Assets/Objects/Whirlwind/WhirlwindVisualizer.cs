@@ -7,8 +7,8 @@ public class WhirlwindVisualizer : MonoBehaviour
 	void Update()
 	{
 		int rotationSpeed=parent.spin;
-		ParticleSystem.Particle[] particles=new  ParticleSystem.Particle[particleSystem.particleCount];
-		particleSystem.GetParticles(particles);
+		ParticleSystem.Particle[] particles=new  ParticleSystem.Particle[GetComponent<ParticleSystem>().particleCount];
+		GetComponent<ParticleSystem>().GetParticles(particles);
 		for(int i=0; i<particles.Length; i++)
 		{
 			Vector3 position=particles[i].position;
@@ -24,7 +24,7 @@ public class WhirlwindVisualizer : MonoBehaviour
 			//particles[i].position
 			//Debug.DrawRay(position+transform.position, direction, Color.red);
 		}
-		particleSystem.SetParticles(particles, particles.Length);
+		GetComponent<ParticleSystem>().SetParticles(particles, particles.Length);
 	}
 	
 }

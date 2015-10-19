@@ -17,8 +17,8 @@ public class RedFireflyActivator : ScriptableObject
   {
     m_planer = planer;
 		m_firefly =(Instantiate(fireflyPrefab) as GameObject).GetComponent<RedFirefly>();
-    defaultPlanerMaterial =new Material( m_planer.Visualiser.body.renderer.material);
-    m_planer.Visualiser.body.renderer.material.color = Color.red;
+    defaultPlanerMaterial =new Material( m_planer.Visualiser.body.GetComponent<Renderer>().material);
+    m_planer.Visualiser.body.GetComponent<Renderer>().material.color = Color.red;
     planer.AddUpdateFunc(UpdatePlaner);
     planer.State=1;
     planer.CutInterface();
@@ -48,7 +48,7 @@ public class RedFireflyActivator : ScriptableObject
     m_planer.RemoveUpdateFunc(UpdatePlaner);
     m_planer.State = 0;
     m_planer.InitInterface();
-    m_planer.Visualiser.body.renderer.material = defaultPlanerMaterial;
+    m_planer.Visualiser.body.GetComponent<Renderer>().material = defaultPlanerMaterial;
     m_planer.DefaultInteract();
 		m_planer.GetComponent<RedFirefly>();
 		Creator.DestroyObject(m_firefly);

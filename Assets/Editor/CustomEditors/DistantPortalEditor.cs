@@ -28,6 +28,8 @@ public class DistantPortalEditor : Editor
     //base.OnInspectorGUI();
     UpdateSceneList();
     m_index = EditorGUILayout.IntPopup("Region", m_index, m_levelNames.ToArray(), m_sceneIndexes);
+   
+   
     if (m_index >= 0)
     {
       targ.m_targetScene = m_levelNames[m_index];

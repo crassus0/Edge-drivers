@@ -25,7 +25,7 @@ public class DistantPortalEnter : CustomObject
   public int defaultStatus = -1;
   public override void OnStart()
   {
-    m_visualiser.renderer.material = new Material(m_visualiser.renderer.material);
+    m_visualiser.GetComponent<Renderer>().material = new Material(m_visualiser.GetComponent<Renderer>().material);
 
     if(defaultStatus<Status)
       defaultStatus=Status;
@@ -66,15 +66,15 @@ public class DistantPortalEnter : CustomObject
       m_visualiser.gameObject.SetActive(status > 0);
       if (status == 1)
       {
-        m_visualiser.renderer.material.color = new Color(1, 1, 1, 0.5f);
+        m_visualiser.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.5f);
       }
       if (status == 2)
       {
-        m_visualiser.renderer.material.color = Color.red;
+        m_visualiser.GetComponent<Renderer>().material.color = Color.red;
       }
       if (status == 3)
       {
-        m_visualiser.renderer.material.color = Color.white;
+        m_visualiser.GetComponent<Renderer>().material.color = Color.white;
       }
     }
   }

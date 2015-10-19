@@ -8,17 +8,17 @@ public class Flower : CustomObject, IActivatable, IDeactivatable
   public Texture2D activatedTexture;
   public override void OnStart()
   {
-    m_visualiser.renderer.material = new Material(Shader.Find("Transparent/Diffuse"));
-    m_visualiser.renderer.material.mainTexture = basicTexture;
+    m_visualiser.GetComponent<Renderer>().material = new Material(Shader.Find("Transparent/Diffuse"));
+    m_visualiser.GetComponent<Renderer>().material.mainTexture = basicTexture;
   }
   public void Activate()
   {
-    m_visualiser.renderer.material.mainTexture = activatedTexture;
+    m_visualiser.GetComponent<Renderer>().material.mainTexture = activatedTexture;
   }
 
   public void Deactivate()
   {
-    m_visualiser.renderer.material.mainTexture = basicTexture;
+    m_visualiser.GetComponent<Renderer>().material.mainTexture = basicTexture;
   }
 
   public override System.Type SerializedType()
@@ -58,8 +58,8 @@ public class FlowerInfo : CustomObjectInfo
     if (activatedTexture.Length == 0)
       activatedTexture = "Transparent";
     x.basicTexture = Resources.Load("Textures/" + basicTexture, typeof(Texture2D)) as Texture2D;
-    x.m_visualiser.renderer.sharedMaterial = new Material(Shader.Find("Transparent/Diffuse"));
-    x.m_visualiser.renderer.sharedMaterial.mainTexture = x.basicTexture;
+    x.m_visualiser.GetComponent<Renderer>().sharedMaterial = new Material(Shader.Find("Transparent/Diffuse"));
+    x.m_visualiser.GetComponent<Renderer>().sharedMaterial.mainTexture = x.basicTexture;
     x.activatedTexture = Resources.Load("Textures/" + activatedTexture, typeof(Texture2D)) as Texture2D;
     x.m_visualiser.transform.position = position;
     x.m_visualiser.transform.rotation = rotation;

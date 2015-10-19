@@ -8,8 +8,8 @@ public class StreamVisualizer : MonoBehaviour
 	{
 
 		int rotationSpeed=parent.power;
-		ParticleSystem.Particle [] particless=new  ParticleSystem.Particle[particleSystem.particleCount];
-		particleSystem.GetParticles(particless);
+		ParticleSystem.Particle [] particless=new  ParticleSystem.Particle[GetComponent<ParticleSystem>().particleCount];
+		GetComponent<ParticleSystem>().GetParticles(particless);
 		for(int i=0; i<particless.Length; i++)
 		{
 			Vector3 position=particless[i].position;
@@ -45,7 +45,7 @@ public class StreamVisualizer : MonoBehaviour
 			//particles[i].position
 			//Debug.DrawRay(position+transform.position, direction, Color.red);
 		}
-		particleSystem.SetParticles(particless, particless.Length);
+		GetComponent<ParticleSystem>().SetParticles(particless, particless.Length);
 	}
 	
 }

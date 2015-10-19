@@ -31,13 +31,13 @@ public class WeaponPrototype : CustomObject, IDeactivatable
   {
 
     IsActive = 1;
-    transform.GetChild(0).renderer.material.color = Color.green;
+    transform.GetChild(0).GetComponent<Renderer>().material.color = Color.green;
   }
   public void Deactivate()
   {
 
     IsActive = 0;
-    transform.GetChild(0).renderer.material.color = Color.white;
+    transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
   }
 	public override CustomObjectInfo SerializeObject ()
 	{

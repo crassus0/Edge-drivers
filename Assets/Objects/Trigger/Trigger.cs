@@ -124,9 +124,9 @@ public class Trigger : CustomObject, IActivatable, IDeactivatable
     }
 		if(texture!=null)
 		{
-			m_visualiser.renderer.material=new Material(m_visualiser.renderer.material);
-			m_visualiser.renderer.material.mainTexture=texture;
-			m_visualiser.renderer.material.color=Color.white;
+			m_visualiser.GetComponent<Renderer>().material=new Material(m_visualiser.GetComponent<Renderer>().material);
+			m_visualiser.GetComponent<Renderer>().material.mainTexture=texture;
+			m_visualiser.GetComponent<Renderer>().material.color=Color.white;
 		}
 		else
 		{

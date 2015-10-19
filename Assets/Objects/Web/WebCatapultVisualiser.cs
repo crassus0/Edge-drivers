@@ -5,8 +5,8 @@ public class WebCatapultVisualiser : CustomObjectVisualiser
 {
   void OnHit()
   {
-    animation.localBounds = new Bounds(Vector3.zero, Vector3.zero);
-    animation.Play("Hit");
+    GetComponent<Animation>().localBounds = new Bounds(Vector3.zero, Vector3.zero);
+    GetComponent<Animation>().Play("Hit");
 
   }
   public void Push(PlanerCore parent)
@@ -22,7 +22,7 @@ public class WebCatapultVisualiser : CustomObjectVisualiser
       angle = -angle;
     transform.parent.Rotate(new Vector3(0, angle, 0));
 
-    animation.Play("Push");
+    GetComponent<Animation>().Play("Push");
     //m_visualiser.animation.localBounds
 
   }

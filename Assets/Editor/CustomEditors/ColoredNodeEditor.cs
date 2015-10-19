@@ -8,7 +8,7 @@ public class ColoredNodeEditor : Editor
   public void OnEnable()
   {
     ColoredNode targ = target as ColoredNode;
-    targ.m_visualiser.renderer.sharedMaterial = new Material(targ.m_visualiser.renderer.sharedMaterial);
+    targ.m_visualiser.GetComponent<Renderer>().sharedMaterial = new Material(targ.m_visualiser.GetComponent<Renderer>().sharedMaterial);
   }
   public override void OnInspectorGUI()
   {

@@ -51,6 +51,7 @@ public class PlanerCore : CustomObject, IPlanerLike, IFireflyDestroyable
   bool m_hasTarget=false;
   public override void OnStart()
   {
+//		Debug.Log("gfsdf");
   }
   public List<string> Upgrades
   {

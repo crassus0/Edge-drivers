@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1251"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <name>EasyDemonstration</name>
   <objectsInfo>
@@ -26,17 +26,17 @@
       <instanceID>1</instanceID>
       <instanceName>Flower9</instanceName>
       <basicTexture>Here</basicTexture>
-      <activatedTexture />
+      <activatedTexture>Transparent</activatedTexture>
       <position>
         <x>243.923279</x>
         <y>-1.99998546</y>
         <z>176.202087</z>
       </position>
       <rotation>
-        <x>-9.217243E-08</x>
-        <y>0.2759367</y>
-        <z>-3.18847562E-08</z>
-        <w>-0.961175859</w>
+        <x>-9.2172435E-08</x>
+        <y>0.275936663</y>
+        <z>-3.188476E-08</z>
+        <w>-0.9611758</w>
         <eulerAngles>
           <x>1.11603113E-05</x>
           <y>327.964325</y>
@@ -166,7 +166,7 @@
       <instanceID>10</instanceID>
       <instanceName>Flower6</instanceName>
       <basicTexture>Oasis</basicTexture>
-      <activatedTexture />
+      <activatedTexture>Transparent</activatedTexture>
       <position>
         <x>455.29422</x>
         <y>-2</y>

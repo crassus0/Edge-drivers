@@ -22,7 +22,7 @@ public class BasicMineVisualiser : CustomObjectVisualiser
 
     //animation.GetClip("InstallMine").localBounds=new Bounds(Vector3.zero, new Vector3(dist,0,dist));
 
-    animation.Play("InstallMine");
+    GetComponent<Animation>().Play("InstallMine");
     //Debug.Log(angle);
     //Debug.Log(targetVector);
     //Debug.Log(parent.Visualiser.transform.position);
@@ -30,7 +30,7 @@ public class BasicMineVisualiser : CustomObjectVisualiser
   }
   public void OnDestroyed()
   {
-    animation.Play("DestroyMine");
+    GetComponent<Animation>().Play("DestroyMine");
   }
   public void OnDestroyFinished()
   {

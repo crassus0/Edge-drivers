@@ -16,12 +16,12 @@ public class GUIButtonControls : MonoBehaviour, IButton
 	{
    
 	  m_parent=parent;
-	  guiTexture.texture=parent.GetObjectTexture();
+	  GetComponent<GUITexture>().texture=parent.GetObjectTexture();
 	  
     int allignNumeric=Utility.AllignToIntHorizontal(allign);
     transform.position = new Vector3(allignNumeric, 1 - (float)((index + 2)) / GUIButtonControls.numColumnTextures, 0);
     Rect pixelInsert = new Rect(-allignNumeric * Screen.height / (numColumnTextures + 0.2f), 0, Screen.height / (numColumnTextures + 0.2f), Screen.height / (numColumnTextures + 0.2f));
-	  guiTexture.pixelInset=pixelInsert;
+	  GetComponent<GUITexture>().pixelInset=pixelInsert;
 	}
   public void Init(ButtonObject parent)
 	{

@@ -10,13 +10,13 @@ public class FlowerEditor:Editor
 		targ=target as Flower;
 		try
 		{
-			if(targ.m_visualiser.renderer.sharedMaterial==null)
+			if(targ.m_visualiser.GetComponent<Renderer>().sharedMaterial==null)
 		  {
-			  targ.m_visualiser.renderer.sharedMaterial=new Material(Shader.Find("Transparent/Diffuse"));
+			  targ.m_visualiser.GetComponent<Renderer>().sharedMaterial=new Material(Shader.Find("Transparent/Diffuse"));
 		  }
 		  if(targ.basicTexture!=null)
  		  {
-			  targ.m_visualiser.renderer.sharedMaterial.mainTexture=targ.basicTexture;
+			  targ.m_visualiser.GetComponent<Renderer>().sharedMaterial.mainTexture=targ.basicTexture;
 		  }
 		}
 		catch
@@ -36,7 +36,7 @@ public class FlowerEditor:Editor
 		{
 			if(targ.basicTexture!=null)
  		  {
-			  targ.m_visualiser.renderer.sharedMaterial.mainTexture=targ.basicTexture;
+			  targ.m_visualiser.GetComponent<Renderer>().sharedMaterial.mainTexture=targ.basicTexture;
 		  }
 		}
 		if(GUILayout.Button("Visualizer home"))

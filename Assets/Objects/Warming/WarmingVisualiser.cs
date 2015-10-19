@@ -8,13 +8,13 @@ public class WarmingVisualiser : CustomObjectVisualiser
   //GameObject core;
   void Start()
   {
-    animation["WalkWarming"].layer = 1;
-    animation["WalkWarming"].speed = Random.Range(0.8f, 1.2f) * animation["WalkWarming"].speed;
+    GetComponent<Animation>()["WalkWarming"].layer = 1;
+    GetComponent<Animation>()["WalkWarming"].speed = Random.Range(0.8f, 1.2f) * GetComponent<Animation>()["WalkWarming"].speed;
     //animation["Rotate"].layer = 2;
     //animation.Play("WalkWarming", AnimationPlayMode.Mix);
     //animation.Play("Rotate", AnimationPlayMode.Mix);
-    animation["MoveI1"].layer = 3;
-    animation["MoveI0"].layer = 3;
+    GetComponent<Animation>()["MoveI1"].layer = 3;
+    GetComponent<Animation>()["MoveI0"].layer = 3;
   }
   public void PassiveAnimations()
   {
@@ -25,12 +25,12 @@ public class WarmingVisualiser : CustomObjectVisualiser
   public void Move(int index)
   {
     numMoves++;
-    animation.Play("MoveI" + index, PlayMode.StopSameLayer);
-    animation.Play("WalkWarming", PlayMode.StopSameLayer);
+    GetComponent<Animation>().Play("MoveI" + index, PlayMode.StopSameLayer);
+    GetComponent<Animation>().Play("WalkWarming", PlayMode.StopSameLayer);
   }
   public void OnMoveFinished()
   {
-    animation.Stop();
+    GetComponent<Animation>().Stop();
    
   }
   public void Rewind()

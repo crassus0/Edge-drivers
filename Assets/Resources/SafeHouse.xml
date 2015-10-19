@@ -1,7 +1,18 @@
-<?xml version="1.0" encoding="windows-1251"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LevelObjectsInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <name>SafeHouse</name>
   <objectsInfo>
+    <CustomObjectInfo xsi:type="DistantPortalExitInfo">
+      <node>
+        <i>3</i>
+        <j>3</j>
+        <index>0</index>
+        <level>0</level>
+      </node>
+      <instanceID>0</instanceID>
+      <instanceName>DefaultEnter</instanceName>
+      <Direction>1</Direction>
+    </CustomObjectInfo>
     <CustomObjectInfo xsi:type="DistantPortalEnterInfo">
       <node>
         <i>2</i>
@@ -9,7 +20,7 @@
         <index>0</index>
         <level>0</level>
       </node>
-      <instanceID>0</instanceID>
+      <instanceID>1</instanceID>
       <instanceName>GlobalMapPortal</instanceName>
       <m_targetScene>GlobalMap</m_targetScene>
       <m_targetNode>
@@ -23,17 +34,6 @@
       <m_sceneStatus>3</m_sceneStatus>
       <targetPortalName>DefaultEnter</targetPortalName>
     </CustomObjectInfo>
-    <CustomObjectInfo xsi:type="DistantPortalExitInfo">
-      <node>
-        <i>3</i>
-        <j>3</j>
-        <index>0</index>
-        <level>0</level>
-      </node>
-      <instanceID>1</instanceID>
-      <instanceName>DefaultEnter</instanceName>
-      <Direction>1</Direction>
-    </CustomObjectInfo>
   </objectsInfo>
   <info>
     <LevelInfo>
@@ -45,6 +45,6 @@
       <NumAreas>1</NumAreas>
     </LevelInfo>
   </info>
-  <defaultPortal>1</defaultPortal>
+  <defaultPortal>0</defaultPortal>
   <mainTexture>Background2</mainTexture>
 </LevelObjectsInfo>

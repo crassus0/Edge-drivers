@@ -35,10 +35,10 @@ public static class Armory
 
       m_prototypes[k] = x.GetComponent<WeaponSelectButton>();
       ButtonObject t = ScriptableObject.CreateInstance(UpgradeNames[index][upgrades[k]]) as ButtonObject;
-      m_prototypes[k].guiTexture.texture = (t).GetObjectTexture();
+      m_prototypes[k].GetComponent<GUITexture>().texture = (t).GetObjectTexture();
       m_prototypes[k].transform.position = GetCoords(k, upgrades.Count) + new Vector3(1f, 0.6f-index*0.2f);
       float radius = Screen.height / 10;
-      m_prototypes[k].guiTexture.pixelInset = new Rect(0, radius / 2, radius, radius);
+      m_prototypes[k].GetComponent<GUITexture>().pixelInset = new Rect(0, radius / 2, radius, radius);
       m_prototypes[k].index = upgrades[k];
       ScriptableObject.Destroy(t);
       

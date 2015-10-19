@@ -57,9 +57,17 @@ public class CreatorEditor : Editor
     targ.m_ShowSceneSetup=EditorGUILayout.Foldout(targ.m_ShowSceneSetup, "Scene options");
     if(!targ.m_ShowSceneSetup)return;
 		creator.SceneName=EditorGUILayout.TextField("  Scene name", creator.SceneName);
-		Texture2D texture=Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture as Texture2D;
+		Texture2D texture=Camera.main.GetComponent<CameraControls>().BackgroundTexture.GetComponent<Renderer>().sharedMaterial.mainTexture as Texture2D;
 		texture=EditorGUILayout.ObjectField("  Background", texture, typeof(Texture2D),false) as Texture2D;
-		Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture=texture;
+    string texturePath = AssetDatabase.GetAssetPath(texture);
+    if (!(texturePath.StartsWith("Assets/Resources/Background/") || texturePath.StartsWith("Assets\\Resources\\Background\\")))
+    {
+      if(texture!=null)
+        Debug.LogWarning("Textures should be from \"Resources/Background\" folder.");
+      
+      texture = null;
+    }
+		Camera.main.GetComponent<CameraControls>().BackgroundTexture.GetComponent<Renderer>().sharedMaterial.mainTexture=texture;
     int[] levelValues = new int[targ.levels.Count];
     string[] levelNames = new string[levelValues.Length];
     for (int i = 0; i < levelValues.Length; i++)
@@ -323,14 +331,15 @@ public class CreatorEditor : Editor
 	{
 		string m_path="Assets/Resources";
 		string name= Creator.creator.SceneName+".xml";
-		FileStream fout = File.Open(m_path+"/"+name, FileMode.Create);
+        Encoding encoding = Encoding.GetEncoding("UTF-8");
+        StreamWriter fout = new StreamWriter(m_path + "/" + name, false, encoding);
 		MemoryStream stream=new MemoryStream();
 		LevelObjectsInfo objects=new LevelObjectsInfo();
 		objects.objectsInfo=EditorAdditionalGUI.EditorOptions.Objects.ConvertAll<CustomObjectInfo>(x=>x.SerializeObject());
 		objects.info=EditorAdditionalGUI.EditorOptions.levels.ConvertAll<LevelInfo>(x=>x.SerializeLevel());
 		objects.name=Creator.creator.SceneName;
 		objects.defaultPortal=Creator.creator.defaultPortal.ObjectID;
-		objects.mainTexture=Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture.name;
+		objects.mainTexture=Camera.main.GetComponent<CameraControls>().BackgroundTexture.GetComponent<Renderer>().sharedMaterial.mainTexture.name;
 		System.Type[] types=new System.Type[EditorAdditionalGUI.EditorOptions.prefabs.Count+1];
 		for(int i=0; i<EditorAdditionalGUI.EditorOptions.prefabs.Count; i++)
 		{
@@ -339,11 +348,10 @@ public class CreatorEditor : Editor
 		types[EditorAdditionalGUI.EditorOptions.prefabs.Count]=typeof(LevelInfo);
 		XmlSerializer serializer=new XmlSerializer(typeof(LevelObjectsInfo), types);
 		//XmlTextWriter writer=new XmlTextWriter(stream, Encoding.UTF8);
-		serializer.Serialize(stream, objects);
+        serializer.Serialize(fout, objects);
 		//Debug.Log(stream.Length);
 		
-	  fout.Write(stream.ToArray(), 0, stream.ToArray().Length);
-		Debug.Log(fout.Name);
+	    //fout.Write(stream);
 		fout.Close();
 		AssetDatabase.Refresh();
 		
@@ -362,7 +370,7 @@ public class CreatorEditor : Editor
 		Creator.creator.defaultPortal=CustomObjectInfo.GetObjectByID(x.defaultPortal) as DistantPortalExit;
 		x.objectsInfo.ForEach(y=>y.EstablishConnections());
 		if(x.mainTexture.Length>0)
-		  Camera.main.GetComponent<CameraControls>().BackgroundTexture.renderer.sharedMaterial.mainTexture=Resources.Load("Background/"+x.mainTexture, typeof(Texture2D)) as Texture2D;
+		  Camera.main.GetComponent<CameraControls>().BackgroundTexture.GetComponent<Renderer>().sharedMaterial.mainTexture=Resources.Load("Background/"+x.mainTexture, typeof(Texture2D)) as Texture2D;
 
 		Creator.creator.SceneName=x.name;
 		loaded=true;

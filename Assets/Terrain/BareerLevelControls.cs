@@ -85,7 +85,7 @@ public class BareerLevelControls : MonoBehaviour
   {
     //Debug.Log("init"+ Level);
     PreInit();
-    renderer.sharedMaterial = new Material(renderer.sharedMaterial);
+    GetComponent<Renderer>().sharedMaterial = new Material(GetComponent<Renderer>().sharedMaterial);
     m_areaWidth = BareerAreaControls.areaWidth;
     m_areaHeight = BareerAreaControls.areaHeight;
     triangleRow = NumAreas * BareerAreaControls.areaSize;
@@ -104,7 +104,7 @@ public class BareerLevelControls : MonoBehaviour
         parameters.parent = this;
         //Debug.Log(this);
         parameters.basicMesh = areaMesh;
-        newArea.renderer.sharedMaterial = renderer.sharedMaterial;
+        newArea.GetComponent<Renderer>().sharedMaterial = GetComponent<Renderer>().sharedMaterial;
         newArea.transform.parent = transform;
         newArea.GetComponent<BareerAreaControls>().Init(parameters);
         newArea.hideFlags = 0;// HideFlags.HideInHierarchy | HideFlags.HideInInspector;

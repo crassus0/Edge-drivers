@@ -25,29 +25,29 @@ public class PlanerVisualControls : CustomObjectVisualiser
     string anim = "MoveR" + rotation + "I" + index;
     //Debug.Log("Planer");
     //Debug.Log(animation[anim].normalizedSpeed);
-    animation.Play(anim);
+    GetComponent<Animation>().Play(anim);
     //animation[anim].speed = 1/Creator.turnDuration;
   }
   public void Hit(int rotation)
   {
     string anim = "HitR" + rotation + "I" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
-    animation.Play(anim);
+    GetComponent<Animation>().Play(anim);
   }
 	public void Stay()
 	{
 		string anim = "StayI" + (m_parentPlaner.GetNode().Index + m_parentPlaner.Direction % 2) % 2;
-		animation.Play(anim);
+		GetComponent<Animation>().Play(anim);
 	}
   public void OnHit()
   {
     if (m_isHit)
     {
-      halo.renderer.material.mainTexture = normalHaloTexture;
+      halo.GetComponent<Renderer>().material.mainTexture = normalHaloTexture;
       m_isHit = false;
     }
     else
     {
-      halo.renderer.material.mainTexture = hitHaloTexture;
+      halo.GetComponent<Renderer>().material.mainTexture = hitHaloTexture;
       m_isHit = true;
     }
   }
